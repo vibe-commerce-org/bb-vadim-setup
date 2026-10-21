@@ -2,7 +2,7 @@
   "format": 3,
   "created": "2026-10-21",
   "name": "bb-vadim-kit",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "license": "MIT",
   "checked_environment": [
     {
@@ -175,17 +175,17 @@
     {
       "path": "AGENT-TASK.md",
       "bytes": 19677,
-      "sha256": "716c2ae8f02a516c3b49dff063118aeaa4f578ec2f2f56c976c3635e70ec720a"
+      "sha256": "9ce8cfedfbebae60269e8336935948851ceadee3f670d1c7e863fd2b80f712a7"
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 18590,
-      "sha256": "a0638f0682c9287008e39ef6af6da31382445e39a1d06a8a04db1096c0d7f545"
+      "bytes": 19319,
+      "sha256": "6b0f6c741d3bf081dfd0fcbbfb25afa674c156fc9ff46f39b48744bad015374f"
     },
     {
       "path": "GUIDE.md",
-      "bytes": 114760,
-      "sha256": "7adb2400dfe2cf481a9c43fbd70821940f2da9e2d2ac1ae24bdfc735ff2d9acd"
+      "bytes": 115161,
+      "sha256": "408437da78056220f03aa156c986fd457f98a0ae792d1497359a09631800f3e1"
     },
     {
       "path": "LICENSE",
@@ -200,7 +200,7 @@
     {
       "path": "README.md",
       "bytes": 10806,
-      "sha256": "4d84d55d5e1ae6811900bac05877242a512c3a6b743cc38d93edb08a737a5daf"
+      "sha256": "0fd4da52ed3242cf4be3e662abc705d4b8b2d16eec5ee3828d2d3e19420027f9"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -209,18 +209,18 @@
     },
     {
       "path": "VALIDATION.md",
-      "bytes": 14869,
-      "sha256": "34423a08b23dd4296a6e47fa95e59ed242822f8269407b4fcf0f63b5a6dbd3b8"
+      "bytes": 16471,
+      "sha256": "adf8849e1a396ed15438b48d1ceea522e4ce9a72f7dacdec27adb6dba4efd606"
     },
     {
       "path": "VERSION",
       "bytes": 6,
-      "sha256": "40b8eb4000a913a7791090535f291d3d369874162a89ef3c9e3d4e887a1b9e79"
+      "sha256": "f62184cee8787f2f6941c82041a5725d4edc9aa293ebe5dbf664406e82ec1fe1"
     },
     {
       "path": "catalog.json",
-      "bytes": 23795,
-      "sha256": "828983aca53d4836c4929ad519b91e0cc18680481b75df9f9aaa7a56bc5705a4"
+      "bytes": 23855,
+      "sha256": "07c104368c612c78fff48ab661d8bb828196255c8f43e82bce39f1c3fb397899"
     },
     {
       "path": "examples/README.md",
@@ -260,7 +260,7 @@
     {
       "path": "plugins/README.md",
       "bytes": 3966,
-      "sha256": "0144a37b758b1794e3e2a6cf04f85b10c3249d5782062814a08c3780212393f5"
+      "sha256": "50d6b1ba0bffaa4aac3da613ac215ad3f9b57790fe45a1398a0e9c893ce98ebd"
     },
     {
       "path": "plugins/artifacts/LICENSE",
@@ -1235,12 +1235,12 @@
     {
       "path": "plugins/folder-links/package-lock.json",
       "bytes": 3934,
-      "sha256": "f19bc1e6abef59ad89de0723fb5cab4331cb0ed4e932c24ad1f54a7d728cbfbb"
+      "sha256": "be51939b5a04590863730806594ba26357329b9802b3972b51db15802373e405"
     },
     {
       "path": "plugins/folder-links/package.json",
       "bytes": 923,
-      "sha256": "06493b51159115f2990f964973b8d9bb5e03b1e012361bf5fbc52155d5174353"
+      "sha256": "df39a82949b7ac5a307fff6d24cf363721636e6cdf8c63d8a38b001865d9d1b6"
     },
     {
       "path": "plugins/folder-links/rpc.ts",
@@ -1350,12 +1350,12 @@
     {
       "path": "plugins/markdown-view/package-lock.json",
       "bytes": 7922,
-      "sha256": "463713f8a2bf5bcfc9413741634b3d8354f2cc9f38ac080c2ac8eb9af7a43b48"
+      "sha256": "e19122399a8d460a50246838aefaea046f9afc7898a865b5294bb48da711c16b"
     },
     {
       "path": "plugins/markdown-view/package.json",
       "bytes": 1003,
-      "sha256": "4300d2d641f6e9d2863519ecc5bd895e5bddeaa3d3c4fcd7945ba4c00971bb8a"
+      "sha256": "9df016145411df2cb8f8f1c218785939b205f85867e8fea57e82266fda369a62"
     },
     {
       "path": "plugins/markdown-view/server.ts",
@@ -1475,12 +1475,12 @@
     {
       "path": "plugins/office-preview/package-lock.json",
       "bytes": 49549,
-      "sha256": "42b392aedcd9ca1933b449e651c2f508e2fcdf9d6f5188568b582b7ebabc0624"
+      "sha256": "339183441626340d0b82afc1405b3b514d91123a5fa3d9d6cfaee13a6a14511c"
     },
     {
       "path": "plugins/office-preview/package.json",
       "bytes": 1038,
-      "sha256": "398094d29461d7d6941c772ab1b035030b655cac7bd5ce4096d0f62181dd86ee"
+      "sha256": "f477ea5626a39c941e95c7ec58d93cf7bb00f5df6bfac2343408d5e41cf503bb"
     },
     {
       "path": "plugins/office-preview/server.ts",

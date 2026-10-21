@@ -2,7 +2,7 @@
 
 Last Updated: 2026-10-21
 
-Комплект 0.4.0 проверен на bb 0.46.1, macOS: 21.10 все девять плагинов собраны с нуля (`npm ci`,
+Комплект 0.4.1 проверен на bb 0.46.1, macOS: 21.10 все девять плагинов собраны с нуля (`npm ci`,
 `bb plugin build .`) и прошли тесты; до 11.10 комплект проверялся на 0.45.0. Windows проверена Вадимом 08.10.2026 на 0.45.0;
 маршрут установки не уточнён. Linux-сервер описан по официальной документации,
 на настоящем сервере не испытан.
@@ -57,7 +57,7 @@ bb и хотя бы один агент уже должны работать. В
    переустанавливай, а пересобери: `npm ci` (для `files-editor` и `floating-terminal` — `npm ci --ignore-scripts`),
    `bb plugin build .`, `bb plugin reload <id>` (ID — имя папки, не имя с `_vibecom`); сверь версию
    в `bb plugin list` (`floating-terminal@0.6.2`, `files-editor@0.1.6`, `russifier@0.2.0`, `pult@0.2.0`,
-   `repo-tag@0.1.0`, `artifacts@0.1.0`, три просмотрщика — `@0.4.0`). Explorer_vibecom показывает
+   `repo-tag@0.1.0`, `artifacts@0.1.0`, три просмотрщика — `@0.4.1`). Explorer_vibecom показывает
    Markdown через сервер Markdown_vibecom: без `markdown-view` его не ставь. Lockfile и версии не меняй. Предупреждение сборки о закреплённой версии SDK — норма;
    `bb plugin types` не выполняй.
 6. Скопируй папку `theme/atom-one_vibecom` в каталог из `bb theme dir`, выполни

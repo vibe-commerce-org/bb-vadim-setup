@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "version": "0.4.0",
-  "tag": "v0.4.0",
+  "version": "0.4.1",
+  "tag": "v0.4.1",
   "repository": "https://github.com/vibe-commerce-org/bb-vadim-setup",
   "archive": {
     "name": "08-BB-VADIM-KIT.zip",
-    "url": "https://github.com/vibe-commerce-org/bb-vadim-setup/releases/download/v0.4.0/08-BB-VADIM-KIT.zip",
+    "url": "https://github.com/vibe-commerce-org/bb-vadim-setup/releases/download/v0.4.1/08-BB-VADIM-KIT.zip",
     "folder": "bb-vadim-kit",
     "mirrors": []
   },
   "checked": "bb 0.46.1 на macOS; Windows — bb 0.45.0",
-  "guide": "https://github.com/vibe-commerce-org/bb-vadim-setup/blob/v0.4.0/GUIDE.md",
+  "guide": "https://github.com/vibe-commerce-org/bb-vadim-setup/blob/v0.4.1/GUIDE.md",
   "sections": [
     {
       "id": "theme",
@@ -62,7 +62,7 @@
       "id": "markdown-view",
       "section": "plugins",
       "name": "Markdown_vibecom",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "gives": "Планы и отчёты агентов — как в Typora: оглавление, таблицы, ссылки между файлами и репозиториями. Правка без разметки, сохранение само, правки агента не затираются.",
       "for": "Всем, кто читает и правит документы агентов",
       "os": {
@@ -82,7 +82,7 @@
       "id": "office-preview",
       "section": "plugins",
       "name": "Office_vibecom",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "gives": "Excel, CSV, Word и PowerPoint с заметками докладчика — рядом с чатом, без Office. Только просмотр: формулы показывают сохранённый результат.",
       "for": "Селлерам, аналитикам и всем, кто работает с таблицами и презентациями",
       "os": {
@@ -144,7 +144,7 @@
       "id": "folder-links",
       "section": "plugins",
       "name": "Folder links_vibecom",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "gives": "Клик по ссылке на папку в ответе агента открывает её дерево справа, а не браузер.",
       "for": "Тем, кому агенты присылают ссылки на папки",
       "os": {
@@ -379,7 +379,7 @@
       "id": "models-cloudru",
       "section": "models",
       "name": "Cloud.ru",
-      "gives": "GLM-5.2 и Kimi K2.6 через агента Pi: без VPN, оплата рублями, грант 4 000 бонусов на 60 дней. Компании и ИП — по договору и счёту.",
+      "gives": "GLM-5.2 и Kimi K2.6 через агента Pi: без VPN, оплата рублями по токенам; приветственный грант Cloud.ru на модели не тратится. Компании и ИП — по договору и счёту.",
       "for": "Тем, кому нужна модель без VPN; компаниям с оплатой по счёту",
       "os": {
         "macos": "yes",
