@@ -30,7 +30,7 @@ MIT, © 2026 Foma. Оба уведомления — в [LICENSE](LICENSE).
 ## Установка
 
 ```sh
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.3.0" --subdirectory plugins/files-editor
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/files-editor
 ```
 
 Для `.md` нужен установленный Markdown_vibecom: Vditor отдаёт его сервер.

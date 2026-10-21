@@ -2,7 +2,7 @@
 // either platform. Which paths are served is the server's business.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { folderTitle, isAbsoluteLinkPath, linkPath } from "../src/link-path.ts";
+import { folderTitle, hostFilePath, isAbsoluteLinkPath, linkPath } from "../src/link-path.ts";
 
 test("Mac and Linux links read as before", () => {
   assert.equal(linkPath("/Users/me/repo"), "/Users/me/repo");
@@ -69,4 +69,11 @@ test("a tab is titled with the last segment; only a path with a drive letter spl
   assert.equal(folderTitle("C:\\Users\\Имя\\repo"), "repo");
   assert.equal(folderTitle("C:/Users/Имя\\My Docs\\"), "My Docs");
   assert.equal(folderTitle("C:\\"), "C:\\");
+});
+
+test("a file path goes to BB the way BB writes it: a Windows path with forward slashes, others untouched", () => {
+  assert.equal(hostFilePath("C:\\Users\\Имя\\repo\\notes.md"), "C:/Users/Имя/repo/notes.md");
+  assert.equal(hostFilePath("c:/Users/Имя\\repo\\notes.md"), "c:/Users/Имя/repo/notes.md");
+  assert.equal(hostFilePath("/home/kate/repo/notes.md"), "/home/kate/repo/notes.md");
+  assert.equal(hostFilePath("/home/kate/a\\b.md"), "/home/kate/a\\b.md", "on Linux a backslash is part of the name");
 });

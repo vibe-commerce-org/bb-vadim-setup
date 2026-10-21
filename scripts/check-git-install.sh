@@ -1,6 +1,6 @@
 #!/bin/bash
 # Установка «как у bb из Git»: клон по тегу, удаление .npmrc/.yarnrc, установка зависимостей
-# без инструментов разработки npm-ом из bb, bb plugin build — для каждого из пяти плагинов.
+# без инструментов разработки npm-ом из bb, bb plugin build — для каждого плагина из plugins/.
 # Использование: scripts/check-git-install.sh [ТЕГ]
 #   ТЕГ — существующий тег репозитория; без него — временный репозиторий из рабочей копии
 #   (отслеживаемые и новые неигнорируемые файлы) с тегом v<VERSION>.
@@ -24,7 +24,8 @@ git -c advice.detachedHead=false clone -q --branch "$TAG" "$SRC" "$T/clone"
 export npm_config_cache="$T/npm-cache"
 echo "npm $("${NPM_CMD[@]}" --version), клон $TAG → $T/clone"
 fail=0
-for p in markdown-view office-preview folder-links files-editor floating-terminal; do
+for p in $(cd "$T/clone/plugins" && ls -d */ | tr -d /); do
+  [ -f "$T/clone/plugins/$p/package.json" ] || continue
   R="$T/clone/plugins/$p"
   for f in .npmrc .yarnrc .yarnrc.yml; do [ -e "$R/$f" ] && mv "$R/$f" "$T/removed-$p-$f"; done
   printf "=== %-18s " "$p"

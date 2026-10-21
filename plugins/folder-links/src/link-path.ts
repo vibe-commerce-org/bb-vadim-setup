@@ -17,6 +17,16 @@ export function isAbsoluteLinkPath(path: string): boolean {
   return path.startsWith("/") || DRIVE_PATH.test(path);
 }
 
+/**
+ * A path the way BB takes it for a file on a host. BB's own file links on
+ * Windows carry `C:/Users/…`, forward slashes, and its host-file address is
+ * made from the path the same way, so the tree hands a Windows path over in
+ * that form. A Mac or Linux path is left as it is.
+ */
+export function hostFilePath(path: string): string {
+  return DRIVE_PATH.test(path) ? path.replace(/\\/gu, "/") : path;
+}
+
 /** The folder's name for a tab title: the last segment; a path with a drive letter is split by `\` as well. */
 export function folderTitle(path: string): string {
   const drive = DRIVE_PATH.test(path);

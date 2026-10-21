@@ -1,6 +1,6 @@
 {
   "name": "bb-plugin-folder-links",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -13,7 +13,7 @@
   },
   "bb": {
     "name": "Folder links_vibecom",
-    "description": "A click on a chat link to an existing folder opens that folder as a tree in the thread's side panel instead of a browser listing. Files and missing paths stay with BB. Reads only inside the home folder.",
+    "description": "A click on a chat link to an existing folder opens that folder as a tree in the thread's side panel instead of a browser listing. Files and missing paths stay with BB. Reads only inside the home folder, in WSL2 the Windows profile, and the folders of BB's projects on this machine.",
     "branding": {
       "icon": "Folder"
     },

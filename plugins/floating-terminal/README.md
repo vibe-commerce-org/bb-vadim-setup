@@ -29,7 +29,7 @@ v0.5.3 (коммит `ff6df634885a`), MIT, © 2026 Vedran Burojević — см. [
 Установка из Git:
 
 ```sh
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.3.0" --subdirectory plugins/floating-terminal
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/floating-terminal
 ```
 
 Плагин с тем же id из каталога BB или от автора сначала удалите:

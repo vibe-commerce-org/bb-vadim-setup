@@ -28,13 +28,20 @@ PREFIX = "bb-vadim-kit/"
 # Встроенный в Terminal_vibecom шрифт значков (base64) даёт ложные совпадения.
 SKIP = ("plugins/floating-terminal/fonts/nerd-symbols.css",)
 # Вымышленные пользователи в примерах и тестах.
-FICTIONAL = r"(?:me|dev|user|alex|someone-else|ИМЯ|Ivan|Kate)\b|Имя|Другой|\$\{|%D0|…"
+FICTIONAL = r"(?:me|dev|user|alex|someone-else|ИМЯ|Ivan|Kate|KateX|Public|Other|Nobody|Иван)\b|Имя|Другой|\$\{|%D0|…"
 GENERIC = [
     r"/Users/(?!(?:" + FICTIONAL + r"))[A-Za-z]", r"C:[/\\]+Users[/\\]+(?![/\\]*(?:" + FICTIONAL + r"))",
     r"\b(thr|proj|env|host)_[a-z0-9]{8,}\b", r"@gmail\.com", r"\bsk-[A-Za-z0-9]{10,}", r"\bghp_[A-Za-z0-9]{10,}",
     r"\beyJ[A-Za-z0-9_-]{20,}\.", r"\bAQVN[A-Za-z0-9_-]{10,}", r"\bb1g[a-z0-9]{17}\b",
     r"Documents/_CODE", r"\.bb/thread-storage", r"getbb\.app/[a-z]",
 ]
+
+# Вымышленные ID bb в тестах и комментариях Пульта: явный список, чтобы новый ID проверял человек.
+FICTIONAL_IDS = {
+    "thr_aaaaaaaaaa", "thr_bbbbbbbbbb", "thr_dddddddddd", "thr_hhhhhhhhhh", "thr_xxxxxxxxxx", "thr_zzzzzzzzzz",
+    "thr_classify01", "thr_test000001", "thr_action01", "thr_commit01", "thr_fresh001", "thr_comm0004",
+    "thr_grandchild", "thr_approval", "thr_parent01", "thr_child001", "thr_other001", "proj_fixture01",
+}
 
 failures: list[str] = []
 
@@ -155,8 +162,10 @@ def main() -> None:
         except UnicodeDecodeError:
             continue
         for i, line in enumerate(t.splitlines(), 1):
-            if (mm := pat.search(line)):
-                hits.append(f"{p}:{i}: {mm.group(0)!r}")
+            for mm in pat.finditer(line):
+                if mm.group(0) not in FICTIONAL_IDS:
+                    hits.append(f"{p}:{i}: {mm.group(0)!r}")
+                    break
     for h in hits[:30]:
         print("     " + h)
     extra = " + частные шаблоны" if args.private_patterns else " (без частных шаблонов)"

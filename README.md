@@ -1,19 +1,20 @@
 # BB как у Вадима — комплект настройки
 
-Last Updated: 2026-10-11
-Версия: 0.3.6 · Лицензия: [MIT](LICENSE) для собственных материалов ·
+Last Updated: 2026-10-21
+Версия: 0.4.0 · Лицензия: [MIT](LICENSE) для собственных материалов ·
 Сторонние части: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
 Инструкция и комплект, чтобы установить [bb](https://github.com/get-bb/bb) и настроить
-его так же, как у меня: подключение моделей (в том числе российских), тема, просмотр
-и правка Markdown, офисные файлы рядом с чатом, проводник проекта, терминал в панели
-треда, ссылки на папки, шаблон правил для агентов. Подходит для кода, документов,
+его так же, как у меня: подключение моделей (в том числе российских), русский интерфейс,
+тема, просмотр и правка Markdown, офисные файлы рядом с чатом, проводник проекта, терминал
+в панели треда, ссылки на папки, теги репозиториев у тредов, Пульт «чей ход», важные
+артефакты треда (бета), шаблон правил для агентов. Подходит для кода, документов,
 исследований и работы селлера. Доступ к другим репозиториям не нужен.
 
 Это единственный источник комплекта: из него собираются архив `08-BB-VADIM-KIT.zip`,
 инструкция `08-BB-VADIM-SETUP.md` и файл для агента `08-BB-AGENT-SETUP.md`.
 
-**Проверено на macOS, bb 0.46.0:** сборка пяти плагинов с нуля и их тесты, установка
+**Проверено на macOS, bb 0.46.1:** сборка девяти плагинов с нуля и их тесты, установка
 так, как это делает bb при установке из Git, тот же код плагинов работает у автора.
 Установка из публичного Git проверяется после публикации; Windows проверял автор
 на bb 0.45.0, Linux-сервер — только по документации. Подробно — [VALIDATION.md](VALIDATION.md).
@@ -26,7 +27,7 @@ Last Updated: 2026-10-11
 | [PHONE.md](PHONE.md) | Как пользоваться bb с телефона: подключение, голос, документы, терминал |
 | [AGENT-TASK.md](AGENT-TASK.md) | Готовое задание кодинговому агенту: настроить bb по комплекту |
 | [theme/](theme/README.md) | Тема `atom-one_vibecom` (One Dark / One Light) |
-| [plugins/](plugins/README.md) | Исходники плагинов Markdown_vibecom, Office_vibecom, Folder links_vibecom, Explorer_vibecom, Terminal_vibecom |
+| [plugins/](plugins/README.md) | Исходники плагинов Markdown_vibecom, Office_vibecom, Folder links_vibecom, Explorer_vibecom, Terminal_vibecom, Русификатор_vibecom, Repo tags_vibecom, Пульт_vibecom, Важные артефакты_vibecom (бета) |
 | [models/pi/](models/pi/README.md) | Шаблоны агента Pi для моделей Яндекса, Cloud.ru и LM Studio, без ключей |
 | [instructions/](instructions/README.md) | Универсальный шаблон `AGENTS.md` для агентов в bb |
 | [examples/](examples/README.md) | Искусственный `demo.md` для проверки |
@@ -38,6 +39,9 @@ Last Updated: 2026-10-11
 
 ## Быстрый старт
 
+**bb ещё нет, а скрипт установки не сработал** — [GUIDE.md, «Поставить bb вручную, без скриптов»](GUIDE.md#поставить-bb-вручную-без-скриптов):
+прямые ссылки на установщики, SHA-256 и что делать дальше на Windows и Mac.
+
 **Путь 1 — архив.** Скачайте `08-BB-VADIM-KIT.zip` и `08-BB-VADIM-SETUP.md`, распакуйте
 архив в `~/Developer` (появится папка `bb-vadim-kit`) и идите по инструкции. Плагины
 ставятся из этой папки командами из [GUIDE.md, раздел 12](GUIDE.md#12-мои-плагины-из-комплекта).
@@ -47,11 +51,15 @@ Last Updated: 2026-10-11
 и потом обновляет командой; ставьте только нужные:
 
 ```sh
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.3.0" --subdirectory plugins/markdown-view
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.3.0" --subdirectory plugins/office-preview
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.3.0" --subdirectory plugins/folder-links
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.3.0" --subdirectory plugins/files-editor
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.3.0" --subdirectory plugins/floating-terminal
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/markdown-view
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/office-preview
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/folder-links
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/files-editor
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/floating-terminal
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/russifier
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/repo-tag
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/pult
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/artifacts
 bb plugin list
 ```
 
@@ -67,24 +75,29 @@ Explorer_vibecom показывает `.md` через Markdown_vibecom — ст
 
 | Что | Обновить | Откатить |
 |---|---|---|
-| Плагин из Git с диапазоном `~0.3.0` | `bb plugin outdated`, затем `bb plugin update ИМЯ` | `bb plugin remove ИМЯ` и установка нужного тега, например `@v0.3.1` |
-| Плагин из Git с тегом `@v0.3.6` | закреплён: `remove` и установка нового тега | то же |
+| Плагин из Git с диапазоном `~0.4.0` | `bb plugin outdated`, затем `bb plugin update ИМЯ` | `bb plugin remove ИМЯ` и установка нужного тега, например `@v0.3.6` |
+| Плагин из Git с тегом `@v0.4.0` | закреплён: `remove` и установка нового тега | то же |
 | Плагин из папки комплекта | новые файлы в ту же папку, `npm ci`, `bb plugin build .`, `bb plugin reload ИМЯ` | предыдущая версия папки и те же команды |
 | Тема | скопировать новую папку `atom-one_vibecom` | резервная копия темы или `bb theme reset` |
 | Правила | сравнить новый шаблон со своим `AGENTS.md` и перенести нужное | ваш файл остаётся вашим |
 
-Выпуски 0.3.x совместимы между собой; опубликованные теги не передвигаются.
-Диапазоны `~0.1.0` и `~0.2.0` выпуски 0.3.x не принимают: переустановите плагин
-(`bb plugin remove ИМЯ`, затем установка с `@semver:~0.3.0`). Тема с 0.2.0 называется
+Выпуски 0.4.x будут совместимы между собой; опубликованные теги не передвигаются.
+Диапазоны `~0.2.0` и `~0.3.0` выпуски 0.4.x не принимают: переустановите плагин
+(`bb plugin remove ИМЯ`, затем установка с `@semver:~0.4.0`). Тема с 0.2.0 называется
 `atom-one_vibecom`. ИМЯ — id из `bb plugin list`: `markdown-view`, `office-preview`,
-`folder-links`, `files-editor`, `floating-terminal`. `bb plugin remove` удаляет настройки,
-секреты и расписания плагина (настройки есть у Explorer_vibecom и Terminal_vibecom);
+`folder-links`, `files-editor`, `floating-terminal`, `russifier`, `repo-tag`, `pult`, `artifacts`.
+`bb plugin remove` удаляет настройки, секреты, расписания и базу плагина (настройки есть у Explorer_vibecom,
+Terminal_vibecom, Русификатора и тега репозитория; база — у Пульта и Артефактов);
 папка комплекта остаётся на диске.
 
 ## Ограничения
 
-- Folder links_vibecom опирается на внутренние селекторы чата bb; пути Windows проверены тестами,
+- Folder links_vibecom опирается на внутренние селекторы чата bb; пути Windows и WSL2 проверены тестами,
   на живой Windows не испытаны. Сетевые пути `\\сервер\папка` не поддерживаются.
+- Русификатор, тег репозитория, Пульт и Артефакты требуют bb 0.46+, на Windows не испытаны. Русификатор и
+  тег опираются на разметку bb: после обновления bb новые подписи остаются английскими, теги могут пропасть.
+- Важные артефакты_vibecom — бета: панель не открывается сама при входе в тред, список наполняет агент
+  командой `bb artifacts`; подробно — [его README](plugins/artifacts/README.md).
 - Office_vibecom показывает файлы только для чтения; DOC/RTF/ODT конвертирует
   через `textutil` macOS. Его тесты проверяют чтение файлов, но не вёрстку.
 - Корзина, домашняя папка, загрузка файлов и «Open in Mac app» в Explorer_vibecom

@@ -1,0 +1,11 @@
+{
+  "comment": "Builtin plugins whose strings count toward coverage: the ones switched on in the user's bb (bb plugin list, 2026-10-14) plus Docs, which is in the navigation. Strings of other builtin plugins stay in the catalog; add a plugin here when it is switched on, then translate its strings (coverage.mjs --todo).",
+  "builtin": [
+    "automations", "provider-usage", "bb-account", "bb-ai", "bb-guide", "concurrency-limit", "connect",
+    "custom-instructions", "drafts", "environment-git-worktree", "environment-personal-workspace",
+    "environment-project-checkout", "inline-vis", "keep-awake", "monaco-editor", "pdf-preview", "provider-acp",
+    "provider-claude-code", "provider-codex", "provider-pi", "provider-retry", "push-notifications",
+    "scheduled-send", "secrets", "side-chat", "tasks", "thread-list", "docs"
+  ],
+  "serverNoise": "^The |\\bEg:|Better Auth|server-only|organization|invitation|\\bteam\\b|Api Key|API key|OAuth|idToken|Timestamp|\\bID\\b|Unprocessable|telemetry|launcher|Salesforce|rate limit|password|Success - |\\bsession details\\b|\\bsort by\\b|\\boffset\\b|\\bnonce\\b"
+}

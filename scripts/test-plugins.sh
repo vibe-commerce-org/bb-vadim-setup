@@ -1,5 +1,5 @@
 #!/bin/bash
-# Сборка и тесты пяти плагинов с нуля в копии: npm ci с пустым кэшем, bb plugin build, npm test.
+# Сборка и тесты всех плагинов из plugins/ с нуля в копии: npm ci с пустым кэшем, bb plugin build, npm test.
 # Использование: scripts/test-plugins.sh [ПАПКА_ДЛЯ_КОПИИ]   (по умолчанию — новая папка в $TMPDIR)
 # Сеть: registry.npmjs.org и cdn.sheetjs.com. В floating-terminal запускается только npm test:
 # его другие скрипты шлют команды в открытый терминал.
@@ -9,7 +9,8 @@ OUT="${1:-$(mktemp -d "${TMPDIR:-/tmp}/kit-test.XXXX")}"
 mkdir -p "$OUT/plugins" "$OUT/npm-cache"
 echo "bb $(bb --version)  node $(node --version)  npm $(npm --version)  → $OUT"
 fail=0
-for p in markdown-view office-preview folder-links files-editor floating-terminal; do
+for p in $(cd "$ROOT/plugins" && ls -d */ | tr -d /); do
+  [ -f "$ROOT/plugins/$p/package.json" ] || continue
   rsync -a --exclude node_modules --exclude dist "$ROOT/plugins/$p/" "$OUT/plugins/$p/"
   d="$OUT/plugins/$p"
   flags=""; case "$p" in files-editor|floating-terminal) flags="--ignore-scripts";; esac

@@ -10,10 +10,11 @@ import type { PluginThreadPanelProps } from "@get-bb/plugin-sdk/app";
 import type { RpcContract } from "../rpc";
 import type { FolderEntry } from "./folders";
 import { folderTabOf, folderTitle } from "./folder-tab";
+import { hostFilePath } from "./link-path";
 
 type Listing =
   | { status: "loading" }
-  | { status: "ok"; entries: FolderEntry[]; parent: string | null; truncated: boolean }
+  | { status: "ok"; path: string; entries: FolderEntry[]; parent: string | null; truncated: boolean }
   | { status: "error"; message: string };
 
 const SMALL_BUTTON =
@@ -61,7 +62,7 @@ function FolderTree({ start, missing }: { start: string; missing: string | null 
         const result = await rpc.call("list", { path });
         if (!result.ok) return put(path, { status: "error", message: result.message });
         if (mounted.current) setHostId(result.hostId);
-        put(path, { status: "ok", entries: result.entries, parent: result.parent, truncated: result.truncated });
+        put(path, { status: "ok", path: result.path, entries: result.entries, parent: result.parent, truncated: result.truncated });
       } catch (cause) {
         put(path, { status: "error", message: `Сервер плагина не ответил: ${cause instanceof Error ? cause.message : String(cause)}` });
       }
@@ -92,12 +93,14 @@ function FolderTree({ start, missing }: { start: string; missing: string | null 
     setOpenError(null);
     const opened =
       hostId !== null &&
-      navigate.experimental_openFilePreview({ target: { kind: "host", hostId, path }, location: null });
+      navigate.experimental_openFilePreview({ target: { kind: "host", hostId, path: hostFilePath(path) }, location: null });
     if (!opened) setOpenError(`BB не открыл файл ${path}`);
   };
 
   const rootListing = listings.get(root);
   const parent = rootListing?.status === "ok" ? rootListing.parent : null;
+  // The folder as the server spells it: `C:\Users\Имя\repo` for a link written `c:/users/Имя/repo`.
+  const rootShown = rootListing?.status === "ok" ? rootListing.path : root;
 
   const renderListing = (path: string, depth: number) => {
     const listing = listings.get(path);
@@ -138,7 +141,7 @@ function FolderTree({ start, missing }: { start: string; missing: string | null 
     const muted = entry.muted ? " opacity-60" : "";
     if (entry.outside) {
       return (
-        <div key={entry.path} className={`${ROW} cursor-not-allowed opacity-40`} style={indent(depth)} title="Ссылка за пределы домашней папки">
+        <div key={entry.path} className={`${ROW} cursor-not-allowed opacity-40`} style={indent(depth)} title="Ссылка за пределы разрешённых папок">
           <span className="size-3.5 flex-none" />
           <Icon name={entry.kind === "directory" ? "Folder" : "File"} className="size-4 flex-none" aria-hidden />
           <span className="truncate">{entry.name}</span>
@@ -174,8 +177,8 @@ function FolderTree({ start, missing }: { start: string; missing: string | null 
           <Icon name="ArrowUp" className="size-3.5" aria-hidden />
           Выше
         </button>
-        <span className="min-w-0 flex-1 truncate" title={root} dir="rtl">
-          <bdi>{root}</bdi>
+        <span className="min-w-0 flex-1 truncate" title={rootShown} dir="rtl">
+          <bdi>{rootShown}</bdi>
         </span>
         <button type="button" className={SMALL_BUTTON} onClick={refresh}>
           Обновить

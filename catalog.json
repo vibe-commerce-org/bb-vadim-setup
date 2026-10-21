@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "version": "0.3.6",
-  "tag": "v0.3.6",
+  "version": "0.4.0",
+  "tag": "v0.4.0",
   "repository": "https://github.com/vibe-commerce-org/bb-vadim-setup",
   "archive": {
     "name": "08-BB-VADIM-KIT.zip",
-    "url": "https://github.com/vibe-commerce-org/bb-vadim-setup/releases/download/v0.3.6/08-BB-VADIM-KIT.zip",
+    "url": "https://github.com/vibe-commerce-org/bb-vadim-setup/releases/download/v0.4.0/08-BB-VADIM-KIT.zip",
     "folder": "bb-vadim-kit",
     "mirrors": []
   },
-  "checked": "bb 0.46.0 на macOS; Windows — bb 0.45.0",
-  "guide": "https://github.com/vibe-commerce-org/bb-vadim-setup/blob/v0.3.6/GUIDE.md",
+  "checked": "bb 0.46.1 на macOS; Windows — bb 0.45.0",
+  "guide": "https://github.com/vibe-commerce-org/bb-vadim-setup/blob/v0.4.0/GUIDE.md",
   "sections": [
     {
       "id": "theme",
@@ -54,13 +54,15 @@
         "windows": "проверьте вид после установки"
       },
       "default": true,
-      "docs": "#9-тема-atom-one_vibecom"
+      "docs": "#9-тема-atom-one_vibecom",
+      "tier": 2,
+      "short": "Тёмная и светлая тема, подсветка кода"
     },
     {
       "id": "markdown-view",
       "section": "plugins",
       "name": "Markdown_vibecom",
-      "version": "0.3.6",
+      "version": "0.4.0",
       "gives": "Планы и отчёты агентов — как в Typora: оглавление, таблицы, ссылки между файлами и репозиториями. Правка без разметки, сохранение само, правки агента не затираются.",
       "for": "Всем, кто читает и правит документы агентов",
       "os": {
@@ -72,13 +74,15 @@
         "windows": "ссылки между файлами и картинки по относительным путям могут не работать"
       },
       "default": true,
-      "docs": "#markdown_vibecom--markdown-как-в-typora"
+      "docs": "#markdown_vibecom--markdown-как-в-typora",
+      "tier": 1,
+      "short": "Документы агентов — как в Typora"
     },
     {
       "id": "office-preview",
       "section": "plugins",
       "name": "Office_vibecom",
-      "version": "0.3.6",
+      "version": "0.4.0",
       "gives": "Excel, CSV, Word и PowerPoint с заметками докладчика — рядом с чатом, без Office. Только просмотр: формулы показывают сохранённый результат.",
       "for": "Селлерам, аналитикам и всем, кто работает с таблицами и презентациями",
       "os": {
@@ -91,7 +95,9 @@
         "linux": ".doc, .rtf, .odt — только внешним приложением"
       },
       "default": true,
-      "docs": "#office_vibecom--excel-word-powerpoint"
+      "docs": "#office_vibecom--excel-word-powerpoint",
+      "tier": 1,
+      "short": "Excel, Word, PowerPoint рядом с чатом"
     },
     {
       "id": "files-editor",
@@ -113,7 +119,9 @@
         "markdown-view"
       ],
       "default": true,
-      "docs": "#11-файлы-explorer_vibecom"
+      "docs": "#11-файлы-explorer_vibecom",
+      "tier": 1,
+      "short": "Проводник и редактор файлов проекта"
     },
     {
       "id": "floating-terminal",
@@ -128,13 +136,15 @@
         "linux": "candidate"
       },
       "default": true,
-      "docs": "#10-терминал"
+      "docs": "#10-терминал",
+      "tier": 2,
+      "short": "Терминал в панели, удобный с телефона"
     },
     {
       "id": "folder-links",
       "section": "plugins",
       "name": "Folder links_vibecom",
-      "version": "0.3.6",
+      "version": "0.4.0",
       "gives": "Клик по ссылке на папку в ответе агента открывает её дерево справа, а не браузер.",
       "for": "Тем, кому агенты присылают ссылки на папки",
       "os": {
@@ -146,13 +156,99 @@
         "windows": "проверено тестами, на живой Windows не испытано; ссылки на папки — в виде file:///C:/…"
       },
       "default": true,
-      "docs": "#folder-links_vibecom--папка-из-ответа-агента-в-дерево-справа"
+      "docs": "#folder-links_vibecom--папка-из-ответа-агента-в-дерево-справа",
+      "tier": 3,
+      "short": "Ссылка на папку открывает дерево"
+    },
+    {
+      "id": "russifier",
+      "section": "plugins",
+      "name": "Русификатор_vibecom",
+      "version": "0.2.0",
+      "gives": "Подписи, меню и подсказки bb — на русском, в приложении и на телефоне. Переписку, код и названия файлов не трогает. Effort, режимы доступа, названия моделей и команды остаются по-английски — как в документации и у провайдера. Вернуть английский — одна настройка.",
+      "for": "Тем, кому удобнее интерфейс на русском",
+      "os": {
+        "macos": "yes",
+        "windows": "candidate",
+        "linux": "candidate"
+      },
+      "os_notes": {
+        "windows": "на Windows не проверялся"
+      },
+      "default": true,
+      "docs": "#русификатор_vibecom--интерфейс-bb-на-русском",
+      "tier": 1,
+      "short": "Интерфейс bb на русском"
+    },
+    {
+      "id": "repo-tag",
+      "section": "plugins",
+      "name": "Repo tags_vibecom",
+      "version": "0.1.0",
+      "gives": "У каждого треда в списке — цветной тег из первых букв репозитория: видно, где работает тред, даже без группировки по проектам. Длина тега — настройка, отдельно для телефона.",
+      "for": "Тем, у кого треды в нескольких репозиториях",
+      "os": {
+        "macos": "yes",
+        "windows": "candidate",
+        "linux": "candidate"
+      },
+      "os_notes": {
+        "windows": "на Windows не проверялся"
+      },
+      "default": true,
+      "docs": "#repo-tags_vibecom--тег-репозитория-у-треда",
+      "tier": 2,
+      "short": "Тег репозитория у каждого треда"
+    },
+    {
+      "id": "pult",
+      "section": "plugins",
+      "name": "Пульт_vibecom",
+      "version": "0.2.0",
+      "gives": "Страница «Пульт»: какие треды ждут вашего ответа — вопрос, план на «делай», ручной шаг, ошибка, проверка — и приоритеты задач Сейчас / Дальше / Потом поверх Задач bb, карта проектов и тредов. Точнее всего работает с правилом «⏸ Ход за тобой» из правил агентам.",
+      "for": "Тем, у кого много тредов одновременно",
+      "os": {
+        "macos": "yes",
+        "windows": "candidate",
+        "linux": "candidate"
+      },
+      "os_notes": {
+        "windows": "на Windows не проверялся"
+      },
+      "recommends": [
+        "rules"
+      ],
+      "default": true,
+      "docs": "#пульт_vibecom--чей-ход-по-всем-тредам",
+      "tier": 3,
+      "short": "Какие треды ждут вас и приоритеты задач"
+    },
+    {
+      "id": "artifacts",
+      "section": "plugins",
+      "name": "Важные артефакты_vibecom",
+      "version": "0.1.0",
+      "stage": "beta",
+      "gives": "Вкладка «Важные артефакты» справа в треде: бриф, план, статус, нужные файлы и ссылки этого треда, с закреплением и архивом. Пока не работает: панель не открывается сама при входе в тред (кнопка в заголовке треда), список наполняет агент командой bb artifacts, на телефоне вживую не проверено.",
+      "for": "Тем, кто ведёт длинные задачи с брифом и планом",
+      "os": {
+        "macos": "yes",
+        "windows": "candidate",
+        "linux": "candidate"
+      },
+      "os_notes": {
+        "windows": "на Windows не проверялся"
+      },
+      "default": true,
+      "docs": "#важные-артефакты_vibecom--бриф-и-план-треда-справа-бета",
+      "tier": 3,
+      "short": "Бриф, план и важные файлы треда справа"
     },
     {
       "id": "rules",
       "section": "instructions",
       "name": "Правила агентам (AGENTS.md)",
-      "gives": "Как работают агенты Вадима: план в файл и ваше «делай» перед работой, бриф с вашими словами и решениями, основной чекаут вместо копий, дочерние треды, варианты А, Б, В с рекомендацией, абсолютные ссылки на файлы, сохранение статуса при заполнении контекста. Ваши правила остаются — блок комплекта добавляется между маркерами.",
+      "gives": "Как работают агенты Вадима: план в файл и ваше «делай» перед работой, бриф с вашими словами и решениями, основной чекаут вместо копий, дочерние треды, варианты А, Б, В с рекомендацией, абсолютные ссылки на файлы, сохранение статуса при заполнении контекста, строка «⏸ Ход за тобой» в конце ответа, когда нужен вы. Ваши правила остаются — блок комплекта добавляется между маркерами.",
       "for": "Всем, кому нужны предсказуемые агенты",
       "os": {
         "macos": "yes",
@@ -160,7 +256,9 @@
         "linux": "yes"
       },
       "default": true,
-      "docs": "#15-правила-агентам"
+      "docs": "#15-правила-агентам",
+      "tier": 1,
+      "short": "Предсказуемые агенты: план, бриф, решения"
     },
     {
       "id": "phone",
@@ -174,7 +272,9 @@
         "linux": "yes"
       },
       "default": true,
-      "docs": "PHONE.md"
+      "docs": "PHONE.md",
+      "tier": 2,
+      "short": "Задания и документы с телефона"
     },
     {
       "id": "settings-queue",
@@ -188,7 +288,9 @@
         "linux": "yes"
       },
       "default": true,
-      "docs": "#8-общие-настройки-bb"
+      "docs": "#8-общие-настройки-bb",
+      "tier": 1,
+      "short": "Enter не перебивает агента"
     },
     {
       "id": "settings-ui",
@@ -202,7 +304,9 @@
         "linux": "yes"
       },
       "default": true,
-      "docs": "#8-общие-настройки-bb"
+      "docs": "#8-общие-настройки-bb",
+      "tier": 2,
+      "short": "Подсказки клавиш, чистая лента"
     },
     {
       "id": "settings-hotkeys",
@@ -216,7 +320,9 @@
         "linux": "yes"
       },
       "default": true,
-      "docs": "#8-общие-настройки-bb"
+      "docs": "#8-общие-настройки-bb",
+      "tier": 3,
+      "short": "Панели — Cmd+Shift+стрелки"
     },
     {
       "id": "provider-retry",
@@ -230,7 +336,9 @@
         "linux": "yes"
       },
       "default": true,
-      "docs": "#16-skills-и-встроенные-плагины"
+      "docs": "#16-skills-и-встроенные-плагины",
+      "tier": 1,
+      "short": "После лимита bb продолжит сам"
     },
     {
       "id": "keep-awake",
@@ -247,7 +355,9 @@
         "linux": "на сервере не нужно"
       },
       "default": false,
-      "docs": "#16-skills-и-встроенные-плагины"
+      "docs": "#16-skills-и-встроенные-плагины",
+      "tier": 3,
+      "short": "Компьютер не засыпает при работе"
     },
     {
       "id": "models-yandex",
@@ -260,8 +370,10 @@
         "windows": "candidate",
         "linux": "candidate"
       },
-      "default": false,
-      "docs": "#6-путь-2-российское-облако-через-агента-pi"
+      "default": true,
+      "docs": "#6-путь-2-российское-облако-через-агента-pi",
+      "short": "DeepSeek без VPN, оплата рублями",
+      "tier": 1
     },
     {
       "id": "models-cloudru",
@@ -274,8 +386,10 @@
         "windows": "candidate",
         "linux": "candidate"
       },
-      "default": false,
-      "docs": "#6-путь-2-российское-облако-через-агента-pi"
+      "default": true,
+      "docs": "#6-путь-2-российское-облако-через-агента-pi",
+      "short": "GLM и Kimi без VPN, оплата рублями",
+      "tier": 1
     },
     {
       "id": "models-lmstudio",
@@ -291,8 +405,31 @@
       "os_notes": {
         "linux": "сервер без видеокарты не подходит"
       },
-      "default": false,
-      "docs": "#7-путь-3-локальная-модель"
+      "default": true,
+      "docs": "#7-путь-3-локальная-модель",
+      "short": "Бесплатная модель на своём компьютере",
+      "tier": 1
+    }
+  ],
+  "presets": [
+    {
+      "id": "main",
+      "title": "Главное",
+      "tier": 1,
+      "default": true,
+      "intro": "Без этого работать неудобно: русский интерфейс, правила для агентов, документы и таблицы рядом с чатом, проводник, защита от лимита и модели без VPN. Ключ модели вы впишете сам: без него агент оставит шаблон и подскажет, куда вставить ключ."
+    },
+    {
+      "id": "more",
+      "title": "Расширенное",
+      "tier": 2,
+      "intro": "Главное плюс тема, терминал, работа с телефона, тег репозитория у треда и спокойная лента."
+    },
+    {
+      "id": "all",
+      "title": "Всё как у Вадима",
+      "tier": 3,
+      "intro": "Всё, что стоит у Вадима: ещё Пульт, «Важные артефакты» (бета), ссылки на папки, его клавиши и компьютер без сна."
     }
   ],
   "prompts": {

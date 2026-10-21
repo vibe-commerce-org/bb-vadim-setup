@@ -7,62 +7,10 @@ import assert from "node:assert/strict";
 import { posix, win32 } from "node:path";
 import { test } from "node:test";
 import { inspectPath, listFolder, looksLikeFile } from "../src/folders.ts";
-import type { Disk, DiskEntry, System } from "../src/folders.ts";
+import type { Disk, System } from "../src/folders.ts";
+import { dir, fakeDisk, file, link, ntfsKey } from "./fake-disk.ts";
 
-type Node = { kind: "dir" } | { kind: "file" } | { kind: "link"; target: string };
-
-const fail = (code: string, path: string) => Object.assign(new Error(`${code}: ${path}`), { code });
-
-/** NTFS compares names by upper-casing each character on its own: `ß` stays `ß`, the Kelvin sign U+212A stays apart from `K`. */
-const ntfsKey = (path: string) =>
-  Array.from(path, (char) => {
-    const upper = char.toUpperCase();
-    return Array.from(upper).length === 1 ? upper : char;
-  }).join("");
-
-/** A Windows disk in memory, keyed the way NTFS matches names. */
-function windowsDisk(tree: Record<string, Node>): Disk {
-  const nodes = new Map(Object.entries(tree).map(([path, node]) => [ntfsKey(path), { path, node }]));
-
-  const resolve = (path: string, depth = 0): string => {
-    if (depth > 8) throw fail("ELOOP", path);
-    const [drive = "", ...names] = win32.normalize(path).split("\\").filter((part) => part !== "");
-    let current = `${drive.toUpperCase()}\\`;
-    if (!nodes.has(ntfsKey(current))) throw fail("ENOENT", path);
-    for (const [index, name] of names.entries()) {
-      const entry = nodes.get(ntfsKey(win32.join(current, name)));
-      if (entry === undefined) throw fail("ENOENT", path);
-      if (entry.node.kind === "file" && index < names.length - 1) throw fail("ENOTDIR", path);
-      current = entry.node.kind === "link" ? resolve(entry.node.target, depth + 1) : entry.path;
-    }
-    return current;
-  };
-
-  return {
-    realpath: async (path) => resolve(path),
-    stat: async (path) => {
-      const kind = nodes.get(ntfsKey(resolve(path)))?.node.kind;
-      return { isDirectory: () => kind === "dir" };
-    },
-    readdir: async (path) => {
-      const folder = ntfsKey(resolve(path));
-      const entries: DiskEntry[] = [];
-      for (const { path: child, node } of nodes.values()) {
-        if (ntfsKey(child) === folder || ntfsKey(win32.dirname(child)) !== folder) continue;
-        entries.push({
-          name: win32.basename(child),
-          isDirectory: () => node.kind === "dir",
-          isSymbolicLink: () => node.kind === "link",
-        });
-      }
-      return entries;
-    },
-  };
-}
-
-const dir = { kind: "dir" } as const;
-const file = { kind: "file" } as const;
-const link = (target: string) => ({ kind: "link", target }) as const;
+const windowsDisk = (tree: Parameters<typeof fakeDisk>[0]) => fakeDisk(tree, { path: win32, key: ntfsKey });
 
 const windows: System = {
   path: win32,

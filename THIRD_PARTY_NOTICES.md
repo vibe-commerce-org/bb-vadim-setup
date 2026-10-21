@@ -1,6 +1,6 @@
 # Сторонние компоненты и лицензии
 
-Last Updated: 2026-10-11
+Last Updated: 2026-10-21
 
 Собственные материалы комплекта распространяются по [MIT](LICENSE). Лицензия
 комплекта не меняет условий сторонних компонентов ниже: для них действуют их
@@ -43,10 +43,14 @@ Last Updated: 2026-10-11
 | Terminal_vibecom | @radix-ui/react-dropdown-menu, react-scroll-area, react-select, react-slot, react-tooltip | 2.1.24, 1.2.18, 2.3.7, 1.3.3, 1.2.16 | MIT |
 | Terminal_vibecom | cmdk, clsx, tailwind-merge | 1.1.1, 2.1.1, 3.6.0 | MIT |
 | Terminal_vibecom | class-variance-authority | 0.7.1 | Apache-2.0 |
+| Русификатор_vibecom, Важные артефакты_vibecom | zod | 4.6.7; 4.6.5 | MIT |
+| Пульт_vibecom | zod, @radix-ui/react-checkbox, @radix-ui/react-slot (с react, react-dom из дерева radix) | 4.6.6, 1.3.12, 1.4.0 | MIT |
+| Repo tags_vibecom | — (зависимостей нет) | | |
 
 Инструменты сборки и тестов (devDependencies): `typescript` (Apache-2.0),
-`@types/*` (MIT), `vitest` (MIT), `@get-bb/plugin-sdk` — пакет SDK от BB
-(0.6.15, у Folder links_vibecom — 0.5.9), поле лицензии в нём не указано.
+`@types/*` (MIT), `vitest` (MIT), `jsdom` (MIT), `better-sqlite3` (MIT, у Пульта и Артефактов), `@get-bb/plugin-sdk` —
+пакет SDK от BB (0.6.15; у Folder links_vibecom — 0.5.9; у Русификатора, тега, Пульта и Артефактов —
+0.6.37), поле лицензии в нём не указано.
 При установке из Git BB их не загружает.
 
 Транзитивные зависимости рабочей установки: Office_vibecom — 106 пакетов,

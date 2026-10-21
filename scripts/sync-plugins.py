@@ -2,8 +2,9 @@
 
 Использование: python3 scripts/sync-plugins.py --from ПАПКА_ПЛАГИНОВ [--apply]
 
-ПАПКА_ПЛАГИНОВ — папка внутри git-репозитория, где лежат markdown-view, office-preview,
-folder-links, files-editor, floating-terminal. Берутся только закоммиченные файлы HEAD.
+ПАПКА_ПЛАГИНОВ — папка внутри git-репозитория, где лежат плагины из списка PLUGINS.
+Берутся только закоммиченные файлы HEAD. Плагин, которого в коммитах источника нет
+(в 0.4.0 — repo-tag и artifacts), пропускается: его копия в комплекте остаётся как есть.
 Без --apply скрипт только показывает, что изменится.
 
 Правила:
@@ -11,6 +12,9 @@ folder-links, files-editor, floating-terminal. Берутся только за�
   docs/, samples/, scratch/, .claude/;
 - у трёх своих плагинов в package.json и в корне package-lock.json версия = VERSION
   комплекта, в package.json добавляется "license": "MIT";
+- у своих плагинов с собственной версией (NEW_OWN) версия остаётся, в package.json
+  добавляется "license": "MIT";
+- LICENSE и package-lock.json, которых нет в источнике, — файлы комплекта: не удаляются;
 - файл, который в комплекте отличается от источника, но в источнике не менялся с прошлого
   переноса, считается правкой комплекта (например, обезличенный комментарий) и остаётся;
 - если такой файл изменился и в источнике, он заменяется, а скрипт просит заново внести
@@ -25,7 +29,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 STATE = ROOT / "scripts" / "plugins-source-commit.txt"
 OWN = ("markdown-view", "office-preview", "folder-links")
-PLUGINS = OWN + ("files-editor", "floating-terminal")
+NEW_OWN = ("russifier", "pult", "repo-tag", "artifacts")
+PLUGINS = OWN + ("files-editor", "floating-terminal") + NEW_OWN
+KIT_ADDED = {"LICENSE", "package-lock.json"}
 EXCLUDED_TOP = {"README.md", "PLUGIN_OVERVIEW.md", ".gitignore"}
 EXCLUDED_DIRS = {"docs", "samples", "scratch", ".claude", "node_modules", "dist"}
 
@@ -41,12 +47,13 @@ def excluded(rel: str) -> bool:
 
 
 def transform(plugin: str, rel: str, data: bytes, version: str) -> bytes:
-    if plugin not in OWN or rel not in ("package.json", "package-lock.json"):
+    if plugin not in OWN + NEW_OWN or rel not in ("package.json", "package-lock.json"):
         return data
     s = data.decode("utf-8")
     head, tail = s[:800], s[800:]
     limit = 1 if rel == "package.json" else 2
-    head = re.sub(r'"version": "[^"]+"', f'"version": "{version}"', head, count=limit)
+    if plugin in OWN:
+        head = re.sub(r'"version": "[^"]+"', f'"version": "{version}"', head, count=limit)
     if rel == "package.json" and '"license"' not in s:
         head = re.sub(r'("version": "[^"]+",\n)', r'\1  "license": "MIT",\n', head, count=1)
     return (head + tail).encode("utf-8")
@@ -74,6 +81,9 @@ def main() -> None:
         base = f"{prefix}/{plugin}/"
         src_files = [f[len(base):] for f in git(repo, "ls-tree", "-r", "--name-only", "HEAD", "--", base).splitlines()]
         src_files = [f for f in src_files if not excluded(f)]
+        if not src_files:
+            print(f"пропущен {plugin}: в коммитах источника его нет, копия комплекта не меняется")
+            continue
         changed_since = None
         if last:
             changed_since = {f[len(base):] for f in git(repo, "diff", "--name-only", last, head, "--", base).splitlines()}
@@ -96,7 +106,7 @@ def main() -> None:
         src_set = set(src_files)
         for f in sorted(lib_dir.rglob("*")):
             rel = f.relative_to(lib_dir).as_posix()
-            if f.is_file() and not excluded(rel) and rel not in src_set:
+            if f.is_file() and not excluded(rel) and rel not in src_set and rel not in KIT_ADDED:
                 changes.append(("remove", plugin, rel, None))
 
     for kind, plugin, rel, _ in changes:
