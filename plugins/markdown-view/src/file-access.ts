@@ -52,6 +52,11 @@ export async function locateFile(
     return { hostId: storage.hostId, path: joinPath(storage.storageRootPath, path), checkout: null };
   }
 
+  // Opened outside any thread (Files page, Pult), BB names the host and nothing else.
+  if (source.kind === "host" && source.experimental_hostId) {
+    return { hostId: source.experimental_hostId, path, checkout: null };
+  }
+
   let environmentId = source.environmentId;
   if (environmentId === null && source.threadId !== null) {
     environmentId = (await sdk.threads.get({ threadId: source.threadId, signal })).environmentId;
@@ -60,7 +65,7 @@ export async function locateFile(
   if (source.kind === "host") {
     if (environmentId === null) return null;
     const environment = await sdk.environments.get({ environmentId, signal });
-    return { hostId: source.experimental_hostId ?? environment.hostId, path, checkout: null };
+    return { hostId: environment.hostId, path, checkout: null };
   }
 
   const environment =

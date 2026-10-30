@@ -28,6 +28,8 @@ export type LanesList = RpcOut<"lanes.list">;
 export type LaneTaskView = LanesList["lanes"]["now"][number];
 export type MapTree = RpcOut<"map.get">;
 export type MapNodeView = MapTree["projects"][number];
+export type FeedList = RpcOut<"feed.list">;
+export type FeedRowView = FeedList["rows"][number];
 export type PanelData = RpcOut<"panel.forThread">;
 export type GitStateView = NonNullable<PanelData["git"]>;
 export type MarksList = RpcOut<"marks.list">;
@@ -193,6 +195,11 @@ export function useLanes(): Live<LanesList> {
 export function useMapTree(openOnly: boolean): Live<MapTree> {
   const rpc = usePultRpc();
   return useLive(`map:${openOnly}`, () => rpc.call("map.get", { openOnly }));
+}
+
+export function useFeed(): Live<FeedList> {
+  const rpc = usePultRpc();
+  return useLive("feed", () => rpc.call("feed.list"));
 }
 
 export function usePanel(threadId: string): Live<PanelData> {

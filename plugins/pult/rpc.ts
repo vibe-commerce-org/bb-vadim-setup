@@ -160,6 +160,24 @@ export const mapNodeSchema: z.ZodType<MapNodeShape> = z.lazy(() =>
   }),
 );
 
+/** One thread of the «Лента» tab (lib/feed.ts). */
+export const feedRowSchema = z.object({
+  threadId: z.string(),
+  title: z.string(),
+  projectName: z.string(),
+  providerId: z.string(),
+  model: z.string().nullable(),
+  modelLabel: z.string().nullable(),
+  effort: z.string().nullable(),
+  lastAt: z.number(),
+  parentThreadId: z.string().nullable(),
+  parentTitle: z.string().nullable(),
+  parentProjectName: z.string().nullable(),
+  parentState: z.enum(["none", "active", "archived", "missing"]),
+  kind: kind.nullable(),
+  pinned: z.boolean(),
+});
+
 const ok = z.object({ ok: z.literal(true) });
 
 export const rpcContract = defineRpcContract({
@@ -231,6 +249,11 @@ export const rpcContract = defineRpcContract({
   "map.get": {
     input: z.object({ openOnly: z.boolean() }).strict(),
     output: z.object({ projects: z.array(mapNodeSchema), gitCheckedAt: z.number().nullable() }),
+  },
+  /** The «Лента» tab: every active thread, newest conversation first. Read-only. */
+  "feed.list": {
+    input: z.null(),
+    output: z.object({ rows: z.array(feedRowSchema) }),
   },
   /** Thread-row marks for BB's own thread list (content script). */
   "marks.list": {

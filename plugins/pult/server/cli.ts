@@ -17,6 +17,7 @@ import {
   MARK_LABELS,
   formatAge,
   formatDateTime,
+  modelLine,
   tomorrowMorning,
 } from "../lib/format.ts";
 import { cut, tail } from "../lib/marker.ts";
@@ -332,6 +333,9 @@ export function explainText(
   const lines = [
     `${snapshot.threadId} — «${oneLine(snapshot.title, 100)}» (${snapshot.projectName})`,
     `BB: статус ${snapshot.status}${snapshot.archived ? ", в архиве" : ""}; ход: ${input?.lastTurn ?? "—"}; агент: ${when(snapshot.lastAgentAt)}; Вадим: ${when(snapshot.lastHumanAt)}`,
+    `Модель: ${modelLine(snapshot.modelLabel, snapshot.effort, false) ?? "—"}${
+      snapshot.model === null ? "" : ` (${snapshot.model}${snapshot.effort === null ? "" : `, эффорт ${snapshot.effort}`})`
+    }`,
     `Классификация: ${KIND_SHORT[c.kind]} (${c.kind}; источник ${c.source}; уверенность ${c.confidence.toFixed(2)}; ${when(snapshot.classifiedAt)})`,
   ];
   if (c.ask !== null) lines.push(`Что нужно: ${oneLine(c.ask, 400)}`);

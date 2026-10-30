@@ -7,11 +7,16 @@ import {
   KIND_TITLES,
   LANE_TITLES,
   MARK_LABELS,
+  effortLabel,
   formatAge,
   formatShortDate,
+  modelLine,
+  modelTag,
+  shortModelId,
   snoozePresets,
   sourceLabel,
   tomorrowMorning,
+  withoutVendor,
 } from "../lib/format.ts";
 import { WAITING_KINDS } from "../lib/types.ts";
 
@@ -66,4 +71,62 @@ test("sourceLabel takes the inventory date from scan.seedAsOf", () => {
   assert.equal(sourceLabel("rules", 0.704), "по тексту, уверенность 70%");
   assert.equal(sourceLabel("llm", 1.4), "LLM, уверенность 100%");
   assert.equal(sourceLabel("native", 1), "сигнал BB");
+});
+
+test("effortLabel words a reasoning level the way BB's own chip does", () => {
+  assert.equal(effortLabel("xhigh"), "Extra High");
+  assert.equal(effortLabel("xhigh", true), "XHi", "three characters at most (the user, 30.10)");
+  assert.equal(effortLabel("medium", true), "Med");
+  assert.equal(effortLabel("none"), "None");
+  // A level we do not know is better shown than swallowed.
+  assert.equal(effortLabel("turbo"), "turbo");
+  assert.equal(effortLabel(null), null);
+});
+
+test("modelLine joins the model and the effort, whichever of the two is known", () => {
+  assert.equal(modelLine("Gemini 4 Argon", "xhigh"), "Gemini 4 Argon · XHi");
+  assert.equal(modelLine("Gemini 4 Argon", "xhigh", false), "Gemini 4 Argon · Extra High");
+  assert.equal(modelLine("Gemini 4 Argon", null), "Gemini 4 Argon");
+  assert.equal(modelLine(null, "medium"), "Med", "the effort alone is still worth a line");
+  assert.equal(modelLine(null, null), null, "a thread that has not run a turn shows nothing");
+});
+
+test("modelTag shortens a model's name to its meaningful three letters", () => {
+  assert.equal(modelTag("Sonnet 5.5"), "Son", "the name, not the family");
+  assert.equal(modelTag("Gemini 4 Argon"), "Arg", "the word that names it, not «Gem»");
+  assert.equal(modelTag("Opus 5.5"), "Opu");
+  assert.equal(modelTag("DeepSeek V4.1 Flash"), "Dee", "the model's own name, not its suffix");
+  assert.equal(modelTag("DeepSeek 5.5"), "Dee", "the name alone is enough");
+  assert.equal(modelTag("5.5 Sonnet"), "Son", "digits are skipped");
+  assert.equal(modelTag("Qi"), "Qi");
+  assert.equal(modelTag("gemini 4 argon"), "Arg", "the first letter is capital");
+  assert.equal(modelTag("4.1"), null);
+  assert.equal(modelTag(""), null);
+  assert.equal(modelTag(null), null);
+});
+
+test("modelTag names a GPT model by its code name, not by the vendor's initials", () => {
+  assert.equal(modelTag("GPT-6.1-Sol"), "Sol");
+  assert.equal(modelTag("GPT-6-Sol"), "Sol");
+  assert.equal(modelTag("GPT-6.1-Terra"), "Ter");
+  assert.equal(modelTag("GPT-6.1 Terra"), "Ter", "the spaced spelling of BB's catalog");
+  assert.equal(modelTag("GPT-6-Luna"), "Lun");
+  assert.equal(modelTag("GPT-6-Astra"), "Ast");
+  assert.equal(modelTag("gpt-6.1-sol"), "Sol", "an id instead of a name");
+  assert.equal(modelTag("GPT-6"), null, "a version alone leaves no name to show");
+});
+
+test("withoutVendor drops the vendor BB appends to a model name", () => {
+  assert.equal(withoutVendor("DeepSeek V4.1 Flash · Yandex"), "DeepSeek V4.1 Flash");
+  assert.equal(withoutVendor("Gemini 4 Argon"), "Gemini 4 Argon");
+  assert.equal(withoutVendor(" · leading"), " · leading", "nothing left after the cut — keep the name");
+  assert.equal(withoutVendor(null), null);
+});
+
+test("shortModelId names a model BB's catalog does not know", () => {
+  assert.equal(shortModelId("neuraldeep/qwen3.6-35b-a3b"), "qwen3.6 35b a3b");
+  assert.equal(shortModelId("yandex/gpt://b1go/deepseek-v4.1-flash/latest"), "deepseek v4.1 flash");
+  assert.equal(shortModelId("gemini-4-argon"), "gemini 4 argon");
+  assert.equal(shortModelId(""), null);
+  assert.equal(shortModelId(null), null);
 });

@@ -15,7 +15,7 @@ import { laneToPriority } from "../lib/lanes.ts";
 import { buildQueue } from "../lib/queue.ts";
 import plugin from "../server.ts";
 import { parseSnooze } from "../server/cli.ts";
-import { applySeed, toPendingInfo, vadimLastMessageAt } from "../server/collector.ts";
+import { applySeed, latestExecution, toPendingInfo, vadimLastMessageAt } from "../server/collector.ts";
 import { pickMainEnvironment } from "../server/git.ts";
 import { parseAnswer } from "../server/llm.ts";
 import { parseSeed, resolveSeedPath } from "../server/seed.ts";
@@ -405,6 +405,25 @@ test("queue.list and marks.list", { skip: !queueReady && "lib/queue.ts is a stub
   for (const mark of marks.marks) assert.match(mark.label, /^Ход за тобой: /);
 });
 
+test("feed.list: every active thread once, newest conversation first, read-only", async () => {
+  const sdk = harness.inspection.sdk;
+  const writesBefore = ["threads.send", "threads.archive", "threads.spawn"].map((m) => sdk.callsTo(m).length);
+  const list = (await harness.behavior.callRpc("queue.list", null)) as { scan: { threadCount: number } };
+  const feed = (await harness.behavior.callRpc("feed.list", null)) as {
+    rows: { threadId: string; providerId: string; lastAt: number; parentState: string; parentProjectName: string | null }[];
+  };
+  // The same threads the scan counts (Pult's own hidden thread is not among them).
+  assert.equal(feed.rows.length, list.scan.threadCount);
+  assert.deepEqual(feed.rows.map((r) => r.threadId).sort(), [A, B]);
+  for (let i = 1; i < feed.rows.length; i += 1) assert.ok(feed.rows[i - 1]!.lastAt >= feed.rows[i]!.lastAt);
+  // B is the one the user wrote to last (a minute before T0), A's newest event is an hour old.
+  assert.equal(feed.rows[0]?.threadId, B);
+  assert.ok(feed.rows.every((r) => r.parentState === "none" && r.parentProjectName === null));
+  assert.ok(feed.rows.every((r) => r.providerId === "claude-code"));
+  const writesAfter = ["threads.send", "threads.archive", "threads.spawn"].map((m) => sdk.callsTo(m).length);
+  assert.deepEqual(writesAfter, writesBefore);
+});
+
 test("toTask creates a linked tracker project and a task with the thread", { skip: !lanesReady && "lib/lanes.ts is a stub" }, async () => {
   const result = (await harness.behavior.callRpc("queue.toTask", { threadId: B, lane: "now" })) as { taskKey: string };
   assert.equal(result.taskKey, "STU-1");
@@ -625,6 +644,9 @@ test("the seed never beats a native approval", () => {
     lastErrorText: null,
     isChild: false,
     turnSeq: 1,
+    model: null,
+    modelLabel: null,
+    effort: null,
   };
   const seed = { threadId: A, status: "DONE" as const, ask: null, task: null, asOf: 10 };
   assert.equal(applySeed(native, seed, input, 1).kind, "approval");
@@ -678,6 +700,9 @@ test("queue.dismiss and queue.snooze refuse an approval instead of a silent no-o
     title: "Ждёт одобрения",
     parentThreadId: null,
     providerId: "claude-code",
+    model: null,
+    modelLabel: null,
+    effort: null,
     status: "active",
     pinned: false,
     archived: false,
@@ -698,4 +723,29 @@ test("queue.dismiss and queue.snooze refuse an approval instead of a silent no-o
   await assert.rejects(() => harness.behavior.callRpc("queue.dismiss", { threadId: D }), /Одобрение/);
   await assert.rejects(() => harness.behavior.callRpc("queue.snooze", { threadId: D, until: Date.now() + 3_600_000 }), /Одобрение/);
   assert.equal(db.prepare("SELECT 1 FROM overlays WHERE thread_id = ?").get(D), undefined);
+});
+
+test("latestExecution reads the model and the effort off the newest turn that has them", () => {
+  const asked = (over: Record<string, unknown> = {}) => ({ createdAt: 1, ...over });
+  assert.deepEqual(
+    latestExecution([
+      asked({ execution: { model: "gemini-4-argon", reasoningLevel: "xhigh" } }),
+      asked({ execution: { model: "claude-opus-5-5", reasoningLevel: "high" } }),
+    ]),
+    { model: "gemini-4-argon", effort: "xhigh" },
+    "the newest turn wins: the thread may have switched model since",
+  );
+  assert.deepEqual(
+    latestExecution([
+      asked(),
+      asked({ execution: { model: "claude-opus-5-5[1m]", reasoningLevel: "xhigh" } }),
+    ]),
+    { model: "claude-opus-5-5[1m]", effort: "xhigh" },
+    "a turn with no execution (an older BB) does not hide the ones that have it",
+  );
+  assert.deepEqual(latestExecution([asked({ execution: { model: "", reasoningLevel: 7 } })]), {
+    model: null,
+    effort: null,
+  }, "junk from the event log is dropped, not shown");
+  assert.deepEqual(latestExecution([]), { model: null, effort: null });
 });

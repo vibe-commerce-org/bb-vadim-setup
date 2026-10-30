@@ -14,7 +14,7 @@ Fast mode, названия продуктов, моделей и команд. 
 Установка из Git:
 
 ```sh
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/russifier
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/russifier
 ```
 
 Локально, в этой папке: npm ci, bb plugin build ., bb plugin install .

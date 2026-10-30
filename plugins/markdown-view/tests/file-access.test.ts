@@ -56,6 +56,13 @@ test("a host file keeps its absolute path, on the thread's host", async () => {
   assert.deepEqual(file, { hostId: "host_a", path, checkout: null });
 });
 
+test("a host file opened outside any thread is read on the host BB names", async () => {
+  // What BB hands an opener for a host file with no thread (Files page, Pult): the host and nothing else.
+  const path = "/Users/me/notes/other/AGENTS.md";
+  const file = await locateFile(fakeSdk(), path, source({ kind: "host", experimental_hostId: "host_a" }), signal);
+  assert.deepEqual(file, { hostId: "host_a", path, checkout: null });
+});
+
 test("a thread-storage file is read under the thread's storage root", async () => {
   const file = await locateFile(fakeSdk(), "report.md", source({ kind: "thread-storage", threadId: "thr_9" }), signal);
   assert.deepEqual(file, { hostId: "host_s", path: "/data/thread-storage/thr_9/report.md", checkout: null });

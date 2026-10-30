@@ -4,7 +4,7 @@
 
 ПАПКА_ПЛАГИНОВ — папка внутри git-репозитория, где лежат плагины из списка PLUGINS.
 Берутся только закоммиченные файлы HEAD. Плагин, которого в коммитах источника нет
-(в 0.4.0 — repo-tag и artifacts), пропускается: его копия в комплекте остаётся как есть.
+(в 0.4.0 — repo-tag и artifacts; с 0.5.0 они в коммитах), пропускается: его копия в комплекте остаётся как есть.
 Без --apply скрипт только показывает, что изменится.
 
 Правила:
@@ -29,7 +29,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 STATE = ROOT / "scripts" / "plugins-source-commit.txt"
 OWN = ("markdown-view", "office-preview", "folder-links")
-NEW_OWN = ("russifier", "pult", "repo-tag", "artifacts")
+NEW_OWN = ("russifier", "pult", "repo-tag", "artifacts", "composer-labels")
 PLUGINS = OWN + ("files-editor", "floating-terminal") + NEW_OWN
 KIT_ADDED = {"LICENSE", "package-lock.json"}
 EXCLUDED_TOP = {"README.md", "PLUGIN_OVERVIEW.md", ".gitignore"}

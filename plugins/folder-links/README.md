@@ -14,7 +14,7 @@ Last Updated: 2026-10-21
 Установка из Git:
 
 ```sh
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/folder-links
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/folder-links
 ```
 
 Локально, в этой папке: npm ci, bb plugin build ., bb plugin install .

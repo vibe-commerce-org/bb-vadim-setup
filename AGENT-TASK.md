@@ -1,9 +1,12 @@
 # Задание агенту: настрой bb как у Вадима
 
-Last Updated: 2026-10-21
+Last Updated: 2026-10-30
 
-Комплект 0.4.1 проверен на bb 0.46.1, macOS: 21.10 все девять плагинов собраны с нуля (`npm ci`,
-`bb plugin build .`) и прошли тесты; до 11.10 комплект проверялся на 0.45.0. Windows проверена Вадимом 08.10.2026 на 0.45.0;
+Комплект 0.5.0 проверен на bb 0.46.1, macOS: 30.10 все десять плагинов собраны с нуля (`npm ci`,
+`bb plugin build .`) и прошли тесты; до 11.10 комплект проверялся на 0.45.0. На bb 0.48 проверена только сборка и
+тесты против его SDK (GUIDE.md, раздел 21): если у пользователя bb 0.48, после установки проверь, что
+панели Explorer_vibecom, Terminal_vibecom, Пульта и Артефактов открываются, и скажи пользователю, что работа на 0.48
+не подтверждена. Windows проверена Вадимом 08.10.2026 на 0.45.0;
 маршрут установки не уточнён. Linux-сервер описан по официальной документации,
 на настоящем сервере не испытан.
 
@@ -43,11 +46,11 @@ bb и хотя бы один агент уже должны работать. В
    symlink наружу и лишних файлов. Если комплект — клон репозитория, `.git`, `.gitignore` и `scripts/`
    в манифест не входят: это служебные файлы репозитория.
 5. Поставь профиль ОС по таблице ниже. Плагины лежат в `plugins/`: `markdown-view`, `office-preview`,
-   `folder-links`, `floating-terminal`, `files-editor`, `russifier`, `repo-tag`, `pult`, `artifacts`; в bb
+   `folder-links`, `floating-terminal`, `files-editor`, `russifier`, `repo-tag`, `pult`, `artifacts`, `composer-labels`; в bb
    они видны с суффиксом `_vibecom` (Markdown_vibecom, Office_vibecom, Folder links_vibecom,
    Terminal_vibecom, Explorer_vibecom, Русификатор_vibecom, Repo tags_vibecom, Пульт_vibecom,
-   Важные артефакты_vibecom). Русификатору, тегу репозитория, Пульту и Артефактам нужен bb 0.46 или
-   новее: на старом bb пропусти их и скажи почему.
+   Важные артефакты_vibecom, Модель и эффорт_vibecom). Русификатору, тегу репозитория, Пульту, Артефактам и
+   «Модели и эффорту» нужен bb 0.46 или новее: на старом bb пропусти их и скажи почему.
    В папке каждого: `npm ci` (для `files-editor` и `floating-terminal` — `npm ci --ignore-scripts`), `bb plugin build .`,
    `bb plugin install <абсолютный путь папки> --yes`. Уже установленный плагин не дублируй:
    проверь `bb plugin list` и `bb plugin source <id>`. Если плагин с тем же ID стоит из другого
@@ -56,8 +59,8 @@ bb и хотя бы один агент уже должны работать. В
    удалённого плагина пропадут. Если плагин уже стоит из этой же папки комплекта (прошлый ZIP), не
    переустанавливай, а пересобери: `npm ci` (для `files-editor` и `floating-terminal` — `npm ci --ignore-scripts`),
    `bb plugin build .`, `bb plugin reload <id>` (ID — имя папки, не имя с `_vibecom`); сверь версию
-   в `bb plugin list` (`floating-terminal@0.6.2`, `files-editor@0.1.6`, `russifier@0.2.0`, `pult@0.2.0`,
-   `repo-tag@0.1.0`, `artifacts@0.1.0`, три просмотрщика — `@0.4.1`). Explorer_vibecom показывает
+   в `bb plugin list` (`floating-terminal@0.6.2`, `files-editor@0.1.6`, `russifier@0.2.0`, `pult@0.4.3`,
+   `repo-tag@0.1.0`, `artifacts@0.1.0`, `composer-labels@0.1.0`, три просмотрщика — `@0.5.0`). Explorer_vibecom показывает
    Markdown через сервер Markdown_vibecom: без `markdown-view` его не ставь. Lockfile и версии не меняй. Предупреждение сборки о закреплённой версии SDK — норма;
    `bb plugin types` не выполняй.
 6. Скопируй папку `theme/atom-one_vibecom` в каталог из `bb theme dir`, выполни
@@ -109,8 +112,9 @@ Id — как в `catalog.json` и на странице выбора. Пунк�
 | `markdown-view`, `office-preview`, `folder-links`, `floating-terminal`, `files-editor` | шаг 5 для папки с этим именем и настройки плагина из «Общих настроек»; `files-editor` требует `markdown-view` |
 | `russifier` | шаг 5 для `plugins/russifier`; интерфейс сразу становится русским, effort и режимы доступа остаются по-английски. Скажи, как вернуть английский: `bb plugin config russifier set language en` |
 | `repo-tag` | шаг 5 для `plugins/repo-tag`; настройки по умолчанию (3 символа) |
-| `pult` | шаг 5 для `plugins/pult`; маркер «⏸ Ход за тобой» в ответах агентов даёт пункт `rules` — не выбран, скажи, что Пульт будет распознавать ход только по тексту |
+| `pult` | шаг 5 для `plugins/pult`; открывается на вкладке «Лента» (все треды одной таблицей); маркер «⏸ Ход за тобой» в ответах агентов даёт пункт `rules` — не выбран, скажи, что Пульт будет распознавать ход только по тексту |
 | `artifacts` | шаг 5 для `plugins/artifacts`; это бета — перескажи пользователю «что пока не работает» из `plugins/artifacts/README.md` |
+| `composer-labels` | шаг 5 для `plugins/composer-labels`; настроек нет. Скажи пользователю: плагин возвращает эффорт в чип набора на узком поле ввода и на телефоне; он опирается на внутреннюю разметку bb, и если после обновления bb перестал работать — его можно выключить (`bb plugin disable composer-labels`) |
 | `rules` | шаг 8 |
 | `phone` | Connect сам не подключай: проверь `bb connect status` и покажи пользователю шаги из `PHONE.md`, разделы 1–2 |
 | `settings-queue`, `settings-ui`, `provider-retry` | команды с этим id из «Общих настроек» |
@@ -139,7 +143,7 @@ Id — как в `catalog.json` и на странице выбора. Пунк�
 | Folder links_vibecom (`folder-links`) | ставить | ставить | ставить как кандидат: на живой Windows не испытан; ссылки на папки пиши как `file:///C:/…` |
 | Terminal_vibecom (`floating-terminal`) | ставить | ставить | ставить как кандидат |
 | Explorer_vibecom (`files-editor`) | ставить | ставить; «Open documents in» — не `Mac app`: вне Mac он не работает | ставить; «Open documents in» — не `Mac app` |
-| Русификатор, тег репозитория, Пульт, Артефакты (`russifier`, `repo-tag`, `pult`, `artifacts`) | ставить | ставить как кандидат | ставить как кандидат: на Windows не испытаны |
+| Русификатор, тег репозитория, Пульт, Артефакты, Модель и эффорт (`russifier`, `repo-tag`, `pult`, `artifacts`, `composer-labels`) | ставить | ставить как кандидат | ставить как кандидат: на Windows не испытаны |
 | Не давать уснуть | `bb keep-awake enable`, если пользователь попросил | не нужно | `bb keep-awake enable` и параметры электропитания, если попросил |
 
 ## Общие настройки
@@ -178,6 +182,6 @@ bb plugin config files-editor set openDocumentsIn "This panel"
 Версии bb, Node.js и ОС; какие плагины `running`, какие пропущены и почему; результаты сборок
 и тестов; где резервные копии и как откатить; какие модели ждут ключа и куда его вписать. Отдельно — что
 пользователю проверить глазами (открыватели, вид Markdown, документы в Explorer_vibecom, вкладка
-Terminal_vibecom и терминал с телефона, русский интерфейс, теги у тредов, страница «Пульт», вкладка
+Terminal_vibecom и терминал с телефона, русский интерфейс, теги у тредов, эффорт в чипе набора на узком поле ввода, страница «Пульт», вкладка
 «Важные артефакты»). Установку у пользователя не называй проверенной,
 пока не прошли её собственные проверки.

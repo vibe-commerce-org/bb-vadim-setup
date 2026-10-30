@@ -1,8 +1,9 @@
 # Как установить и настроить bb как у Вадима
 
-Last Updated: 2026-10-21 · Комплект **0.4.1** (история версий — `CHANGELOG.md` в комплекте)
-Проверенная среда: **bb 0.46.1, macOS на Apple Silicon** (21.10 все девять плагинов комплекта собраны с нуля
-и прошли тесты; до 11.10 комплект проверялся на 0.45.0). **Windows проверена Вадимом 08.10.2026** на 0.45.0;
+Last Updated: 2026-10-30 · Комплект **0.5.0** (история версий — `CHANGELOG.md` в комплекте)
+Проверенная среда: **bb 0.46.1, macOS на Apple Silicon** (30.10 все десять плагинов комплекта собраны с нуля
+и прошли тесты; до 11.10 комплект проверялся на 0.45.0). **На bb 0.48** (вышел 28.10) комплект проверен только
+сборкой и тестами против его SDK, живой bb 0.48 не запускался — [раздел 21](#21-как-проверена-инструкция). **Windows проверена Вадимом 08.10.2026** на 0.45.0;
 маршрут установки (нативная Windows или WSL) не уточнён. Linux-сервер описан по официальной
 документации; на настоящем сервере эти шаги не проверялись.
 
@@ -13,7 +14,7 @@ bb — приложение, в котором вы даёте задания И
 Инструкция состоит из двух файлов. Пересылайте **оба**:
 
 - **этот файл** — `08-BB-VADIM-SETUP.md`;
-- **комплект** `08-BB-VADIM-KIT.zip` — тема, девять плагинов, шаблоны
+- **комплект** `08-BB-VADIM-KIT.zip` — тема, десять плагинов, шаблоны
   для подключения российских моделей и правила для агентов. Внутри нет ключей, паролей и личных данных.
 
 Внутри ZIP лежит `GUIDE.md` — этот же текст. Команды удобнее копировать оттуда, а не из PDF.
@@ -749,7 +750,8 @@ bb settings general defaultProviderId claude-code
 Как группировать список тредов — по проектам, по времени с разделами или по компьютерам, — выберите
 сами; текущую покажет `bb thread-list prefs list`. Вадим от группировки по проектам
 отказывается, поэтому в комплекте этой настройки больше нет. Видимые кнопки боковой панели: Tasks,
-New thread, Docs, Search threads.
+New thread, Docs, Search threads. С bb 0.47 вид навигации (левая колонка, список сверху или плагин навигации)
+выбирается в **Settings → Appearance → Navigation**; на 0.47 и 0.48 это не проверялось.
 
 **Горячие клавиши.** Штатные: Cmd+P — файл, Cmd+Shift+P — палитра действий, Cmd+K — поиск тредов,
 Cmd+J — правая панель. Вадим переназначил переход между панелями на **Cmd+Shift+стрелки**
@@ -874,22 +876,23 @@ HTML-страницы (`.html`, `.htm`) открываются свёрстан�
 
 ### 12. Мои плагины из комплекта
 
-В `plugins/` — исходники девяти плагинов с `package-lock.json`. Зависимости скачивает npm, собирает
+В `plugins/` — исходники десяти плагинов с `package-lock.json`. Зависимости скачивает npm, собирает
 bb. Они не привязаны к конкретному репозиторию. В bb они видны с суффиксом `_vibecom`, ID прежние.
 
 | Папка (ID) | Имя в bb | Версия | macOS | Linux-сервер | Windows |
 |---|---|---|---|---|---|
-| `markdown-view` | Markdown_vibecom | 0.4.1, bb 0.45+ | ✅ | ⚠️ должен работать | ⚠️ ссылки между файлами могут не работать |
-| `office-preview` | Office_vibecom | 0.4.1, bb 0.45+ | ✅ | ⚠️ без `.doc/.rtf/.odt` | ⚠️ без `.doc/.rtf/.odt` |
-| `folder-links` | Folder links_vibecom | 0.4.1 | ✅ | ⚠️ проверено тестами | ⚠️ проверено тестами; ссылки — `file:///C:/…` |
+| `markdown-view` | Markdown_vibecom | 0.5.0, bb 0.45+ | ✅ | ⚠️ должен работать | ⚠️ ссылки между файлами могут не работать |
+| `office-preview` | Office_vibecom | 0.5.0, bb 0.45+ | ✅ | ⚠️ без `.doc/.rtf/.odt` | ⚠️ без `.doc/.rtf/.odt` |
+| `folder-links` | Folder links_vibecom | 0.5.0 | ✅ | ⚠️ проверено тестами | ⚠️ проверено тестами; ссылки — `file:///C:/…` |
 | `floating-terminal` | Terminal_vibecom | 0.6.2 | ✅ | ⚠️ | ⚠️ |
 | `files-editor` | Explorer_vibecom | 0.1.6 с правками | ✅ | ⚠️ без `Mac app` | ⚠️ без `Mac app` |
 | `russifier` | Русификатор_vibecom | 0.2.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 | `repo-tag` | Repo tags_vibecom | 0.1.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
-| `pult` | Пульт_vibecom | 0.2.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
+| `pult` | Пульт_vibecom | 0.4.3, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 | `artifacts` | Важные артефакты_vibecom | 0.1.0, **бета**, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
+| `composer-labels` | Модель и эффорт_vibecom | 0.1.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 
-Три просмотрщика нумеруются версией комплекта, у Русификатора, тега, Пульта и Артефактов — свои версии; у копий
+Три просмотрщика нумеруются версией комплекта, у Русификатора, тега, Пульта, Артефактов и «Модели и эффорта» — свои версии; у копий
 чужих плагинов версии продолжают версии их авторов.
 Explorer_vibecom показывает Markdown через сервер Markdown_vibecom — ставьте их вместе.
 
@@ -939,21 +942,22 @@ bb plugin config files-editor set openDocumentsIn "This panel"
 зависимости, соберёт плагин и сможет обновлять его командой. Ставьте только нужные:
 
 ```text
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/markdown-view
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/office-preview
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/folder-links
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/files-editor
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/floating-terminal
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/russifier
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/repo-tag
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/pult
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/artifacts
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/markdown-view
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/office-preview
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/folder-links
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/files-editor
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/floating-terminal
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/russifier
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/repo-tag
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/pult
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/artifacts
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/composer-labels
 ```
 
-bb покажет источник и попросит подтвердить. Диапазон `~0.4.0` принимает выпуски 0.4.x: новую совместимую
+bb покажет источник и попросит подтвердить. Диапазон `~0.5.0` принимает выпуски 0.5.x: новую совместимую
 версию покажет `bb plugin outdated`, поставит `bb plugin update <ID>`. Для точного повторения укажите тег
-`@v0.4.0` вместо диапазона — такой источник `update` не меняет. Плагины, поставленные с диапазоном `~0.3.0`
-или `~0.2.0`, на 0.4.x сами не перейдут: удалите и поставьте заново.
+`@v0.5.0` вместо диапазона — такой источник `update` не меняет. Плагины, поставленные с диапазоном `~0.4.0`,
+`~0.3.0` или `~0.2.0`, на 0.5.x сами не перейдут: удалите (`bb plugin remove <ID>`) и поставьте заново.
 
 Один плагин ставится одним путём. Чтобы перейти с папки на Git или обратно, сначала `bb plugin remove <ID>`:
 команда удаляет и настройки плагина (они есть у Explorer_vibecom и Terminal_vibecom) — задайте их заново
@@ -983,7 +987,8 @@ bb покажет источник и попросит подтвердить. �
 - **На телефоне** шапка и лента инструментов правки занимают одну строку, ленту листают пальцем.
   Свайп по ленте больше не нажимает кнопки редактора: раньше на iPhone он мог испортить файл.
 
-Настройки вида хранятся в браузере, отдельно от файлов. Тесты: `npm test` (28 проверок ✅).
+Настройки вида хранятся в браузере, отдельно от файлов. Файл на компьютере по абсолютной ссылке открывается и без
+треда — из «Файлов» и «Пульта». Тесты: `npm test` (29 проверок ✅).
 
 #### Office_vibecom — Excel, Word, PowerPoint
 
@@ -1032,10 +1037,28 @@ bb) в своём цвете: видно, где работает тред, да
 различаются цветом. Тег дописывается в разметку встроенного списка тредов: если после обновления bb теги
 пропали, список работает как раньше. Тесты: `npm test` (20 проверок ✅). ⚠️ На Windows не проверялся.
 
+#### Модель и эффорт_vibecom — эффорт у поля ввода
+
+У поля ввода стоит чип набора: модель и уровень рассуждений (effort), например `Sonnet 5.5 · Extra High`. В узком
+поле ввода — шириной 480 px и меньше, то есть на телефоне и в узкой панели — bb прячет эффорт, остаётся только модель.
+Плагин возвращает эффорт на любой ширине поля от 256 px; ниже bb сжимает чип до иконки, и там решает он сам. При
+нехватке места первой обрезается модель, эффорт остаётся целым. Настроек нет, плагин ничего не хранит и не меняет в
+файлах.
+
+Плагин временный: он опирается на внутреннюю разметку bb (атрибуты `data-promptbox-*`, слой стилей `components`).
+Если после обновления bb эффорт на телефоне снова пропал, плагин можно выключить — `bb plugin disable
+composer-labels` — или убрать: `bb plugin uninstall composer-labels`. Когда bb сам покажет эффорт в узком поле,
+плагин не нужен. Тестов у плагина нет: вся работа — один стилевой лист. ⚠️ На Windows не проверялся.
+
 #### Пульт_vibecom — чей ход по всем тредам
 
 Страница «Пульт» в боковой панели (кнопка внизу боковой панели) и вкладка в правой панели треда:
 
+- **«Лента»** (открывается первой, с 0.4.3) — все активные треды одной таблицей, свежий разговор сверху: когда
+  (`<1м`, `5м`, `3ч`, `2д`) · логотип агента с точкой состояния (красная — ждёт вас, пульсирует — работает) ·
+  название · репозиторий (пять символов без `_code`, полное имя в подсказке) · модель · эффорт последнего хода ·
+  родитель сабтреда и его репозиторий; переключатель «По тредам / Семьями». На телефоне вместо колонок модели и
+  эффорта — метка из трёх букв модели и эффорта перед названием. Только читает, в треды ничего не пишет;
 - **«Приоритеты»** — задачи **Tasks** bb в полосах Сейчас / Дальше / Потом, в «Сейчас» не больше 5;
   кнопки «Готово» и «В архив»;
 - **«Ход за тобой»** — треды, где агент закончил ход и ждёт вас: подтверждение, решение, ручной шаг, ошибка,
@@ -1045,8 +1068,9 @@ bb) в своём цвете: видно, где работает тред, да
 Ход Пульт распознаёт по тексту ответа агента, точнее всего — по строке в конце ответа «⏸ Ход за тобой ·
 решение: …». Её просит правило из [раздела 15](#15-правила-агентам). Агентам доступна команда `bb pult queue`
 («что меня ждёт») и `bb pult lanes`. Правила распознавания рассчитаны на русские ответы. Тесты: `npm test`
-(174 проверки ✅). ⚠️ На Windows не проверялся. У Вадима стоит версия новее, с вкладкой «Лента» — она войдёт
-в следующий выпуск комплекта.
+(199 проверок ✅). ⚠️ На Windows не проверялся. ⚠️ На bb 0.48 состояние git проектов на «Карте» может
+показываться как «неизвестно»: SDK 0.48 убрал вызов `environments.status`, которым Пульт его читает
+(вживую на 0.48 не проверялось, [раздел 21](#21-как-проверена-инструкция)).
 
 #### Важные артефакты_vibecom — бриф и план треда справа (бета)
 
@@ -1165,7 +1189,11 @@ ID — из `bb status` и `bb environment list`, модель — сверьт�
 строка «⏸ Ход за тобой · решение: …» в конце ответа, когда нужен пользователь (её читает Пульт);
 дочерний тред принимает команды родителя, но сверяет их со своим репозиторием и не делает необратимого без
 «да» пользователя; вопросы дочерних тредов родитель собирает в один список; название треда — на языке
-пользователя.
+пользователя. С 30.10 — ещё: в брифе — и важные исходные файлы с итогом разбора; родитель передаёт ответ
+пользователя дочернему треду со ссылкой на его сообщение; раздел про Codex в режиме Full — там bb запускает
+Codex без вопросов о подтверждении (`approval_policy: never`), поэтому команда, которую правила репозитория
+`.codex/rules` помечают `prompt` (например, `git push`), получит отказ; агент предупреждает об этом в первом ответе
+и не обходит отказ.
 
 - **Для всех проектов** — положите как `<папка данных bb>/AGENTS.md`. Папку показывает `bb status`,
   обычно `~/.bb`. Если файл уже есть — объедините правила, свои не удаляйте.
@@ -1195,28 +1223,32 @@ bb provider-retry status
 - Агентам **вне** bb можно поставить те же skills: `bb skill cli-skills-status`, затем
   `bb skill install-cli-skills` (меняет глобальные папки агентов).
 
-### 17. Полный снимок настроек Вадима на 21.10
+### 17. Полный снимок настроек Вадима на 30.10
 
 | Группа | Значения |
 |---|---|
-| bb | 0.46.1, приложение на Mac, обновлений нет (`bb settings version`) |
-| Плагины | 50 всего: 39 running, 11 disabled |
-| Свои (в bb — `_vibecom`) | все девять из комплекта. Версии у Вадима: `russifier` 0.2.0, `repo-tag` 0.1.0, `artifacts` 0.1.0, `floating-terminal` 0.6.2, `files-editor` 0.1.6 — как в комплекте; `folder-links` 0.4.0, `markdown-view` и `office-preview` 0.1.0 из рабочей папки — код тот же, в комплекте нумеруются по комплекту, 0.4.1; `pult` — 0.4.0 с вкладкой «Лента», в комплекте 0.2.0: «Лента» ещё проверяется и войдёт в следующий выпуск |
-| Свои, не в комплекте | `limit-guard` — сторож недельного лимита Claude, выйдет отдельно после проверки; `focus-probe` — личная диагностика |
+| bb | 0.46.1, приложение на Mac. 30.10 `bb settings version` показывает свежую версию 0.48.0: Вадим на неё не обновлялся, комплект на 0.48 проверен только сборкой (раздел 21) |
+| Плагины | 52 всего: 41 running, 11 disabled |
+| Свои (в bb — `_vibecom`) | все десять из комплекта. Версии у Вадима: `russifier` 0.2.0, `repo-tag` 0.1.0, `artifacts` 0.1.0, `composer-labels` 0.1.0, `floating-terminal` 0.6.2, `files-editor` 0.1.6, `pult` 0.4.3 — как в комплекте; `folder-links` 0.4.0, `markdown-view` и `office-preview` 0.1.0 из рабочей папки — код тот же, в комплекте нумеруются по комплекту, 0.5.0 |
+| Свои, не в комплекте | `limit-guard` 0.1.1 — сторож недельного лимита Claude, завязан на личного Telegram-бота, общей версии пока нет; `provider-icons` 0.1.1 — иконка Gemini у провайдера Google Antigravity, самого провайдера в комплекте нет; `focus-probe` 0.1.0 — личная диагностика |
 | Внешние | нет: `file-manager` удалён, его заменяет Explorer_vibecom |
-| Настройки плагинов | `floating-terminal`: `fontSize=13`; `files-editor`: `excludedDirectories` по умолчанию, `openDocumentsIn=This panel`; `russifier`: `language=ru`, `collectMissing=true`; `repo-tag`: `tagLength=3`, `compactTagLength=3`; `provider-retry`: `maximumWait=24 hours`; `bb-guide`: всё включено |
+| Настройки плагинов | `floating-terminal`: `fontSize=13`; `files-editor`: `excludedDirectories` по умолчанию, `openDocumentsIn=This panel`; `russifier`: `language=ru`, `collectMissing=true`; `repo-tag`: `tagLength=3`, `compactTagLength=3`; `pult`: `llmTriage=false` (в комплекте этот разбор отключён в коде), `llmModel` по умолчанию; `provider-retry`: `maximumWait=24 hours`; `bb-guide`: всё включено; у `composer-labels`, `artifacts`, `folder-links`, `markdown-view`, `office-preview` настроек нет |
 | Встроенные активные | automations, bb--provider-usage, bb-account, bb-ai, bb-guide, concurrency-limit, connect, custom-instructions, drafts, environment-git-worktree, environment-personal-workspace, environment-project-checkout, inline-vis, keep-awake, monaco-editor, pdf-preview, provider-acp, provider-claude-code, provider-codex, provider-pi, provider-retry, push-notifications, scheduled-send, secrets, side-chat, simple-notes (Docs), tasks, thread-list |
-| Отключены | account-pool, agent-annotations, ask-user-question, bb--mcp, bb--prompt-library, bb--provider-acp-next, bb--storage-retention, file-tree, plugin-api-docs, plugin-api-tester, workflows — включать ради совпадения не нужно; `bb--mcp` и `bb--provider-acp-next` появились после 11.10 |
+| Отключены | account-pool, agent-annotations, ask-user-question, bb--mcp, bb--prompt-library, bb--provider-acp-next, bb--storage-retention, file-tree, plugin-api-docs, plugin-api-tester, workflows — включать ради совпадения не нужно |
 | Агенты | Claude Code (по умолчанию), Codex, Pi; Pi — Яндекс, Cloud.ru, LM Studio. Завершённые ответы Claude Code свёрнуты (`bb settings completed-turns claude-code collapse`) |
 | Клавиши | 4 переназначения: переход между панелями — Cmd+Shift+стрелки (mac) |
 | Тема | `atom-one_vibecom`, файлы темы совпадают с комплектом; подсветка кода — `atom-one_vibecom:dark` / `one-light` |
 | Боковая панель | в навигации — Tasks, New thread, Docs, Search threads; на строке треда — быстрое действие «В архив» |
 | Прочее | `confirmThreadArchive=true`, `allowFastServiceTier=true`, `showGitChanges=true`, `voiceTranscriptionEnabled=true`, AI-сервисы bb — Automatic (bb cloud), эксперименты `changelogPreview=false`, `serverMove=false`, `performanceDiagnostics=false`, `timelinePush=false` |
 
+С 21.10 изменились только версии плагинов (`pult` 0.4.0 → 0.4.3) и появились два плагина Вадима: `composer-labels`
+(теперь в комплекте) и `provider-icons` (не в комплекте); клавиши, тема, настройки плагинов и общие настройки те же.
+
 Правила агентам у Вадима — его `~/.bb/AGENTS.md`. Общие из них перенесены в шаблон комплекта
-(раздел 15); личные — бот-секретарь, выбор модели и effort для его тредов, инструкции по macOS на английском —
-в шаблон не входят. Сверено 21.10 командами `bb settings show`, `bb plugin list`, `bb plugin config`,
-`bb theme show`, `bb settings ui list`, `bb thread-list prefs list`.
+(раздел 15); личные — бот-секретарь, выбор модели и effort для его тредов, инструкции по macOS на английском,
+рубли, формат ответов и управление роем субагентов — в шаблон не входят. Сверено 30.10 командами
+`bb settings show`, `bb plugin list`, `bb plugin config`, `bb theme show`, `bb settings ui list`,
+`bb thread-list prefs list`, `bb settings version`.
 
 ## Часть 4. Телефон, проверка и ошибки
 
@@ -1308,6 +1340,25 @@ Get-Content -Path "$env:USERPROFILE\.bb\logs\host-daemon-stdio.log" -Tail 40
 - **Mac Вадима, bb 0.45.0, 04–11.10.2026; bb 0.46.0 — 11.10:** настройки и плагины сняты командами `bb settings`,
   `bb plugin list/source/config`, `bb provider models`; 11.10 снимок повторён на 0.46.0 и совпал, кроме
   списка встроенных плагинов (раздел 17).
+- **Комплект 0.5.0, bb 0.46.1, 30.10:** все десять плагинов собраны с нуля во временной папке (`npm ci` с пустым кэшем,
+  `bb plugin build .`) и прошли тесты: Markdown 29/29, Office 10/10, Folder links 56/56, Explorer 387 + 6 пропущенных,
+  Terminal 86/86, Русификатор 19/19, Repo tags 20/20, Пульт 199/199, Артефакты 6/6; у «Модели и эффорта» тестов нет —
+  он собирается, `tsc --noEmit` проходит. Установка как у bb из Git — клон по тегу, зависимости без инструментов
+  разработки npm-ом из bb, `bb plugin build` — все десять собраны. Настройки Вадима (раздел 17) сняты заново теми же
+  командами и сверены с 21.10; шаблон правил агентам сверен с его `~/.bb/AGENTS.md`.
+- **bb 0.48.0 — только сборка против SDK, 30.10:** bb 0.48.0 (28.10) идёт с SDK плагинов 0.6.94; живой bb 0.48 не
+  запускался и не обновлялся. Те же десять плагинов в чистой папке с SDK 0.6.94 вместо закреплённого: сборка
+  (`bb plugin build` из 0.46.1) и тесты прошли у всех десяти с теми же числами. Проверка типов `tsc --noEmit` прошла
+  у пяти (Markdown, Office, Русификатор, Repo tags, «Модель и эффорт») и не прошла у пяти (Explorer, Terminal, Folder
+  links, Пульт, Артефакты): SDK 0.48 убрал из типов `threadPanelAction`, `openPanel`, `openThreadPanel` и
+  `experimental_threadHeaderAction`, а Пульт ещё и `environments.status`, которым читает git проектов (если вызова в
+  bb 0.48 нет, «Карта» покажет состояние «неизвестно»: ошибку Пульт ловит). По списку изменений bb 0.48 старые вызовы панелей продолжают работать, а сборка
+  предупреждает и называет замену; регистрацию панели и кнопки в заголовке «Артефактов» новый SDK принял без
+  предупреждений (его тестовый загрузчик, `loadPluginApp`). Не проверено: работа плагинов в живом bb 0.48 — панели,
+  эффорт в узком поле ввода, словарь Русификатора (собран по 0.46.0), «Лента» Пульта. Из заметок выпуска 0.47–0.48,
+  заметных при обычной работе: кнопка Commit скрыта по умолчанию (`bb plugin config bb--git set showCommitButton
+  true`), настройка «Show Git changes and Commit button» разделена на две, а Full Access у Claude Code снова одобряет
+  всё — прежнее поведение возвращает настройка «Approvals in Full Access».
 - **Комплект 0.4.0, bb 0.46.1, 21.10:** все девять плагинов собраны с нуля во временной папке (`npm ci` с пустым кэшем,
   `bb plugin build .`) и прошли тесты: Markdown 28/28, Office 10/10, Folder links 56/56, Explorer 387 + 6 пропущенных,
   Terminal 86/86, Русификатор 19/19, Repo tags 20/20, Пульт 174/174, Артефакты 6/6. Установка как у bb из Git —

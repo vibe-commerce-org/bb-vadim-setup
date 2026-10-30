@@ -1,0 +1,26 @@
+{
+  "name": "bb-plugin-composer-labels",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "bb": ">=0.46",
+    "bbPluginSdk": ">=0.6.37"
+  },
+  "bb": {
+    "name": "Модель и эффорт_vibecom",
+    "description": "Keeps the reasoning effort visible in bb's narrow composer chip: bb hides «Gemini 4 Argon · Medium» down to the model name at 480 px and below, so on a phone the level of effort was invisible.",
+    "branding": {
+      "icon": "Gauge"
+    },
+    "app": "./app.tsx",
+    "server": "./server.ts"
+  },
+  "devDependencies": {
+    "@get-bb/plugin-sdk": "0.6.49",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}

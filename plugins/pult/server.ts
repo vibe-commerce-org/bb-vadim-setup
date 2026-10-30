@@ -18,10 +18,11 @@
 // browser session (useSdk().threads.send) after an explicit click and
 // confirmation by the user.
 import type { BbPluginApi } from "@get-bb/plugin-sdk";
+import { buildFeed } from "./lib/feed.ts";
 import { buildLanes, threadsToHideOnArchive } from "./lib/lanes.ts";
 import { buildMap, type MapProject } from "./lib/map.ts";
-import { buildQueue, flatItems, snoozeUntilProblem } from "./lib/queue.ts";
-import type { Queue, QueueItem, WaitingKind } from "./lib/types.ts";
+import { buildQueue, flatItems, isDismissed, isSnoozed, snoozeUntilProblem } from "./lib/queue.ts";
+import type { Queue, QueueItem, ThreadSnapshot, WaitingKind } from "./lib/types.ts";
 import { PULT_CHANGED, rpcContract } from "./rpc.ts";
 import { MARK_LABEL, registerCli, type CliDeps } from "./server/cli.ts";
 import { createCollector } from "./server/collector.ts";
@@ -238,6 +239,17 @@ export default function plugin(bb: BbPluginApi): void {
         projects: buildMap(projects, store.listSnapshots(), open.tasks, states, Date.now(), openOnly, store.getOverlays()),
         gitCheckedAt,
       };
+    },
+
+    "feed.list": () => {
+      const now = Date.now();
+      const overlays = store.getOverlays();
+      const hidden = (s: ThreadSnapshot): boolean => {
+        const o = overlays.get(s.threadId);
+        return isDismissed(s, o) || isSnoozed(s, o, now);
+      };
+      // Archived snapshots go in too: they only name a subthread's parent.
+      return { rows: buildFeed(store.listSnapshots({ includeArchived: true }), hidden) };
     },
 
     "marks.list": () => {

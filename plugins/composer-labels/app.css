@@ -1,0 +1,48 @@
+/*
+ * «Модель и эффорт» — the model and the reasoning effort of the current thread,
+ * back in bb's composer chip.
+ *
+ * bb already renders both. The chip reads "Gemini 4 Argon · Medium": the model
+ * name, then the effort. On a narrow composer bb hides the effort with a
+ * container query — `@container promptbox (width <= 30rem)` and
+ * `@container promptbox-shell (width <= 34rem)` set `display: none !important`
+ * on `[data-promptbox-hide-compact]`. 30rem is 480 px, so in a phone-width
+ * composer (440 px) the effort is never visible and the chip reads
+ * "Gemini 4 Argon" with no hint of the level. bb keeps the full wording in the
+ * chip's `title`, but a tooltip is no help on a touch screen.
+ *
+ * Two cascade facts decide how this file is written:
+ *   1. bb loads its own stylesheets inside a cascade layer named `components`,
+ *      and for !important declarations a layered rule beats an unlayered one
+ *      (MDN, `!important`: "all the important declarations have precedence over
+ *      important declarations made outside any layer"). A plugin rule can
+ *      therefore only win by joining that same layer.
+ *   2. Inside one layer the later rule with the higher specificity wins, so the
+ *      selector repeats `[data-promptbox]` to outrank bb's
+ *      `[data-promptbox] [data-promptbox-hide-compact]`.
+ *
+ * Only `display` changes: bb's own label stays exactly where bb puts it, with
+ * the chip's typography and colour. The effort span is `shrink-0`, so it keeps
+ * its width in a narrow chip; the model name truncates first (at 340 px and
+ * below), which is the order the user asked for — the effort is the new
+ * information, the model name is still there in full on a desktop.
+ *
+ * The rule is fenced by the composer's own width (`@container promptbox
+ * (width >= 16rem)`, 256 px). Below that the chip shrinks to under the width of
+ * "model + effort" and bb — not us — decides what to cut: measured with the
+ * fence off, at a 208 px composer the effort label stuck 22 px out of the
+ * 65 px chip. 16rem is where the chip holds both labels again, so bb's own
+ * narrow-composer behaviour stays in charge where it is better than ours.
+ *
+ * Stopgap against bb's internals: `data-promptbox-*` attributes are a styling
+ * contract bb uses itself, but the layer name is not. When bb shows a short
+ * effort label in the compact composer instead of hiding it — requested from
+ * the bb developers on 2026-10-29 — delete this plugin.
+ */
+@layer components {
+  @container promptbox (width >= 16rem) {
+    [data-promptbox][data-promptbox] [data-promptbox-hide-compact] {
+      display: inline !important;
+    }
+  }
+}

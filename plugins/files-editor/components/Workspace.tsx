@@ -172,6 +172,8 @@ export function Workspace({
   const [isNarrow, setIsNarrow] = useState(false);
   const isNarrowRef = useRef(isNarrow);
   isNarrowRef.current = isNarrow;
+  const hasFileRef = useRef(false);
+  hasFileRef.current = tabs.activePath !== null;
   // What this workspace looked like when the panel was last on screen, tagged
   // with the workspace it belongs to so a switch never files one under another.
   const scopeKey = scope === null ? null : (stateKey ?? panelStateKey(scope));
@@ -224,7 +226,12 @@ export function Workspace({
     const root = rootRef.current;
     if (root === null || typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(([entry]) => {
-      if (entry !== undefined) setIsNarrow(entry.contentRect.width < NARROW_SURFACE_PX);
+      if (entry === undefined) return;
+      const narrow = entry.contentRect.width < NARROW_SURFACE_PX;
+      // The first measure comes after a file named by the route is already open:
+      // on a phone the tree would lie over that very file and take its touches.
+      if (narrow && !isNarrowRef.current && hasFileRef.current) setIsExplorerOpen(false);
+      setIsNarrow(narrow);
     });
     observer.observe(root);
     return () => observer.disconnect();
@@ -372,6 +379,8 @@ export function Workspace({
     if (filePath === null) return;
     if (tabs.activePath === filePath || hasRoutedTab) return;
     tabs.open(filePath);
+    // As after a pick in the tree: a narrow surface puts the tree away.
+    if (isNarrowRef.current) setIsExplorerOpen(false);
     // A tab opened on a file — from the chat, or "Open in new tab" — starts
     // its Recent with that file, like any file opened by a click.
     setPanel((current) => ({

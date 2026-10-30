@@ -1,5 +1,6 @@
 // Pure: the «Карта» tree — project → tasks → threads, plus threads without a
 // task as families (root → children).
+import { lastConversationAt } from "./feed.ts";
 import { priorityToLane } from "./lanes.ts";
 import { isDismissed, isOpenKind, isSnoozed } from "./queue.ts";
 import {
@@ -33,10 +34,6 @@ function mostUrgent(kinds: Iterable<Kind | null>): Kind | null {
   let best: Kind | null = null;
   for (const k of kinds) if (k !== null && urgency(k) < urgency(best)) best = k;
   return best !== null && urgency(best) < URGENCY.length ? best : null;
-}
-
-function lastActivity(s: ThreadSnapshot): number {
-  return Math.max(s.updatedAt, s.lastAgentAt ?? -Infinity, s.lastHumanAt ?? -Infinity);
 }
 
 function compareThreadNodes(a: MapNode, b: MapNode): number {
@@ -153,7 +150,7 @@ export function buildMap(
       title: s.title,
       kind,
       lane: null,
-      ageMs: Math.max(0, now - lastActivity(s)),
+      ageMs: Math.max(0, now - lastConversationAt(s)),
       // «Ждёт родителя»: only a thread that runs or idles itself (not waiting
       // for the user, not done/unknown) is held up by a parent waiting for the user.
       blockedByThreadId:

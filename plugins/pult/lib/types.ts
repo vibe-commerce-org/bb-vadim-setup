@@ -152,6 +152,16 @@ export interface ThreadSnapshot {
   lastHumanAt: number | null;
   /** Tail of the agent's last message (≤ 2000 chars) for the card. */
   excerpt: string | null;
+  /**
+   * The model and the reasoning level («Gemini 4 Argon · Extra High») of the
+   * thread's latest turn, from its `client/turn/requested` event. `model` and
+   * `effort` are the provider's own ids («gemini-4-argon», «xhigh»);
+   * `modelLabel` is the name BB shows for that model, resolved from the
+   * provider's catalog. All three are null while the thread has not run a turn.
+   */
+  model: string | null;
+  modelLabel: string | null;
+  effort: string | null;
   classification: Classification;
   classifiedAt: number;
 }

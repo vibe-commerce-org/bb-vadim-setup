@@ -1,6 +1,6 @@
-// «Пульт» tab in a thread's side panel: whose move it is in this thread, who
+// «Этот тред» tab of the «Пульт» side panel (components/pult/pult-page.tsx): whose move it is in this thread, who
 // else waits for the user in the same project, and the project's git state.
-import { useBbNavigate, type PluginThreadPanelProps } from "@get-bb/plugin-sdk/app";
+import { useBbNavigate } from "@get-bb/plugin-sdk/app";
 import { Icon } from "@/components/ui/icon";
 import { usePanel, useQueueState, type Live, type PanelData } from "@/hooks/usePult";
 import { KIND_TITLES, sourceLabel } from "@/lib/format";
@@ -14,7 +14,7 @@ const NOT_YOURS: Record<Exclude<Kind, WaitingKind>, string> = {
   unknown: "Ход не за тобой — по крайней мере, Пульт не нашёл, чего агент ждёт.",
 };
 
-export function PanelView({ threadId }: PluginThreadPanelProps) {
+export function PanelView({ threadId }: { threadId: string }) {
   return <PanelBody threadId={threadId} live={usePanel(threadId)} />;
 }
 

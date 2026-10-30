@@ -66,6 +66,15 @@ const MIGRATIONS = [
 export interface StoredInput extends Omit<ClassifyInput, "now"> {
   /** seq of the latest turn/completed event, to skip re-reading the output. */
   turnSeq: number | null;
+  /**
+   * The model and the reasoning level of the thread's latest turn, as the
+   * provider names them; `modelLabel` is BB's name for that model. Read from
+   * rows stored before 29.10 they are missing, hence the `?? null` at the
+   * place they are read.
+   */
+  model: string | null;
+  modelLabel: string | null;
+  effort: string | null;
 }
 
 export type SeedStatus =

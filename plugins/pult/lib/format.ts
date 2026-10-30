@@ -12,9 +12,9 @@ import type {
   WaitingKind,
 } from "./types.ts";
 
-const MINUTE = 60_000;
-const HOUR = 60 * MINUTE;
-const DAY = 24 * HOUR;
+export const MINUTE = 60_000;
+export const HOUR = 60 * MINUTE;
+export const DAY = 24 * HOUR;
 
 /** Russian plural: plural(5, "день", "дня", "дней") → "дней". */
 export function plural(n: number, one: string, few: string, many: string): string {
@@ -169,6 +169,87 @@ export const KIND_SHORT: Record<Kind, string> = {
   done: "готово",
   unknown: "неясно",
 };
+
+/** How a model's reasoning level reads on a tight row: "XH" for "Extra High". */
+export const EFFORT_SHORT: Record<string, string> = {
+  none: "Non",
+  low: "Low",
+  medium: "Med",
+  high: "Hig",
+  xhigh: "XHi",
+  ultracode: "Ult",
+  ultra: "Ult",
+  max: "Max",
+};
+
+/** The same level in full, as BB's own composer chip words it. */
+export const EFFORT_LONG: Record<string, string> = {
+  none: "None",
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+  xhigh: "Extra High",
+  ultracode: "Ultracode",
+  ultra: "Ultra",
+  max: "Max",
+};
+
+/** A reasoning level as BB names it; a level we do not know passes through. */
+export function effortLabel(level: string | null, short = false): string | null {
+  if (level === null) return null;
+  const table = short ? EFFORT_SHORT : EFFORT_LONG;
+  return table[level] ?? level;
+}
+
+/** A model's id as a readable name, for models BB's catalog has no name for: «neuraldeep/qwen3.6-35b-a3b» → «qwen3.6 35b a3b». */
+export function shortModelId(model: string | null): string | null {
+  if (model === null || model === "") return null;
+  const segment = model.split("/").filter((part) => part !== "" && part !== "latest").pop() ?? model;
+  return segment.replace(/[-_]+/g, " ").trim() || model;
+}
+
+/** A model's name without the vendor BB appends: «DeepSeek V4.1 Flash · Yandex» → «DeepSeek V4.1 Flash». */
+export function withoutVendor(label: string | null): string | null {
+  if (label === null) return null;
+  const cut = label.lastIndexOf(" · ");
+  return cut > 0 ? label.slice(0, cut) : label;
+}
+
+/**
+ * The three letters of a model's name that name the model, for a phone row:
+ * «Opus 5.5» → «Opu», «Sonnet 5.5» → «Son», «Gemini 4 Argon» → «Arg»,
+ * «DeepSeek V4.1 Flash» → «Dee», «GPT-6.1-Sol» → «Sol».
+ *
+ * A GPT model takes its code name («Sol», «Ter», «Lun»): «GPT» alone would say
+ * nothing about which one runs, and the vendor is in the logo beside it.
+ * A DeepSeek keeps its family name («Dee») — «V4.1 Flash» alone does not say
+ * whose model it is, unlike «Argon» after «Gemini» (the user, 29.10).
+ * Every other model takes its last word — the one that names it, unlike the
+ * family («Gemini») or the number — or the first word when there is only one.
+ */
+export function modelTag(label: string | null): string | null {
+  if (label === null) return null;
+  const letters = modelTagWord(label).match(/\p{L}/gu)?.slice(0, 3).join("");
+  return letters ? letters.charAt(0).toUpperCase() + letters.slice(1) : null;
+}
+
+/** The word of a model's name that {@link modelTag} takes its letters from. */
+function modelTagWord(label: string): string {
+  const words = label
+    .replace(/^\s*gpt[-_\s]*\d*(\.\d+)?[-_\s]*/i, "")
+    .split(/[\s\-_/]+/)
+    .filter((word) => /\p{L}/u.test(word));
+  // DeepSeek's own name is the model's, where the suffix only says its size.
+  if (words[0]?.toLowerCase().startsWith("deepseek")) return words[0];
+  return words.at(-1) ?? "";
+}
+
+/** «Gemini 4 Argon · Med»: the model and the effort of one row, whichever is known. */
+export function modelLine(model: string | null, effort: string | null, short = true): string | null {
+  const e = effortLabel(effort, short);
+  if (model === null || model === "") return e;
+  return e === null ? model : `${model} · ${e}`;
+}
 
 export const LANE_TITLES: Record<Lane, string> = {
   now: "Сейчас",

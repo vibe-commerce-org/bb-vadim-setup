@@ -11,7 +11,7 @@ HTML-вёрстка может отличаться от Office. Размер ч
 Установка из Git:
 
 ```sh
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.4.0" --subdirectory plugins/office-preview
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/office-preview
 ```
 
 Локально, в этой папке: npm ci, bb plugin build ., bb plugin install .

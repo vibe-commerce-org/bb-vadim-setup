@@ -21,6 +21,9 @@ function snap(id: string, kind: Kind, over: Partial<ThreadSnapshot> = {}): Threa
     title: `Тред ${id}`,
     parentThreadId: null,
     providerId: "claude-code",
+    model: null,
+    modelLabel: null,
+    effort: null,
     status: "idle",
     pinned: false,
     archived: false,
@@ -187,6 +190,11 @@ test("ageMs: newest activity of a thread; project = its freshest child", () => {
   assert.equal(find(map, "x")!.ageMs, HOUR);
   assert.equal(map[0]!.ageMs, HOUR);
   assert.deepEqual(ids(map[0]!.children), ["x", "y"]);
+});
+
+test("ageMs ignores a bumped updatedAt (the 2026-10-15 mass model switch)", () => {
+  const snaps = [snap("w", "working", { updatedAt: NOW - HOUR, lastAgentAt: NOW - 5 * DAY, lastHumanAt: null })];
+  assert.equal(find(buildMap(projects, snaps, [], noGit, NOW, true), "w")!.ageMs, 5 * DAY);
 });
 
 test("archived threads never show", () => {

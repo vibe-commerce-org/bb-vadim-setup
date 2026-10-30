@@ -189,6 +189,30 @@ export interface TurnRequest {
   senderThreadId?: string | null;
   systemMessageKind?: string | null;
   source?: string | null;
+  /** What BB ran that turn on: the model, the reasoning level, the mode. */
+  execution?: { model?: unknown; reasoningLevel?: unknown } | null;
+}
+
+/**
+ * The model and the reasoning level of the newest turn request that carries
+ * them (the array is newest first): the level a thread runs on now, not the
+ * default of its provider. Nulls while the thread has not run a turn.
+ */
+export function latestExecution(requests: readonly TurnRequest[]): {
+  model: string | null;
+  effort: string | null;
+} {
+  for (const r of requests) {
+    if (r.execution == null) continue;
+    const model = text(r.execution.model);
+    const effort = text(r.execution.reasoningLevel);
+    if (model !== null || effort !== null) return { model, effort };
+  }
+  return { model: null, effort: null };
+}
+
+function text(value: unknown): string | null {
+  return typeof value === "string" && value !== "" ? value : null;
 }
 
 /**
@@ -312,6 +336,39 @@ export function createCollector(
     return names;
   }
 
+  /** Provider id → when its catalog was read, and model id → the name BB shows. */
+  const catalogs = new Map<string, { at: number; names: Map<string, string> }>();
+
+  /**
+   * BB's own name for a model of that provider («Gemini 4 Argon»), from the
+   * provider's catalog, cached for ten minutes as the project names are. The
+   * catalog is a call into the provider, so a provider that fails to answer is
+   * remembered too — one attempt per ten minutes, not one per scan.
+   */
+  async function catalogModelLabel(providerId: string, model: string | null): Promise<string | null> {
+    if (model === null) return null;
+    const cached = catalogs.get(providerId);
+    if (cached === undefined || Date.now() - cached.at > 10 * 60_000) {
+      const names = new Map<string, string>();
+      try {
+        const result = await bb.sdk.providers.models({
+          providerId,
+          signal: timeoutSignal(CALL_TIMEOUT_MS, disposed.signal),
+        });
+        for (const m of result.models) {
+          names.set(m.id, m.displayName);
+          names.set(m.model, m.displayName);
+        }
+      } catch (error) {
+        bb.log.warn(`providers.models failed for ${providerId}: ${errorText(error)}`);
+      }
+      catalogs.set(providerId, { at: Date.now(), names });
+    }
+    const names = catalogs.get(providerId)?.names ?? new Map<string, string>();
+    // A thread may run a variant the catalog does not list («claude-opus-5-5[1m]»).
+    return names.get(model) ?? names.get(model.replace(/\[[^\]]*\]$/, "")) ?? null;
+  }
+
   function finalClassification(input: StoredInput, updatedAt: number, now: number): Classification {
     let c: Classification;
     try {
@@ -354,6 +411,9 @@ export function createCollector(
       lastAgentAt: input.lastAgentAt,
       lastHumanAt: input.lastHumanAt,
       excerpt: input.lastAgentText === null ? null : tail(input.lastAgentText, EXCERPT_CHARS),
+      model: input.model ?? null,
+      modelLabel: input.modelLabel ?? null,
+      effort: input.effort ?? null,
       classification: finalClassification(input, thread.updatedAt, now),
       classifiedAt: now,
     };
@@ -401,6 +461,8 @@ export function createCollector(
       turnRequests.push({ ...event.data, createdAt: event.createdAt });
     }
     const lastHumanAt = vadimLastMessageAt(turnRequests, thread.parentThreadId !== null);
+    const { model, effort } = latestExecution(turnRequests);
+    const modelLabel = await catalogModelLabel(thread.providerId, model);
 
     const runningNow = thread.status === "active" || thread.status === "starting";
     if (runningNow && (turnSeq === null || (latestRequestSeq !== null && latestRequestSeq > turnSeq))) {
@@ -462,6 +524,9 @@ export function createCollector(
       lastErrorText,
       isChild: thread.parentThreadId !== null,
       turnSeq,
+      model,
+      modelLabel,
+      effort,
     };
   }
 
