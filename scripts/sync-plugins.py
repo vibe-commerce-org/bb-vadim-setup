@@ -9,7 +9,9 @@
 
 Правила:
 - не переносятся README.md плагина (в комплекте свои), PLUGIN_OVERVIEW.md, .gitignore,
-  docs/, samples/, scratch/, .claude/;
+  docs/, samples/, scratch/, .claude/; исключение — снимки интерфейса docs/screens/*.png
+  (README и аудит рядом с ними остаются в источнике: в комплекте подписи — в README плагина,
+  гайде и catalog.json);
 - у трёх своих плагинов в package.json и в корне package-lock.json версия = VERSION
   комплекта, в package.json добавляется "license": "MIT";
 - у своих плагинов с собственной версией (NEW_OWN) версия остаётся, в package.json
@@ -34,6 +36,7 @@ PLUGINS = OWN + ("files-editor", "floating-terminal") + NEW_OWN
 KIT_ADDED = {"LICENSE", "package-lock.json"}
 EXCLUDED_TOP = {"README.md", "PLUGIN_OVERVIEW.md", ".gitignore"}
 EXCLUDED_DIRS = {"docs", "samples", "scratch", ".claude", "node_modules", "dist"}
+SCREENS = "docs/screens/"
 
 
 def git(repo: Path, *args: str, binary: bool = False):
@@ -43,6 +46,8 @@ def git(repo: Path, *args: str, binary: bool = False):
 
 def excluded(rel: str) -> bool:
     parts = rel.split("/")
+    if rel.startswith(SCREENS):
+        return not rel.endswith(".png")
     return rel in EXCLUDED_TOP or any(p in EXCLUDED_DIRS for p in parts[:-1]) or parts[-1] == ".DS_Store"
 
 

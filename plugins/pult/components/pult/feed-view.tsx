@@ -58,6 +58,14 @@ const MODEL_COL = "w-[7.5rem] shrink-0 truncate text-xs text-muted-foreground";
  */
 const EFFORT_COL = "w-[2.5rem] shrink-0 text-xs text-muted-foreground";
 /**
+ * The state label of a wide row («решение», «работает», «упало»): a column of its
+ * own width even when empty, so a row with a label does not push the model and
+ * effort columns left of the rows without one (the user, 30.10). 5rem: the widest
+ * label («одобрение», «проверить») measures about 65px at text-xs. The pin sits
+ * beside the title for the same reason.
+ */
+const STATE_COL = "w-20 shrink-0 truncate text-right text-xs";
+/**
  * The model tag of a compact row («Opu XHi»), between the logo and the title.
  * 4rem: on the user's iPhone the widest («Opu Max») measures 59px at text-xs, not
  * the 51px of a headless Chrome, and 52px (3.25rem) cut it to «Opu M…»
@@ -271,15 +279,17 @@ function FeedRow({
         </span>
         {wide ? null : <ModelTag row={row} />}
         <span className={cn("flex min-w-0 flex-1 items-center", wide ? "gap-2" : "gap-1.5")} style={{ paddingLeft: indent }}>
-          <span className={cn("min-w-0 flex-1 truncate text-foreground", waiting && "font-medium")}>
-            {row.title === "" ? "Без названия" : row.title}
+          <span className="flex min-w-0 flex-1 items-center gap-1.5">
+            <span className={cn("min-w-0 truncate text-foreground", waiting && "font-medium")}>
+              {row.title === "" ? "Без названия" : row.title}
+            </span>
+            {row.pinned ? <Icon name="Pin" className="size-3 shrink-0 text-muted-foreground" /> : null}
           </span>
           {wide ? <ModelCell row={row} /> : null}
           {wide ? <EffortCell row={row} /> : null}
-          {row.pinned ? <Icon name="Pin" className="size-3 shrink-0 text-muted-foreground" /> : null}
-          {wide && row.kind !== null ? (
-            <span className={cn("shrink-0 text-xs", waiting ? "text-destructive" : "text-muted-foreground")}>
-              {KIND_SHORT[row.kind]}
+          {wide ? (
+            <span className={cn(STATE_COL, waiting ? "text-destructive" : "text-muted-foreground")}>
+              {row.kind === null ? "" : KIND_SHORT[row.kind]}
             </span>
           ) : null}
         </span>
@@ -309,6 +319,7 @@ function ColumnHeader() {
         <span className="min-w-0 flex-1">Тред</span>
         <span className="w-[7.5rem] shrink-0">Модель</span>
         <span className={EFFORT_COL}>Эфф.</span>
+        <span className="w-20 shrink-0" />
         <span className={REPO_COL}>Репо</span>
       </div>
       <div className="flex min-w-0 flex-1 items-center gap-3">

@@ -26,3 +26,11 @@ bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@s
 выключить (`bb plugin disable composer-labels`) или убрать (`bb plugin uninstall composer-labels`):
 файлов и настроек он не трогает, откат ничего не ломает. Когда bb сам начнёт показывать эффорт в узком
 поле ввода, плагин не нужен.
+
+## Снимки
+
+Иллюстрация на демо-данных: живой bb не снимался.
+
+![Чип набора на узком поле ввода: без плагина виден только «Opus 5.5», с плагином — «Opus 5.5 · Extra High»](docs/screens/composer-effort-before-after.png)
+
+*Узкое поле ввода, как на телефоне: слева без плагина только «Opus 5.5», справа с плагином «Opus 5.5 · Extra High». Иллюстрация на демо-данных: разметка набора воссоздана, правило — настоящий `app.css` плагина.*

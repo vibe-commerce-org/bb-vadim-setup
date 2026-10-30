@@ -7,7 +7,9 @@
 08-BB-VADIM-SETUP.md равны GUIDE.md; файл для агента: встроенный скрипт равен
 scripts/extract-kit.mjs, «## Порядок» равен AGENT-TASK.md, извлечение в путь с
 пробелом и кириллицей, повторный запуск, отказ перезаписать чужой файл; поиск
-личного по ZIP и служебным файлам репозитория.
+личного по ZIP и служебным файлам репозитория; снимки интерфейса (поле screens в каталоге и картинки
+в GUIDE.md): файл существует и лежит в ZIP, это PNG не больше 250 КБ без текстовых чанков и EXIF, у каждого
+есть alt и caption.
 
 --private-patterns — файл вне репозитория с регулярками (по одной на строку) для
 имён, которые нельзя публиковать: клиенты, закрытые репозитории.
@@ -43,6 +45,10 @@ FICTIONAL_IDS = {
     "thr_grandchild", "thr_approval", "thr_parent01", "thr_child001", "thr_other001", "proj_fixture01",
 }
 
+# Снимки интерфейса: предел размера и чанки PNG, которых в них быть не должно (подписи программы, даты, EXIF).
+SCREEN_MAX_BYTES = 250 * 1024
+PNG_FORBIDDEN_CHUNKS = {"tEXt", "iTXt", "zTXt", "eXIf", "tIME"}
+
 failures: list[str] = []
 
 
@@ -56,6 +62,47 @@ def slug(heading: str) -> str:
     """Якорь заголовка, как его строит GitHub."""
     h = re.sub(r"[^\w\- ]", "", heading.strip().lower())
     return h.replace(" ", "-")
+
+
+def png_problems(path: Path) -> list[str]:
+    """Что не так с PNG: не PNG, больше предела, запрещённые чанки."""
+    data = path.read_bytes()
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        return ["не PNG"]
+    problems = [f"{len(data)} байт, предел {SCREEN_MAX_BYTES}"] if len(data) > SCREEN_MAX_BYTES else []
+    chunks, i = [], 8
+    while i + 8 <= len(data):
+        size = int.from_bytes(data[i:i + 4], "big")
+        chunks.append(data[i + 4:i + 8].decode("latin-1"))
+        i += 12 + size
+    if chunks[:1] != ["IHDR"] or chunks[-1:] != ["IEND"]:
+        problems.append("нет IHDR в начале или IEND в конце")
+    bad = sorted(set(chunks) & PNG_FORBIDDEN_CHUNKS)
+    return problems + ([f"чанки {bad}"] if bad else [])
+
+
+def check_screens(cat: dict, zip_names: list[str]) -> None:
+    listed = [(i["id"], sc) for i in cat["items"] for sc in i.get("screens", [])]
+    bad = []
+    for item_id, sc in listed:
+        f = sc.get("file", "")
+        problems = [f"нет поля {k}" for k in ("file", "alt", "caption") if not str(sc.get(k, "")).strip()]
+        if not isinstance(sc.get("demo", False), bool):
+            problems.append("demo не true/false")
+        if f and not (ROOT / f).is_file():
+            problems.append("файла нет")
+        elif f:
+            problems += png_problems(ROOT / f)
+            if PREFIX + f not in zip_names:
+                problems.append("файла нет в ZIP")
+        if problems:
+            bad.append(f"{item_id}: {f or '?'}: {'; '.join(problems)}")
+    check(not bad, f"каталог: снимков {len(listed)} — файл есть и в ZIP, PNG ≤ 250 КБ без текстовых чанков, есть alt и caption {bad}")
+    guide = (ROOT / "GUIDE.md").read_text(encoding="utf-8")
+    refs = re.findall(r"!\[[^\]]*\]\(([^)\s]+)\)", guide) + re.findall(r'<img [^>]*src="([^"]+)"', guide)
+    missing = [r for r in refs if not r.startswith("http") and not (ROOT / r).is_file()]
+    heavy = [r for r in refs if (ROOT / r).is_file() and png_problems(ROOT / r)]
+    check(not missing and not heavy, f"GUIDE.md: картинок {len(refs)}, все существуют и проходят проверку PNG {missing + heavy}")
 
 
 def check_catalog() -> None:
@@ -142,6 +189,7 @@ def main() -> None:
         check(r3.returncode != 0 and out.read_bytes() == b"other", "извлечение: чужой файл не перезаписан")
 
     check_catalog()
+    check_screens(json.loads((ROOT / "catalog.json").read_text(encoding="utf-8")), names)
 
     patterns = list(GENERIC)
     if args.private_patterns:

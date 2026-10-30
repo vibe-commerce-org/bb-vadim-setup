@@ -5,6 +5,7 @@
   brew install pandoc && python3 -m pip install playwright && python3 -m playwright install chromium
 
 pandoc собирает HTML с оглавлением, Chromium печатает его в A4 с номерами страниц.
+Картинки (снимки интерфейса в GUIDE.md) берутся по относительным путям от корня репозитория и вшиваются в PDF.
 Шрифты — системные с кириллицей (PT Sans, Helvetica Neue, Menlo); на macOS они есть.
 Команды удобнее копировать из GUIDE.md: в PDF длинные строки кода переносятся.
 """
@@ -36,6 +37,8 @@ th, td { border: 1px solid #d0d7de; padding: 3pt 5pt; vertical-align: top; text-
 th { background: #f6f8fa; }
 tr { break-inside: avoid; }
 blockquote { margin: 6pt 0; padding: 2pt 10pt; border-left: 3px solid #d0d7de; color: #57606a; }
+img { max-width: 100%; height: auto; display: block; margin: 6pt 0 2pt; border: 1px solid #d0d7de; break-inside: avoid; }
+p:has(> img) { break-after: avoid; margin-bottom: 0; }
 nav#TOC { break-after: page; }
 nav#TOC ul { list-style: none; padding-left: 12pt; }
 nav#TOC > ul { padding-left: 0; }
@@ -54,7 +57,7 @@ def render(src_name: str, version: str) -> None:
         css.write_text(CSS, encoding="utf-8")
         html = Path(tmp) / "guide.html"
         subprocess.run(
-            ["pandoc", str(ROOT / src_name), "-f", "gfm", "-t", "html5", "-s",
+            ["pandoc", str(ROOT / src_name), "--resource-path", str(ROOT), "-f", "gfm", "-t", "html5", "-s",
              *(["--toc", "--toc-depth=3"] if src_name == "GUIDE.md" else []),
              "--embed-resources", "--css", str(css),
              "--metadata", f"pagetitle=bb как у Вадима — комплект {version}", "--metadata", "toc-title=Содержание", "-o", str(html)],

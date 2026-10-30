@@ -10,14 +10,14 @@ floating-terminal — `npm ci --ignore-scripts`) → `bb plugin build .` →
 
 | Папка и id | Имя в BB | Версия | Что делает |
 |---|---|---|---|
-| markdown-view/ | Markdown_vibecom | 0.5.0 | просмотр Markdown в виде Typora и правка в Vditor |
-| office-preview/ | Office_vibecom | 0.5.0 | просмотр таблиц, Word и PowerPoint |
-| folder-links/ | Folder links_vibecom | 0.5.0 | ссылки на папки открывают дерево справа; домашняя папка, профиль Windows в WSL2, папки проектов bb |
+| markdown-view/ | Markdown_vibecom | 0.5.1 | просмотр Markdown в виде Typora и правка в Vditor |
+| office-preview/ | Office_vibecom | 0.5.1 | просмотр таблиц, Word и PowerPoint |
+| folder-links/ | Folder links_vibecom | 0.5.1 | ссылки на папки открывают дерево справа; домашняя папка, профиль Windows в WSL2, папки проектов bb |
 | files-editor/ | Explorer_vibecom | 0.1.6 | проводник и редактор рабочей копии, документы внутри панели; переделка плагина abdoutelb |
 | floating-terminal/ | Terminal_vibecom | 0.6.2 | терминал вкладкой правой панели и плавающим окном; переделка плагина vburojevic |
 | russifier/ | Русификатор_vibecom | 0.2.0 | интерфейс bb на русском; effort, режимы доступа и названия — по-английски |
 | repo-tag/ | Repo tags_vibecom | 0.1.0 | тег репозитория у каждого треда в боковой панели |
-| pult/ | Пульт_vibecom | 0.4.3 | лента всех тредов, какие треды ждут вас, приоритеты задач Сейчас / Дальше / Потом, карта проектов |
+| pult/ | Пульт_vibecom | 0.4.4 | лента всех тредов, какие треды ждут вас, приоритеты задач Сейчас / Дальше / Потом, карта проектов |
 | artifacts/ | Важные артефакты_vibecom | 0.1.0, бета | бриф, план и важные файлы треда во вкладке справа |
 | composer-labels/ | Модель и эффорт_vibecom | 0.1.0 | эффорт виден в чипе набора на узком поле ввода и на телефоне |
 
@@ -38,4 +38,5 @@ Explorer_vibecom показывает документы кодом Markdown_vib
 комплекта (в package.json и корне package-lock.json). У Пульта в комплекте маркер
 конца хода принимает любое слово после «Ход за» («Ход за тобой»), у тега
 репозитория добавлен package-lock.json. node_modules, dist, служебные документы,
-образцы и снимки экрана исключены.
+образцы и служебные снимки исключены; снимки интерфейса на демо-данных — `docs/screens/*.png` у Пульта,
+«Модели и эффорта» и Артефактов — перенесены и показаны в README плагинов и в GUIDE.md.
