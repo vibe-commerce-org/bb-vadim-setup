@@ -2,7 +2,7 @@
 
 Last Updated: 2026-10-30
 
-Комплект 0.5.1 проверен на bb 0.46.1, macOS: 30.10 все десять плагинов собраны с нуля (`npm ci`,
+Комплект 0.5.2 проверен на bb 0.46.1, macOS: 30.10 все десять плагинов собраны с нуля (`npm ci`,
 `bb plugin build .`) и прошли тесты; до 11.10 комплект проверялся на 0.45.0. На bb 0.48 проверена только сборка и
 тесты против его SDK (GUIDE.md, раздел 21): если у пользователя bb 0.48, после установки проверь, что
 панели Explorer_vibecom, Terminal_vibecom, Пульта и Артефактов открываются, и скажи пользователю, что работа на 0.48
@@ -60,7 +60,7 @@ bb и хотя бы один агент уже должны работать. В
    переустанавливай, а пересобери: `npm ci` (для `files-editor` и `floating-terminal` — `npm ci --ignore-scripts`),
    `bb plugin build .`, `bb plugin reload <id>` (ID — имя папки, не имя с `_vibecom`); сверь версию
    в `bb plugin list` (`floating-terminal@0.6.2`, `files-editor@0.1.6`, `russifier@0.2.0`, `pult@0.4.4`,
-   `repo-tag@0.1.0`, `artifacts@0.1.0`, `composer-labels@0.1.0`, три просмотрщика — `@0.5.1`). Explorer_vibecom показывает
+   `repo-tag@0.1.0`, `artifacts@0.1.0`, `composer-labels@0.1.0`, три просмотрщика — `@0.5.2`). Explorer_vibecom показывает
    Markdown через сервер Markdown_vibecom: без `markdown-view` его не ставь. Lockfile и версии не меняй. Предупреждение сборки о закреплённой версии SDK — норма;
    `bb plugin types` не выполняй.
 6. Скопируй папку `theme/atom-one_vibecom` в каталог из `bb theme dir`, выполни

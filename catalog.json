@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "version": "0.5.1",
-  "tag": "v0.5.1",
+  "version": "0.5.2",
+  "tag": "v0.5.2",
   "repository": "https://github.com/vibe-commerce-org/bb-vadim-setup",
   "archive": {
     "name": "08-BB-VADIM-KIT.zip",
-    "url": "https://github.com/vibe-commerce-org/bb-vadim-setup/releases/download/v0.5.1/08-BB-VADIM-KIT.zip",
+    "url": "https://github.com/vibe-commerce-org/bb-vadim-setup/releases/download/v0.5.2/08-BB-VADIM-KIT.zip",
     "folder": "bb-vadim-kit",
     "mirrors": []
   },
   "checked": "bb 0.46.1 на macOS, сверено 30.10; Windows — bb 0.45.0; bb 0.48 — сборка и тесты против его SDK, вживую не запускался",
-  "guide": "https://github.com/vibe-commerce-org/bb-vadim-setup/blob/v0.5.1/GUIDE.md",
+  "guide": "https://github.com/vibe-commerce-org/bb-vadim-setup/blob/v0.5.2/GUIDE.md",
   "sections": [
     {
       "id": "theme",
@@ -62,7 +62,7 @@
       "id": "markdown-view",
       "section": "plugins",
       "name": "Markdown_vibecom",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "gives": "Планы и отчёты агентов — как в Typora: оглавление, таблицы, ссылки между файлами и репозиториями. Правка без разметки, сохранение само, правки агента не затираются.",
       "for": "Всем, кто читает и правит документы агентов",
       "os": {
@@ -82,7 +82,7 @@
       "id": "office-preview",
       "section": "plugins",
       "name": "Office_vibecom",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "gives": "Excel, CSV, Word и PowerPoint с заметками докладчика — рядом с чатом, без Office. Только просмотр: формулы показывают сохранённый результат.",
       "for": "Селлерам, аналитикам и всем, кто работает с таблицами и презентациями",
       "os": {
@@ -144,7 +144,7 @@
       "id": "folder-links",
       "section": "plugins",
       "name": "Folder links_vibecom",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "gives": "Клик по ссылке на папку в ответе агента открывает её дерево справа, а не браузер.",
       "for": "Тем, кому агенты присылают ссылки на папки",
       "os": {
@@ -478,7 +478,6 @@
       "id": "main",
       "title": "Главное",
       "tier": 1,
-      "default": true,
       "intro": "Без этого работать неудобно: русский интерфейс, правила для агентов, документы и таблицы рядом с чатом, проводник, защита от лимита и модели без VPN. Ключ модели вы впишете сам: без него агент оставит шаблон и подскажет, куда вставить ключ."
     },
     {
@@ -491,6 +490,7 @@
       "id": "all",
       "title": "Всё как у Вадима",
       "tier": 3,
+      "default": true,
       "intro": "Всё, что стоит у Вадима: ещё Пульт, «Важные артефакты» (бета), ссылки на папки, его клавиши и компьютер без сна."
     }
   ],
