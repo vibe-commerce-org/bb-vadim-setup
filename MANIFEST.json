@@ -1,8 +1,8 @@
 {
   "format": 3,
-  "created": "2026-10-31",
+  "created": "2026-11-07",
   "name": "bb-vadim-kit",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "license": "MIT",
   "checked_environment": [
     {
@@ -200,17 +200,17 @@
     {
       "path": "AGENT-TASK.md",
       "bytes": 20953,
-      "sha256": "9f21615a561e70888bdd83555455ffd49baa86a5add5f12b988d798a9f6c9de9"
+      "sha256": "bca1d4543e32f7a50c2680a97b25e2e0e1159d9f0d66172b7bb2545dabd4c449"
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 26615,
-      "sha256": "fe840e9d3d5767d1d1301db16760d6d78fa6e393916b267548e18d79c328cbed"
+      "bytes": 28173,
+      "sha256": "a02702a97b23ce19c2ea6471fcd228b51375fded2e0662ccca9a2ed894271938"
     },
     {
       "path": "GUIDE.md",
-      "bytes": 128918,
-      "sha256": "8b72e751d68f4c7fb88b2fce0b85d9d671efb64f6b87eb668e01e2b32188fad3"
+      "bytes": 131112,
+      "sha256": "e01a80057747a11cbf495bacb6c56b559208d57713b6c70dbddc3d14d681eb9e"
     },
     {
       "path": "LICENSE",
@@ -225,7 +225,7 @@
     {
       "path": "README.md",
       "bytes": 13048,
-      "sha256": "4abfeae986817a4b076fa809cb8e008ce3c2f8b956617466e21596b2dc766ba7"
+      "sha256": "108727aebdbd3281850ba2f6f6f6884e6fa781b08c6acea1a9c29f45c6c00428"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -234,18 +234,18 @@
     },
     {
       "path": "VALIDATION.md",
-      "bytes": 31268,
-      "sha256": "6b89240d5f1a44a9a0c87c558be46d3a064602fd16f7692a39504465c6cd0c54"
+      "bytes": 35029,
+      "sha256": "447f45c6abc35af7386151afa554ba29faa989e16b10417e7c07b89e55b3e166"
     },
     {
       "path": "VERSION",
       "bytes": 6,
-      "sha256": "26e0ab83aa1ff6bd0ae3882787a92663aa19db128e1241ffc99375fb9ca0c121"
+      "sha256": "27ecff1fcdaf65ab46c1bb99c1072d6d134a0e8dd97dd95cfa88696b9ed453b2"
     },
     {
       "path": "catalog.json",
       "bytes": 29016,
-      "sha256": "f4a46d2481c3b933909207bd6ebc6c667551dbb0d4ce7c19bee7af156fe0cc7f"
+      "sha256": "954824485b59b77494b8facb0c4c6b095386014fa5c55ee73c6332eebda9d425"
     },
     {
       "path": "examples/README.md",
@@ -285,7 +285,7 @@
     {
       "path": "plugins/README.md",
       "bytes": 4472,
-      "sha256": "9d3b7207156330281df545cc6c5bf5abdc44fa414b82a4a73fd516a00eb1aedc"
+      "sha256": "295a3e4e560f0e2a584145b6c1e78c776293a9eaa0e2434a65fdd8d8f881ca80"
     },
     {
       "path": "plugins/artifacts/LICENSE",
@@ -979,8 +979,8 @@
     },
     {
       "path": "plugins/floating-terminal/README.md",
-      "bytes": 3499,
-      "sha256": "d716ecfb304f0af5190076f8f37d04d234a05eed1f848fdc1eadf2c1c80d165d"
+      "bytes": 4420,
+      "sha256": "46a75389d489b3a588965c90a9eac8515c5ce4ffd95699d41753be00fc8665db"
     },
     {
       "path": "plugins/floating-terminal/app.tsx",
@@ -1004,8 +1004,8 @@
     },
     {
       "path": "plugins/floating-terminal/components/key-toolbar.tsx",
-      "bytes": 2532,
-      "sha256": "384a74c8744fb974727726b7c942f435791760c94b920c0250184df8814f69a0"
+      "bytes": 3936,
+      "sha256": "371f9598613a691b1afa7f4a2193dad770bf95078feaf76a4d8c0aecef4250ca"
     },
     {
       "path": "plugins/floating-terminal/components/panel-terminal.tsx",
@@ -1024,8 +1024,8 @@
     },
     {
       "path": "plugins/floating-terminal/components/terminal-surface.tsx",
-      "bytes": 19742,
-      "sha256": "bd6bb8d9cdfe868527c82e491039e41eeb6a3e2dfa4ed85be3fe38e266da744c"
+      "bytes": 20756,
+      "sha256": "d57f03e0804f8a698a94501ebfc670e24524a9d9eeeff3fde27b2e5f89ae81ca"
     },
     {
       "path": "plugins/floating-terminal/components/terminal-view.tsx",
@@ -1184,8 +1184,8 @@
     },
     {
       "path": "plugins/floating-terminal/lib/pump.ts",
-      "bytes": 29806,
-      "sha256": "93c7332af012bc34d567f6894219a371fb2968378e560d0339a585c003fd6dde"
+      "bytes": 30526,
+      "sha256": "869877789f539ceed5d96ab51affa918301c74833a4a9d6233fd5928f37ac58a"
     },
     {
       "path": "plugins/floating-terminal/lib/rpc.ts",
@@ -1315,12 +1315,12 @@
     {
       "path": "plugins/folder-links/package-lock.json",
       "bytes": 3934,
-      "sha256": "d0a170a789fbe433ddd49393fc052b82c0edb8707ee01b2052bca55f4f4ef886"
+      "sha256": "51cd70c90b72dfb200b76afff01fe939e41c7d2478b590ece4bc2255c04e206b"
     },
     {
       "path": "plugins/folder-links/package.json",
       "bytes": 923,
-      "sha256": "c57c1b865f4cf7eefa7046db0be5d21cc421149326e06246e0e2293fba4aa984"
+      "sha256": "bc71141da372b7bb428fa76ee667a80235e14239327643ebfc815fd7d2bafb91"
     },
     {
       "path": "plugins/folder-links/rpc.ts",
@@ -1430,12 +1430,12 @@
     {
       "path": "plugins/markdown-view/package-lock.json",
       "bytes": 7922,
-      "sha256": "708d9099036cb0fa176c0882befbd051cf6fd6409d482dcf55d781e59c4fe313"
+      "sha256": "0b1d08077dc1d4766414ff51553a20849fcce3fd1a0b7df8df6f9b345e57ff3e"
     },
     {
       "path": "plugins/markdown-view/package.json",
       "bytes": 1003,
-      "sha256": "edba48a977e7830383a836ee7c29c159293b83135666eb6831ccc5973244b119"
+      "sha256": "e56ff53591fd22ec998460bb7de0ef5b37439eb15b774015d51068ec4ebe01f7"
     },
     {
       "path": "plugins/markdown-view/server.ts",
@@ -1555,12 +1555,12 @@
     {
       "path": "plugins/office-preview/package-lock.json",
       "bytes": 49549,
-      "sha256": "08320aed05c53e9387e9a411ab6c6f5cc7418f5e2f9ba141d8ea97ba99b002df"
+      "sha256": "a30b59b0a8fefe391e71fe617a95eee789bee227ee52ab3153e02ce97ce4bb4b"
     },
     {
       "path": "plugins/office-preview/package.json",
       "bytes": 1038,
-      "sha256": "d529759e4d72ce370fa5536c8d18f263478a884612876804b5f19a6c616625d4"
+      "sha256": "3d316a1752ed72348e9444fda0c95f3794dbed3846656b382015b82c7b6904b1"
     },
     {
       "path": "plugins/office-preview/server.ts",
@@ -1699,8 +1699,8 @@
     },
     {
       "path": "plugins/pult/README.md",
-      "bytes": 6666,
-      "sha256": "cd1a7d40afce4f0021a5e86f1e2e96e5a9dc0bd973fe14ac1363408cba614c47"
+      "bytes": 7516,
+      "sha256": "d7bdcbb2d9ededd0ce31c27b439f3b12871de8eaa725322c9b1a672bcdd7a1e6"
     },
     {
       "path": "plugins/pult/app.tsx",
@@ -1734,8 +1734,8 @@
     },
     {
       "path": "plugins/pult/components/pult/panel-view.tsx",
-      "bytes": 4393,
-      "sha256": "c701b56c349980e55e88d716c0b72035c8833c61dd5cc91e70e028692ac43d34"
+      "bytes": 4571,
+      "sha256": "7b8f9714f9f17c20ed5f4bf96a44e51242cd7427856294cbb2273c6feb780f59"
     },
     {
       "path": "plugins/pult/components/pult/priorities-view.tsx",
@@ -1920,17 +1920,17 @@
     {
       "path": "plugins/pult/package.json",
       "bytes": 1780,
-      "sha256": "93c75aae4019a491416522af456e74d53040762ad6ce2b8c4e286279ffd0a3a4"
+      "sha256": "c3425eb19c8d6dc8c1393236f2da092f465e0a0f008721c1411afc0cd20c829b"
     },
     {
       "path": "plugins/pult/rpc.ts",
-      "bytes": 8959,
-      "sha256": "68699513371a073d0adfc192978d1e9c1b99da31c948174c34d26bb5acb79cbc"
+      "bytes": 9078,
+      "sha256": "863039f2f70232b786bdca0de31e1c317b575b9b21faff134b8e44b4bdbb1947"
     },
     {
       "path": "plugins/pult/server.ts",
-      "bytes": 15692,
-      "sha256": "3ce694d30f74e0637efd0c5f0664191f61f450447327a1955f37cfb93d599342"
+      "bytes": 15897,
+      "sha256": "dca23cf861178a4d498be28facfb150e58502efdc995fc810b4fce6dfea8469a"
     },
     {
       "path": "plugins/pult/server/cli.ts",
@@ -1939,18 +1939,23 @@
     },
     {
       "path": "plugins/pult/server/collector.ts",
-      "bytes": 29658,
-      "sha256": "022e2bb30301fb41de70ece6fee5ed6cb82306fd39cad72c1c903e65e34f2573"
+      "bytes": 31818,
+      "sha256": "58ac924f72691f44b00a574e9ef79b45e47b7b5a36ab3eb330ad643113a82938"
     },
     {
       "path": "plugins/pult/server/git.ts",
-      "bytes": 5863,
-      "sha256": "79f57816b604094515ea08c1ba93a0f730d149102795617dddbd627494faf2f5"
+      "bytes": 6227,
+      "sha256": "932de189ad894b418dfdb36fe977119b9271efeb1296cdfe0e91dc0573da8fe1"
     },
     {
       "path": "plugins/pult/server/llm.ts",
       "bytes": 12345,
       "sha256": "be7d0fcfc993c6d8a19b945624b98bfa1d32b8b23819331d7a7a3f817416437e"
+    },
+    {
+      "path": "plugins/pult/server/private-projects.ts",
+      "bytes": 2366,
+      "sha256": "31fc4bd539e8af5ec6c1f4fb1406e2a0f62cb32ded96447cda417aaafeee121d"
     },
     {
       "path": "plugins/pult/server/seed.ts",
@@ -1959,8 +1964,8 @@
     },
     {
       "path": "plugins/pult/server/store.ts",
-      "bytes": 19118,
-      "sha256": "dfeff75224c7676dcf1149c056a29bf8ed76d62109f77c661d89d9f9ed93d774"
+      "bytes": 19873,
+      "sha256": "c3f8be136c2c57e10967199828d0e484ba280f3253c8b6ecffd05f3196061927"
     },
     {
       "path": "plugins/pult/server/tasks.ts",
@@ -1974,8 +1979,8 @@
     },
     {
       "path": "plugins/pult/tests/backend.test.ts",
-      "bytes": 35275,
-      "sha256": "5968c69a76a1667d5291e91cc6e03cd5210058a459f1fdcba77964c43740888c"
+      "bytes": 35596,
+      "sha256": "0d934a7b049fde0137fe47a75a613f6c1ecef5c1322c8f01984626e7be1b86c4"
     },
     {
       "path": "plugins/pult/tests/classify.test.ts",
@@ -2021,6 +2026,11 @@
       "path": "plugins/pult/tests/no-raw-html.test.ts",
       "bytes": 1217,
       "sha256": "68debdf90c88387faa79adc6adccd9b2858c1f95d493a55764f978937b77fa3d"
+    },
+    {
+      "path": "plugins/pult/tests/private-projects.test.ts",
+      "bytes": 11806,
+      "sha256": "693c5bc929ae913769f5682678df9393d8b0d5d81439ce3ea06cda9efcf97050"
     },
     {
       "path": "plugins/pult/tests/queue-store.test.ts",

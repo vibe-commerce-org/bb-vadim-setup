@@ -274,15 +274,18 @@ export default function plugin(bb: BbPluginApi): void {
       const snapshot = store.getSnapshot(threadId);
       let projectId = snapshot?.projectId ?? null;
       let projectName = snapshot?.projectName ?? null;
+      let hidden = false;
       if (projectId === null) {
         try {
           const thread = await bb.sdk.threads.get({ threadId, signal: timeoutSignal(10_000) });
-          projectId = thread.projectId;
           projectName = (await collector.projectNames()).get(thread.projectId) ?? null;
+          // A project Pult does not show (__PRIVATE): nothing about it, git state included.
+          hidden = projectName === null;
+          projectId = hidden ? null : thread.projectId;
         } catch (error) {
           bb.log.warn(`panel: threads.get ${threadId} failed: ${errorText(error)}`);
         }
-        collector.schedule(threadId, { delayMs: 0 });
+        if (!hidden) collector.schedule(threadId, { delayMs: 0 });
       }
       git.refreshInBackground();
       // This thread's own item first (it carries options and the reply
@@ -297,6 +300,7 @@ export default function plugin(bb: BbPluginApi): void {
       return {
         projectId,
         projectName,
+        hidden,
         thisThread:
           c === null ? null : { kind: c.kind, ask: c.ask, source: c.source, confidence: c.confidence },
         items,

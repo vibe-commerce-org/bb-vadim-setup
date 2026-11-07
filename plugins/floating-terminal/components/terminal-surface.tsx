@@ -44,6 +44,9 @@ const TITLE_RENAME_DEBOUNCE_MS = 500;
 const DEFAULT_COLS = 80;
 const DEFAULT_ROWS = 24;
 
+/** How long a refused clipboard read waits for iOS's own paste to land. */
+const NATIVE_PASTE_GRACE_MS = 500;
+
 /**
  * The surface with nothing in it. Its job is to get you into a shell in one
  * click and to answer the one question that changes how you use it — whether
@@ -479,13 +482,29 @@ export function TerminalSurface({
             // Through xterm's paste, not raw bytes: newlines become Enter and,
             // under bracketed paste, a multi-line paste waits at the prompt
             // instead of running line by line (see TerminalPump.paste).
+            //
+            // On iOS readText() raises a "Paste" bubble, and WebKit can carry
+            // out a tap on it as an ordinary paste into the focused element
+            // while still refusing the read (WKContentView pasteForWebView).
+            // xterm takes that paste itself, so a refusal counts only when no
+            // native paste followed it, and a read that did resolve is dropped
+            // if one arrived, so the text never lands twice.
+            const requestedAt = performance.now();
             void navigator.clipboard
               ?.readText()
               .then((text) => {
-                if (text !== "") pump.paste(text);
+                if (text !== "" && !pump.pastedNativelySince(requestedAt)) {
+                  pump.paste(text);
+                }
               })
-              .catch(() => {
-                toast.error("Clipboard is not available here.");
+              .catch((error: unknown) => {
+                window.setTimeout(() => {
+                  if (pump.pastedNativelySince(requestedAt)) return;
+                  toast.error("Clipboard is not available here.", {
+                    description:
+                      error instanceof Error ? error.name : String(error),
+                  });
+                }, NATIVE_PASTE_GRACE_MS);
               });
           }
           return;

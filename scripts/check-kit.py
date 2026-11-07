@@ -43,6 +43,8 @@ FICTIONAL_IDS = {
     "thr_aaaaaaaaaa", "thr_bbbbbbbbbb", "thr_dddddddddd", "thr_hhhhhhhhhh", "thr_xxxxxxxxxx", "thr_zzzzzzzzzz",
     "thr_classify01", "thr_test000001", "thr_action01", "thr_commit01", "thr_fresh001", "thr_comm0004",
     "thr_grandchild", "thr_approval", "thr_parent01", "thr_child001", "thr_other001", "proj_fixture01",
+    "proj_shown0001", "proj_private01", "proj_nofolder1", "proj_missing01",
+    "thr_ssssssssss", "thr_pppppppppp", "thr_nnnnnnnnnn", "thr_mmmmmmmmmm",
 }
 
 # Снимки интерфейса: предел размера и чанки PNG, которых в них быть не должно (подписи программы, даты, EXIF).

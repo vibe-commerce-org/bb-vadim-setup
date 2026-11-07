@@ -127,6 +127,8 @@ export class TerminalPump {
    */
   private searchAddon: SearchAddon | null = null;
   private lastAtBottom: boolean | null = null;
+  /** performance.now() of the last paste event the browser fired in here. */
+  private lastNativePaste = -Infinity;
 
   constructor(options: PumpOptions) {
     this.options = options;
@@ -178,6 +180,8 @@ export class TerminalPump {
     this.observeContainer();
     this.warmSymbolFont();
     this.installTouchScroll();
+    // Capture, so it is seen before xterm's own paste listener handles it.
+    options.container.addEventListener("paste", this.onNativePaste, true);
 
     // Both fire on the renderer's schedule: onScroll when the viewport moves,
     // onWriteParsed when new output lands (which moves the bottom out from
@@ -547,6 +551,19 @@ export class TerminalPump {
     this.terminal.paste(text);
   }
 
+  private readonly onNativePaste = (): void => {
+    this.lastNativePaste = performance.now();
+  };
+
+  /**
+   * Whether the browser itself pasted into this terminal since `since`, a
+   * performance.now() stamp. xterm takes such a paste on its own, so there is
+   * nothing left to send.
+   */
+  pastedNativelySince(since: number): boolean {
+    return this.lastNativePaste >= since;
+  }
+
   /** True when the program asked for SS3 arrows (vim, less, anything full-screen). */
   applicationCursorKeys(): boolean {
     return this.terminal.modes.applicationCursorKeysMode;
@@ -811,6 +828,7 @@ export class TerminalPump {
     el.removeEventListener("touchmove", this.onTouchMove);
     el.removeEventListener("touchend", this.onTouchEnd);
     el.removeEventListener("touchcancel", this.onTouchEnd);
+    el.removeEventListener("paste", this.onNativePaste, true);
     this.stopPolling();
     this.resizeObserver?.disconnect();
     this.resizeObserver = null;

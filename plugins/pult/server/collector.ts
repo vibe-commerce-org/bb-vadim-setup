@@ -13,6 +13,9 @@
 // 2 s debounce per thread. A scan and an event refresh of the same thread never
 // run at once (one in-flight read per thread), and a read never overwrites a
 // snapshot that is newer than the thread row it started from.
+//
+// Threads of projects in __PRIVATE are never read (server/private-projects.ts):
+// a scan or a re-read drops what Pult stored of them.
 import type { BbPluginApi } from "@get-bb/plugin-sdk";
 import { classify } from "../lib/classify.ts";
 import { cut, tail } from "../lib/marker.ts";
@@ -23,6 +26,7 @@ import {
   type PendingInteractionInfo,
   type ThreadSnapshot,
 } from "../lib/types.ts";
+import { projectAccess, type ProjectAccess } from "./private-projects.ts";
 import {
   errorText,
   mapLimit,
@@ -82,7 +86,7 @@ export interface Collector {
   refreshThread(threadId: string): Promise<ThreadSnapshot | null>;
   /** Re-classify stored threads from their stored inputs (no I/O). */
   reclassify(threadIds?: readonly string[]): number;
-  /** Project names by id (refreshed on every scan). */
+  /** Names by id of the projects Pult shows (refreshed on every scan). */
   projectNames(): Promise<Map<string, string>>;
   listen(): void;
   status(): { scannedAt: number | null; scanning: boolean; threadCount: number };
@@ -315,25 +319,31 @@ export function createCollector(
   const dirty = new Set<string>();
   /** When a thread was archived or deleted (events), to drop reads started before. */
   const goneAt = new Map<string, number>();
-  let names = new Map<string, string>();
-  let namesAt = 0;
+  /** BB projects by id: the name and whether Pult may show their threads. */
+  let projects = new Map<string, { name: string; access: ProjectAccess }>();
+  let projectsAt = 0;
   let running: Promise<ScanResult> | null = null;
   let runningFull = false;
   let progress = 0;
 
-  async function loadProjectNames(force = false): Promise<Map<string, string>> {
-    if (!force && names.size > 0 && Date.now() - namesAt < 10 * 60_000) return names;
+  /** The project list, cached for ten minutes; a failed call keeps the previous one. */
+  async function loadProjects(force = false): Promise<typeof projects> {
+    if (!force && projects.size > 0 && Date.now() - projectsAt < 10 * 60_000) return projects;
     try {
-      const projects = await bb.sdk.projects.list({
+      const list = await bb.sdk.projects.list({
         includePersonal: true,
         signal: timeoutSignal(CALL_TIMEOUT_MS, disposed.signal),
       });
-      names = new Map(projects.map((p) => [p.id, p.name]));
-      namesAt = Date.now();
+      projects = new Map(list.map((p) => [p.id, { name: p.name, access: projectAccess(p) }]));
+      projectsAt = Date.now();
     } catch (error) {
       bb.log.warn(`projects.list failed: ${errorText(error)}`);
     }
-    return names;
+    return projects;
+  }
+
+  function isPrivate(projectId: string): boolean {
+    return projects.get(projectId)?.access === "private";
   }
 
   /** Provider id → when its catalog was read, and model id → the name BB shows. */
@@ -530,8 +540,23 @@ export function createCollector(
     };
   }
 
-  function skip(thread: ThreadLike): boolean {
+  function hiddenOrOwn(thread: ThreadLike): boolean {
     return thread.visibility === "hidden" || thread.originPluginId === bb.pluginId;
+  }
+
+  /**
+   * Threads Pult does not show: hidden ones, its own, and those of a project
+   * it may not show — private, without a known folder, or missing from the
+   * project list (fail-closed).
+   */
+  function skip(thread: ThreadLike): boolean {
+    return hiddenOrOwn(thread) || projects.get(thread.projectId)?.access !== "shown";
+  }
+
+  /** On an event: a thread of a project not loaded yet is re-read, and the read decides. */
+  function skipEvent(thread: ThreadLike): boolean {
+    const access = projects.get(thread.projectId)?.access;
+    return hiddenOrOwn(thread) || (access !== undefined && access !== "shown");
   }
 
   /**
@@ -545,12 +570,13 @@ export function createCollector(
   ): Promise<{ snapshot: ThreadSnapshot | null; changed: boolean }> {
     const startedAt = Date.now();
     const input = await fetchInput(thread, hintText);
-    let projectName = names.get(thread.projectId);
-    if (projectName === undefined) projectName = (await loadProjectNames(true)).get(thread.projectId);
+    // The project list may have changed while this read ran.
+    if (skip(thread)) return { snapshot: null, changed: false };
     const prev = store.getSnapshot(thread.id);
     if (prev !== null && prev.updatedAt > thread.updatedAt) return { snapshot: prev, changed: false };
     if ((goneAt.get(thread.id) ?? -Infinity) >= startedAt) return { snapshot: prev, changed: false };
-    const snapshot = buildSnapshot(thread, input, projectName ?? thread.projectId, Date.now());
+    const projectName = projects.get(thread.projectId)?.name ?? thread.projectId;
+    const snapshot = buildSnapshot(thread, input, projectName, Date.now());
     store.putSnapshot(snapshot, input, fingerprint(thread, thread.hasPendingInteraction ?? input.hasPendingInteraction));
     return { snapshot, changed: snapshotKey(prev) !== snapshotKey(snapshot) };
   }
@@ -579,12 +605,13 @@ export function createCollector(
       bb.log.warn(`threads.get ${threadId} failed: ${errorText(error)}`);
       return null;
     }
-    if (skip(thread)) {
-      store.deleteSnapshot(threadId);
+    if (!projects.has(thread.projectId)) await loadProjects(true);
+    if (thread.deletedAt !== null || isPrivate(thread.projectId)) {
+      if (store.forgetThreads([threadId]) > 0) opts.onChange();
       return null;
     }
-    if (thread.deletedAt !== null) {
-      if (store.deleteThreadData(threadId)) opts.onChange();
+    if (skip(thread)) {
+      store.deleteSnapshot(threadId);
       return null;
     }
     if (thread.archivedAt !== null) {
@@ -632,8 +659,17 @@ export function createCollector(
   async function runScan(full: boolean, signal?: AbortSignal): Promise<ScanResult> {
     const scanSignal = signal === undefined ? disposed.signal : AbortSignal.any([signal, disposed.signal]);
     progress = 0;
-    await loadProjectNames(true);
+    // Without the project list no thread can be shown: keep what is stored
+    // (archiving it would empty the queue) and try again on the next scan.
+    if ((await loadProjects(true)).size === 0) throw new Error("projects.list gave no projects");
     const rows = await bb.sdk.threads.list({ archived: false, signal: timeoutSignal(60_000, scanSignal) });
+    // Private projects leave nothing behind: listed threads and stored ones.
+    const privateIds = [...projects].filter(([id]) => isPrivate(id)).map(([id]) => id);
+    const forget = [
+      ...rows.filter((row) => isPrivate(row.projectId)).map((row) => row.id),
+      ...store.threadsOfProjects(privateIds),
+    ];
+    if (store.forgetThreads(forget) > 0) opts.onChange();
     const visible = rows.filter((row) => !skip(row));
     const known = store.knownThreads();
     const live = new Set(visible.map((row) => row.id));
@@ -733,16 +769,16 @@ export function createCollector(
 
   function listen(): void {
     bb.events.on("thread.idle", ({ thread, lastAssistantText }) => {
-      if (!skip(thread)) schedule(thread.id, { hintText: lastAssistantText });
+      if (!skipEvent(thread)) schedule(thread.id, { hintText: lastAssistantText });
     });
     for (const event of ["thread.active", "thread.failed", "interaction.pending"] as const) {
       bb.events.on(event, ({ thread }) => {
-        if (!skip(thread)) schedule(thread.id);
+        if (!skipEvent(thread)) schedule(thread.id);
       });
     }
     bb.events.on("thread.unarchived", ({ thread }) => {
       goneAt.delete(thread.id);
-      if (!skip(thread)) schedule(thread.id);
+      if (!skipEvent(thread)) schedule(thread.id);
     });
     bb.events.on("turn.failed", ({ threadId }) => schedule(threadId));
     // An approval resolved in BB does not change the thread's status (it
@@ -767,8 +803,13 @@ export function createCollector(
       cancelTimer(thread.id);
       hints.delete(thread.id);
       goneAt.set(thread.id, Date.now());
-      if (store.deleteThreadData(thread.id)) opts.onChange();
+      if (store.forgetThreads([thread.id]) > 0) opts.onChange();
     });
+  }
+
+  async function projectNames(): Promise<Map<string, string>> {
+    const shown = [...(await loadProjects(false))].filter(([, p]) => p.access === "shown");
+    return new Map(shown.map(([id, p]) => [id, p.name]));
   }
 
   return {
@@ -777,7 +818,7 @@ export function createCollector(
     schedule,
     refreshThread,
     reclassify,
-    projectNames: () => loadProjectNames(false),
+    projectNames,
     listen,
     status() {
       const scannedAt = store.getMeta("scannedAt");

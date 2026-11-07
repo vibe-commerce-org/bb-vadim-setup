@@ -268,6 +268,8 @@ export const rpcContract = defineRpcContract({
     output: z.object({
       projectId: z.string().nullable(),
       projectName: z.string().nullable(),
+      /** The thread's project is one Pult does not show (__PRIVATE or no known folder). */
+      hidden: z.boolean(),
       thisThread: z
         .object({ kind, ask: z.string().nullable(), source, confidence: z.number() })
         .nullable(),

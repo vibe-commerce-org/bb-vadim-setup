@@ -279,18 +279,31 @@ export function createStore(bb: BbPluginApi) {
       db().prepare("DELETE FROM snapshots WHERE thread_id = ?").run(threadId);
     },
 
+    /** Thread ids of stored snapshots in these projects, archived ones too. */
+    threadsOfProjects(projectIds: readonly string[]): string[] {
+      if (projectIds.length === 0) return [];
+      const marks = projectIds.map(() => "?").join(", ");
+      const rows = db()
+        .prepare(`SELECT thread_id FROM snapshots WHERE project_id IN (${marks})`)
+        .all(...projectIds) as { thread_id: string }[];
+      return rows.map((row) => row.thread_id);
+    },
+
     /**
-     * Forgets a deleted thread: its snapshot (agent text included), the user's
-     * overlay and the LLM triage rows. Returns true when anything was stored.
+     * Forgets threads (deleted ones, those of private projects): snapshots
+     * with the agent text, the user's overlays, the LLM triage and the seed.
+     * Returns how many rows went.
      */
-    deleteThreadData(threadId: string): boolean {
+    forgetThreads(threadIds: readonly string[]): number {
+      if (threadIds.length === 0) return 0;
       let removed = 0;
       db().transaction(() => {
-        for (const table of ["snapshots", "overlays", "llm_triage"] as const) {
-          removed += db().prepare(`DELETE FROM ${table} WHERE thread_id = ?`).run(threadId).changes;
+        for (const table of ["snapshots", "overlays", "llm_triage", "seed"] as const) {
+          const remove = db().prepare(`DELETE FROM ${table} WHERE thread_id = ?`);
+          for (const threadId of threadIds) removed += remove.run(threadId).changes;
         }
       })();
-      return removed > 0;
+      return removed;
     },
 
     // ── overlays ───────────────────────────────────────────────────────
@@ -423,6 +436,10 @@ export function createStore(bb: BbPluginApi) {
            ON CONFLICT(project_id) DO UPDATE SET json = excluded.json, checked_at = excluded.checked_at`,
         )
         .run(state.projectId, JSON.stringify(state), state.checkedAt);
+    },
+
+    deleteGitState(projectId: string): void {
+      db().prepare("DELETE FROM git_state WHERE project_id = ?").run(projectId);
     },
 
     // ── llm triage ─────────────────────────────────────────────────────

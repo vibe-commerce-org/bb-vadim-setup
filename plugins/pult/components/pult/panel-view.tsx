@@ -1,5 +1,5 @@
 // «Этот тред» tab of the «Пульт» side panel (components/pult/pult-page.tsx): whose move it is in this thread, who
-// else waits for the user in the same project, and the project's git state.
+// else waits for Vadim in the same project, and the project's git state.
 import { useBbNavigate } from "@get-bb/plugin-sdk/app";
 import { Icon } from "@/components/ui/icon";
 import { usePanel, useQueueState, type Live, type PanelData } from "@/hooks/usePult";
@@ -52,7 +52,9 @@ export function PanelBody({ threadId, live }: { threadId: string; live: Live<Pan
         <h2 id="pult-panel-this" className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
           Этот тред
         </h2>
-        {self === null ? (
+        {data.hidden ? (
+          <p className="text-muted-foreground">Пульт не показывает треды личных проектов (папка __PRIVATE).</p>
+        ) : self === null ? (
           <p className="text-muted-foreground">Пульт ещё не разбирал этот тред.</p>
         ) : isWaitingKind(self.kind) ? (
           <div className="space-y-1.5 rounded-md border border-border bg-card p-2.5">

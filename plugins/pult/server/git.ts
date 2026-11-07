@@ -7,9 +7,11 @@
 // mergeBase. Results are cached in git_state for 10 minutes and refreshed in
 // the background, at most 3 projects at a time. A project whose checkout was
 // not found (host still starting, environment not ready) is looked up again
-// on the next refresh: only found checkouts are remembered.
+// on the next refresh: only found checkouts are remembered. Projects Pult does
+// not show (server/private-projects.ts) are not looked at.
 import type { BbPluginApi } from "@get-bb/plugin-sdk";
 import type { GitState } from "../lib/types.ts";
+import { projectAccess } from "./private-projects.ts";
 import { errorText, mapLimit, timeoutSignal, type PultStore } from "./store.ts";
 
 const TTL_MS = 10 * 60_000;
@@ -105,7 +107,10 @@ export function createGit(bb: BbPluginApi, store: PultStore, opts: { onChange: (
     const states = store.getGitStates();
     const now = Date.now();
     const due = projects.filter((project) => {
-      if (project.kind === "personal") return false;
+      const access = projectAccess(project);
+      // Nothing is kept of a private project, its git state included.
+      if (access === "private" && states.has(project.id)) store.deleteGitState(project.id);
+      if (project.kind === "personal" || access !== "shown") return false;
       const state = states.get(project.id);
       return force || state === undefined || now - state.checkedAt >= TTL_MS;
     });

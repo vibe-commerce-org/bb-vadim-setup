@@ -133,7 +133,16 @@ const { bb, harness } = createFakePluginHost({
   sdk: {
     projects: {
       list: async () => [
-        { id: PROJECT, name: "studio_code", kind: "standard", createdAt: 0, updatedAt: 0, gitRemoteUrl: null, sources: [] },
+        {
+          id: PROJECT,
+          name: "studio_code",
+          kind: "standard",
+          createdAt: 0,
+          updatedAt: 0,
+          gitRemoteUrl: null,
+          // A project without a known folder is not shown (tests/private-projects.test.ts).
+          sources: [{ id: "src_1", hostId: "host_local", path: "/work/studio_code", isDefault: true, projectId: PROJECT, type: "local_path", createdAt: 0, updatedAt: 0 }],
+        },
       ],
     },
     threads: {
