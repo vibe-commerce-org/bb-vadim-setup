@@ -200,17 +200,17 @@
     {
       "path": "AGENT-TASK.md",
       "bytes": 23629,
-      "sha256": "dd474d058983964c8b636ae1da98331fde30bd0a1be42072363f8efc301a2014"
+      "sha256": "e38049d3ad744628aceb17fb1edc2ebbbce94bf69f93f16bd7cce1564d7fa086"
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 32616,
-      "sha256": "4490ece534482c6344f0b7afea58e81a28c4689853e8a17112aa6a2191952a0d"
+      "bytes": 32779,
+      "sha256": "6f96575c42a37a0e23606f11ae91a354e7d03131d440862419ee3b7498fd0494"
     },
     {
       "path": "GUIDE.md",
-      "bytes": 140531,
-      "sha256": "1615b2c468c4430e595fb3a03d70e949eafe1470278253d7d583e039e4619643"
+      "bytes": 140585,
+      "sha256": "0294fcf5e2a07f444df0447c8ab9714f476c3f194aec85b7429e8ec5bc2be6b9"
     },
     {
       "path": "LICENSE",
@@ -234,8 +234,8 @@
     },
     {
       "path": "VALIDATION.md",
-      "bytes": 39915,
-      "sha256": "20b7b10bf200d418e430e6cc3d0e14f25e9f850e57efd0f753e641503826e122"
+      "bytes": 39904,
+      "sha256": "277750e2d1fb115753b8af6a0e8d12924948e5eb7fe41851169dd32d4f1b4400"
     },
     {
       "path": "VERSION",
@@ -244,8 +244,8 @@
     },
     {
       "path": "catalog.json",
-      "bytes": 32457,
-      "sha256": "c2f17429dfda00a2e085aea4561b3468491880dc9e73a534fa644526a217ab7e"
+      "bytes": 32575,
+      "sha256": "ffc4df56a170cfafaf9c456cb93fdc2c0718c3a8752e869fbfc2c09b0f9ba1e2"
     },
     {
       "path": "examples/README.md",
@@ -285,7 +285,7 @@
     {
       "path": "plugins/README.md",
       "bytes": 4899,
-      "sha256": "d5dc183bd2423a07946769d49e150be47774f58ccbb94bb87f5fd43689790211"
+      "sha256": "f2f6ae7c2c0a3d3507fb90f44a1af657bbc163b3feb0706278103fdf8bd372a8"
     },
     {
       "path": "plugins/artifacts/LICENSE",
@@ -1424,8 +1424,8 @@
     },
     {
       "path": "plugins/limit-guard/README.md",
-      "bytes": 7716,
-      "sha256": "0d6c18b0431c2fd37a80a131a4bef9ea88c8f81f8942fe0dca5eaf60d14fe20c"
+      "bytes": 8478,
+      "sha256": "0496aa42a8c9037eae348ff6539b6f6a08341ec5727032bbfd15cf5c75836443"
     },
     {
       "path": "plugins/limit-guard/app.css",
@@ -1448,9 +1448,14 @@
       "sha256": "4cba5cf84324e2d78142494b1500b6ba123ae13c76616d43933bdf79ed399eca"
     },
     {
+      "path": "plugins/limit-guard/lib/fallback.ts",
+      "bytes": 6725,
+      "sha256": "52d4a5e5d4c317fd434cbc062c6fc07c5d7cada4986c2e93e493f8f20b63b088"
+    },
+    {
       "path": "plugins/limit-guard/lib/format.ts",
-      "bytes": 14517,
-      "sha256": "a0b59de9c3b2850e8ab37ce6ffad2e852eec52ee6631bab48d8d58ddaa077084"
+      "bytes": 14535,
+      "sha256": "6310af8ac6cc1c5fa18b84a01d90631183ca6842ec62fada94c36465557e3c26"
     },
     {
       "path": "plugins/limit-guard/lib/ledger.ts",
@@ -1464,8 +1469,8 @@
     },
     {
       "path": "plugins/limit-guard/lib/profile.ts",
-      "bytes": 17054,
-      "sha256": "2d1fbfcf1f059d06ec44709ba26a9a5bca9a37b7669f442714854108f9afba98"
+      "bytes": 18290,
+      "sha256": "15f2623387e0370621126342561bff554f55c085d8f77f09991eaba321564786"
     },
     {
       "path": "plugins/limit-guard/lib/saved.ts",
@@ -1494,8 +1499,8 @@
     },
     {
       "path": "plugins/limit-guard/package.json",
-      "bytes": 1593,
-      "sha256": "3be892b2dfb0fa4bc8d9e4e09e9b95fcd0cdcfc853803242d482fe6f001d3ec5"
+      "bytes": 1856,
+      "sha256": "9320f962e8531d31203025ec2a5da10c5c37f23d859a3dcb44983bdbe7b69544"
     },
     {
       "path": "plugins/limit-guard/rpc.ts",
@@ -1509,13 +1514,18 @@
     },
     {
       "path": "plugins/limit-guard/server/budget.ts",
-      "bytes": 31531,
-      "sha256": "357a9b0295978a83f082ca2140c48afe1a6d2244d41df7ed5e7fa1a58d6ff18c"
+      "bytes": 31918,
+      "sha256": "197c44008a17afe8b435005cb67a20ad58df4f67e25b9cf19d586ef510e2d7ad"
     },
     {
       "path": "plugins/limit-guard/server/cli.ts",
       "bytes": 17666,
       "sha256": "89d2d27a612c6f814ed3195b570132930a52a577cea627f3493f0831eeab02c8"
+    },
+    {
+      "path": "plugins/limit-guard/server/fallback.ts",
+      "bytes": 25532,
+      "sha256": "211b8fd05d5ec0b0e3457ce5e0f77e175e8c7bbfa835eebbe1d5249bcf88fc59"
     },
     {
       "path": "plugins/limit-guard/server/guard.ts",
@@ -1539,8 +1549,8 @@
     },
     {
       "path": "plugins/limit-guard/server/wire.ts",
-      "bytes": 4986,
-      "sha256": "038fed290f5eca470d8a28a45bd2c242e0d7ca2fece8ece8616a6337d6cc61a6"
+      "bytes": 5943,
+      "sha256": "b1e6519288d3dffed746e1511c0db3be2e1be7171ab7f21605ff0063d96c2478"
     },
     {
       "path": "plugins/limit-guard/setup/yandex-billing-viewer.md",
@@ -1579,8 +1589,18 @@
     },
     {
       "path": "plugins/limit-guard/tests/fake-bb.ts",
-      "bytes": 16737,
-      "sha256": "3984522c89fab67eb7e5ac0d45f4a67a21606dba788ae3b2bbe7074582ed1f11"
+      "bytes": 17148,
+      "sha256": "be2650c447148f6540495eeb0fbe0dc85bbc09b4db05ab4ef252bb7bdc8d8679"
+    },
+    {
+      "path": "plugins/limit-guard/tests/fallback-server.test.ts",
+      "bytes": 12989,
+      "sha256": "1fdcfd35bccd92973e18f7b410de98400c7ac3b6363f090f8a30cdf1f1a8b87a"
+    },
+    {
+      "path": "plugins/limit-guard/tests/fallback.test.ts",
+      "bytes": 5467,
+      "sha256": "9b23b013ddb94cb7a095759da2c46e4a2182cbde6f5773aeca1f2378b77287fa"
     },
     {
       "path": "plugins/limit-guard/tests/gemini.test.ts",
@@ -1589,8 +1609,8 @@
     },
     {
       "path": "plugins/limit-guard/tests/harness.ts",
-      "bytes": 2432,
-      "sha256": "8162d6fbbfee3a16f3637ad2488f75ef57e1cc2ead03e808e993d1c5c01da2df"
+      "bytes": 2487,
+      "sha256": "c1f83142cf40b49b36ae536df16cd9fc3ee06becba821d3f0293fb206f8c7ebe"
     },
     {
       "path": "plugins/limit-guard/tests/lib.test.ts",

@@ -29,6 +29,7 @@ export function setup(world: World, extra: { interim?: string | null; settings?:
     sendNowGraceMs: 5,
     // Never the real ~/.bb: the Gemini counter reads only what a test gives it.
     piSessionDirs: extra.piDirs ?? [],
+    fallbackJoinMs: 10,
     ...(extra.facts !== undefined ? { facts: extra.facts } : {}),
     ...(extra.stopBudgetMs !== undefined ? { stopBudgetMs: extra.stopBudgetMs } : {}),
   });
@@ -39,6 +40,7 @@ export function setup(world: World, extra: { interim?: string | null; settings?:
     gemini: guards.gemini,
     yandex: guards.yandex,
     cloudru: guards.cloudru,
+    fallback: guards.fallback,
     notes,
     advance(ms: number) {
       now += ms;

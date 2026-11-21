@@ -149,6 +149,18 @@ export const SETTINGS = {
     description: "С этого процента недельного бюджета — предупреждение в карточке и в Telegram; ходы не держатся. По умолчанию 80.",
     default: 80,
   },
+  geminiFallback: {
+    type: "boolean",
+    label: "Gemini: автопереключение при 429",
+    description: "Когда Google отвечает 429 (перегрузка), тред Pi на Gemini переводится на следующую модель цепочки и упавший ход повторяется; после двух сбоев поколение отключается на 30 минут и далее, возврат — пробным ходом. Цепочка — в соседней настройке.",
+    default: true,
+  },
+  geminiFallbackChain: {
+    type: "string",
+    label: "Gemini: цепочка запасных моделей",
+    description: "Id моделей Vertex через запятую, от сильнейшей к слабой (по бенчу Вайб-Коммерс на 21.11): gemini-4-neon, gemini-4-carbon, gemini-4-hydrogen, gemini-4-argon, gemini-3.1-pro-preview, gemini-3.8-flash. Префикс google-vertex/ не нужен; ошибочная запись заменяется цепочкой по умолчанию.",
+    default: "gemini-4-neon, gemini-4-carbon, gemini-4-hydrogen, gemini-4-argon, gemini-3.1-pro-preview, gemini-3.8-flash",
+  },
   yandexWeeklyRub: {
     type: "number",
     label: "Яндекс: лимит в неделю, ₽",

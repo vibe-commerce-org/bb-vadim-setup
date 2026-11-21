@@ -48,6 +48,7 @@ FICTIONAL_IDS = {
     "thr_aaaaaaaa", "thr_bbbbbbbb", "thr_cccccccc", "thr_dddddddd", "thr_eeeeeeee", "thr_agent0001", "thr_codex000",
     "thr_owner000", "thr_pi000000", "thr_picloud0", "thr_pivtx000", "thr_pivtx001", "thr_pivtx002", "thr_piyand00",
     "thr_stop0001", "thr_stop0002",
+    "thr_pifb0001", "thr_pifb0002", "thr_pifb0003", "thr_pifbhyd0", "thr_pifblast", "thr_pifbnew0", "thr_pifbyand",
 }
 
 # Снимки интерфейса: предел размера и чанки PNG, которых в них быть не должно (подписи программы, даты, EXIF).

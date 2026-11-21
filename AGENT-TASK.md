@@ -61,7 +61,7 @@ bb и хотя бы один агент уже должны работать. В
    переустанавливай, а пересобери: `npm ci` (для `files-editor` и `floating-terminal` — `npm ci --ignore-scripts`),
    `bb plugin build .`, `bb plugin reload <id>` (ID — имя папки, не имя с `_vibecom`); сверь версию
    в `bb plugin list` (`floating-terminal@0.6.2`, `files-editor@0.1.6`, `russifier@0.2.0`, `pult@0.4.6`,
-   `repo-tag@0.1.0`, `artifacts@0.1.0`, `composer-labels@0.1.0`, `limit-guard@0.3.0`, `parakeet-voice@0.2.0`, три просмотрщика — `@0.6.0`). Explorer_vibecom показывает
+   `repo-tag@0.1.0`, `artifacts@0.1.0`, `composer-labels@0.1.0`, `limit-guard@0.3.1`, `parakeet-voice@0.2.0`, три просмотрщика — `@0.6.0`). Explorer_vibecom показывает
    Markdown через сервер Markdown_vibecom: без `markdown-view` его не ставь. Lockfile и версии не меняй. Предупреждение сборки о закреплённой версии SDK — норма;
    `bb plugin types` не выполняй.
 6. Скопируй папку `theme/atom-one_vibecom` в каталог из `bb theme dir`, выполни

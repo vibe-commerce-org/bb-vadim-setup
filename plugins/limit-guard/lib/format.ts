@@ -22,7 +22,7 @@ export interface NotifyRecord {
 }
 
 /** Claude/Codex stages and consent; `<budget>-warn|stop|consent` — the budget guards (lib/budget.ts). */
-export type NotifyKind = "enter-1" | "enter-2" | "consent" | BudgetNotifyKind;
+export type NotifyKind = "enter-1" | "enter-2" | "consent" | BudgetNotifyKind | "fallback-open";
 
 export interface ReseatStats {
   copied: number;

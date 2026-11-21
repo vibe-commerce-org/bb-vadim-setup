@@ -70,6 +70,8 @@ export interface BudgetOptions {
   notifier: Notifier;
   ledger: PiLedger;
   facts?: BudgetFact[];
+  /** Live lines from other modules (the Gemini auto-switch): shown first among the outside figures, null — nothing to say. */
+  notes?: Array<() => BudgetFactLine | null>;
   now?: () => number;
   pollMs?: number;
   sendNowGraceMs?: number;
@@ -327,6 +329,14 @@ export function createBudgetGuard(bb: BbPluginApi, profile: BudgetProfile, opts:
 
   function factLines(now: number): BudgetFactLine[] {
     const lines: BudgetFactLine[] = [];
+    for (const note of opts.notes ?? []) {
+      try {
+        const line = note();
+        if (line !== null) lines.push(line);
+      } catch {
+        // a broken note must not take the card down
+      }
+    }
     for (const f of factStates) {
       if (!f.done) continue;
       if (f.error !== null) lines.push({ label: f.fact.label, value: `недоступно: ${f.error}`, kind: "error" });

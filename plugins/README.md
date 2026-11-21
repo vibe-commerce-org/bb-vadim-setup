@@ -21,7 +21,7 @@ floating-terminal — `npm ci --ignore-scripts`) → `bb plugin build .` →
 | artifacts/ | Важные артефакты_vibecom | 0.1.0, бета | бриф, план и важные файлы треда во вкладке справа |
 | composer-labels/ | Модель и эффорт_vibecom | 0.1.0 | эффорт виден в чипе набора на узком поле ввода и на телефоне |
 | parakeet-voice/ | Parakeet_vibecom | 0.2.0, bb 0.50+ | диктовка распознаётся на вашем компьютере моделью Parakeet Ultra, без облака |
-| limit-guard/ | Сторож лимитов_vibecom | 0.3.0 | недельные лимиты Claude Code и Codex и бюджеты Gemini, Яндекса, Cloud.ru под присмотром |
+| limit-guard/ | Сторож лимитов_vibecom | 0.3.1 | недельные лимиты Claude Code и Codex и бюджеты Gemini, Яндекса, Cloud.ru под присмотром |
 
 Суффикс `_vibecom` есть только в видимом имени плагина: id, папки и имена
 пакетов прежние, поэтому команды `bb plugin update/reload/remove` используют

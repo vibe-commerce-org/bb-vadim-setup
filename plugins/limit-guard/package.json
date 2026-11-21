@@ -1,6 +1,6 @@
 {
   "name": "bb-plugin-limit-guard",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -9,7 +9,7 @@
   },
   "bb": {
     "name": "Сторож лимитов_vibecom",
-    "description": "Two guards, each with its own switch and thresholds. Claude Code (on by default): at 85 % of the weekly Claude limit every claude-code thread moves to Sonnet xhigh and turns on Opus are held and re-queued on Sonnet; at 93 % claude-code work stops until `bb limit-guard resume`. Codex (off by default, `bb limit-guard on codex`): the same on the weekly Codex limit, stage 1 lowers the effort (or moves to a model set in the settings). After the weekly reset the previous models come back. Budgets (on by default): a weekly limit in money for Pi threads per provider — Gemini on google-vertex/* in dollars, Yandex (yandex/*) and Cloud.ru (cloudru/*) in rubles — counted from Pi's session files by catalog prices; the week starts Monday 00:00 Moscow time; 80 % — a warning, 100 % — Gemini turns wait and running ones stop until `bb limit-guard resume gemini|yandex|cloudru`; `bb limit-guard limit gemini|yandex|cloudru <amount>`.",
+    "description": "Two guards, each with its own switch and thresholds. Claude Code (on by default): at 85 % of the weekly Claude limit every claude-code thread moves to Sonnet xhigh and turns on Opus are held and re-queued on Sonnet; at 93 % claude-code work stops until `bb limit-guard resume`. Codex (off by default, `bb limit-guard on codex`): the same on the weekly Codex limit, stage 1 lowers the effort (or moves to a model set in the settings). After the weekly reset the previous models come back. Budgets (on by default): a weekly limit in money for Pi threads per provider — Gemini on google-vertex/* in dollars, Yandex (yandex/*) and Cloud.ru (cloudru/*) in rubles — counted from Pi's session files by catalog prices; the week starts Monday 00:00 Moscow time; 80 % — a warning, 100 % — Gemini turns wait and running ones stop until `bb limit-guard resume gemini|yandex|cloudru`; `bb limit-guard limit gemini|yandex|cloudru <amount>`. Gemini auto-switch (on by default, `geminiFallback`): on a 429 from Vertex a Pi thread moves to the next model of the benchmark chain and the failed turn is retried; two failures shut the whole model generation for 30 minutes and more, then one thread probes it.",
     "branding": {
       "icon": "Limitation"
     },

@@ -13,6 +13,7 @@ import { CLAUDE_PROFILE, CODEX_PROFILE, SETTINGS, type GuardKey } from "../lib/p
 import { registerCli } from "./cli.ts";
 import { BUDGET_KEYS, BUDGET_PROFILES, type BudgetKey } from "../lib/budget.ts";
 import { createBudgetGuard, type BudgetFact, type BudgetGuard } from "./budget.ts";
+import { createFallback, type GeminiFallback } from "./fallback.ts";
 import { createGuard, type Guard, type GuardOptions } from "./guard.ts";
 import { createPiLedger, defaultPiSessionDirs } from "./ledger.ts";
 import { registerRpc } from "./rpc.ts";
@@ -26,6 +27,8 @@ export type InstallOptions = Omit<GuardOptions, "settings"> & {
   piSessionDirs?: string[];
   /** Figures from outside Pi's files per budget (the Yandex balance, Google's month spend). */
   facts?: Partial<Record<BudgetKey, BudgetFact[]>>;
+  /** The auto-switch message waits this long for neighbours that shut with the first model (default 2 s). */
+  fallbackJoinMs?: number;
 };
 
 const PROCEED: DispatchDecision = { action: "proceed" };
@@ -39,8 +42,8 @@ function proceedAfter(ms: number): Promise<DispatchDecision> {
   });
 }
 
-export function installGuards(bb: BbPluginApi, opts: InstallOptions): Guards & Budgets & { budgets: Budgets } {
-  const { piSessionDirs, facts, ...guardOpts } = opts;
+export function installGuards(bb: BbPluginApi, opts: InstallOptions): Guards & Budgets & { budgets: Budgets; fallback: GeminiFallback } {
+  const { piSessionDirs, facts, fallbackJoinMs, ...guardOpts } = opts;
   const settings = bb.settings.define(SETTINGS);
   const source = {
     get: async () => (await settings.get()) as Record<string, unknown>,
@@ -53,6 +56,8 @@ export function installGuards(bb: BbPluginApi, opts: InstallOptions): Guards & B
   };
   // One counter over Pi's session files for all budgets; each budget guard asks it for its provider.
   const ledger = createPiLedger({ dirs: piSessionDirs ?? defaultPiSessionDirs(), providers: BUDGET_KEYS.map((key) => BUDGET_PROFILES[key].piProvider) });
+  // The Gemini auto-switch lives next to the Gemini budget: it shows its line in that block and yields to its stop.
+  let fallback: GeminiFallback | null = null;
   const budgets = Object.fromEntries(
     BUDGET_KEYS.map((key) => [
       key,
@@ -61,6 +66,7 @@ export function installGuards(bb: BbPluginApi, opts: InstallOptions): Guards & B
         notifier: opts.notifier,
         ledger,
         ...(facts?.[key] !== undefined ? { facts: facts[key] } : {}),
+        ...(key === "gemini" ? { notes: [() => fallback?.line() ?? null] } : {}),
         ...(opts.now !== undefined ? { now: opts.now } : {}),
         ...(opts.sendNowGraceMs !== undefined ? { sendNowGraceMs: opts.sendNowGraceMs } : {}),
         ...(opts.stopBudgetMs !== undefined ? { stopBudgetMs: opts.stopBudgetMs } : {}),
@@ -68,10 +74,22 @@ export function installGuards(bb: BbPluginApi, opts: InstallOptions): Guards & B
     ]),
   ) as Budgets;
   const budgetList = BUDGET_KEYS.map((key) => budgets[key]);
+  fallback = createFallback(bb, {
+    settings: source,
+    notifier: opts.notifier,
+    blocked: () => {
+      const s = budgets.gemini.snapshot();
+      return s.enabled && s.stage === 2 && !s.consent;
+    },
+    ...(opts.now !== undefined ? { now: opts.now } : {}),
+    ...(fallbackJoinMs !== undefined ? { joinMs: fallbackJoinMs } : {}),
+  });
+  const fallbackRef = fallback;
   const list: Array<Pick<Guard, "dispatch">> = [guards.claude, guards.codex, ...budgetList];
 
   settings.onChange((next) => {
     for (const guard of [guards.claude, guards.codex, ...budgetList]) guard.onSettings(next as Record<string, unknown>);
+    fallbackRef.onSettings(next as Record<string, unknown>);
   });
 
   // Every guard sees every dispatch (it learns thread providers from them) and answers
@@ -95,5 +113,5 @@ export function installGuards(bb: BbPluginApi, opts: InstallOptions): Guards & B
 
   registerCli(bb, guards, budgets);
   registerRpc(bb, guards, budgets);
-  return { ...guards, ...budgets, budgets };
+  return { ...guards, ...budgets, budgets, fallback: fallbackRef };
 }

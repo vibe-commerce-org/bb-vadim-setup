@@ -190,6 +190,14 @@ export function createFakeBb(world: World, opts: { settings?: Record<string, unk
         if (args.reasoningLevel !== undefined && args.reasoningLevel !== null) t.reasoningLevel = args.reasoningLevel;
         return { ok: true };
       },
+      async promptHistory(args: { threadId: string }) {
+        record("threads.promptHistory", args);
+        return [{ id: "ph_1", createdAt: T0 - 60_000, input: [{ type: "text", text: "Привет, что ты умеешь?" }] }];
+      },
+      async retry(args: { threadId: string; turnRequestId?: string; reason?: string }) {
+        record("threads.retry", args);
+        return { ok: true };
+      },
       async stop({ threadId }: { threadId: string }) {
         record("threads.stop", { threadId });
         world.running.delete(threadId);
