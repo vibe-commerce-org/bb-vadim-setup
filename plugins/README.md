@@ -10,12 +10,12 @@ floating-terminal — `npm ci --ignore-scripts`) → `bb plugin build .` →
 
 | Папка и id | Имя в BB | Версия | Что делает |
 |---|---|---|---|
-| markdown-view/ | Markdown_vibecom | 0.6.0 | просмотр Markdown в виде Typora и правка в Vditor |
-| office-preview/ | Office_vibecom | 0.6.0 | просмотр таблиц, Word и PowerPoint |
-| folder-links/ | Folder links_vibecom | 0.6.0 | ссылки на папки открывают дерево справа; домашняя папка, профиль Windows в WSL2, папки проектов bb |
+| markdown-view/ | Markdown_vibecom | 0.6.1 | просмотр Markdown в виде Typora и правка в Vditor |
+| office-preview/ | Office_vibecom | 0.6.1 | просмотр таблиц, Word и PowerPoint |
+| folder-links/ | Folder links_vibecom | 0.6.1 | ссылки на папки открывают дерево справа; домашняя папка, профиль Windows в WSL2, папки проектов bb |
 | files-editor/ | Explorer_vibecom | 0.1.6 | проводник и редактор рабочей копии, документы внутри панели; переделка плагина abdoutelb |
 | floating-terminal/ | Terminal_vibecom | 0.6.2 | терминал вкладкой правой панели и плавающим окном; переделка плагина vburojevic |
-| russifier/ | Русификатор_vibecom | 0.2.0 | интерфейс bb на русском; effort, режимы доступа и названия — по-английски |
+| russifier/ | Русификатор_vibecom | 0.3.0 | интерфейс bb на русском; effort, режимы доступа и названия — по-английски |
 | repo-tag/ | Repo tags_vibecom | 0.1.0 | тег репозитория у каждого треда в боковой панели |
 | pult/ | Пульт_vibecom | 0.4.6 | лента всех тредов, какие треды ждут вас, приоритеты задач Сейчас / Дальше / Потом, карта проектов |
 | artifacts/ | Важные артефакты_vibecom | 0.1.0, бета | бриф, план и важные файлы треда во вкладке справа |

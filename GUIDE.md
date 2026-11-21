@@ -1,6 +1,6 @@
 # Как установить и настроить bb как у Вадима
 
-Last Updated: 2026-11-21 · Комплект **0.6.0** (история версий — `CHANGELOG.md` в комплекте)
+Last Updated: 2026-11-22 · Комплект **0.6.1** (история версий — `CHANGELOG.md` в комплекте)
 Проверенная среда: **bb 0.50.1, macOS на Apple Silicon** (21.11 все двенадцать плагинов комплекта собраны с нуля
 и прошли тесты; до 07.11 комплект проверялся на 0.46.1, до 11.10 — на 0.45.0). **На bb 0.48** (вышел 28.10) комплект проверен только
 сборкой и тестами против его SDK, живой bb 0.48 не запускался — [раздел 21](#21-как-проверена-инструкция). **Windows проверена Вадимом 08.10.2026** на 0.45.0;
@@ -887,12 +887,12 @@ bb. Они не привязаны к конкретному репозитор�
 
 | Папка (ID) | Имя в bb | Версия | macOS | Linux-сервер | Windows |
 |---|---|---|---|---|---|
-| `markdown-view` | Markdown_vibecom | 0.6.0, bb 0.45+ | ✅ | ⚠️ должен работать | ⚠️ ссылки между файлами могут не работать |
-| `office-preview` | Office_vibecom | 0.6.0, bb 0.45+ | ✅ | ⚠️ без `.doc/.rtf/.odt` | ⚠️ без `.doc/.rtf/.odt` |
-| `folder-links` | Folder links_vibecom | 0.6.0 | ✅ | ⚠️ проверено тестами | ⚠️ проверено тестами; ссылки — `file:///C:/…` |
+| `markdown-view` | Markdown_vibecom | 0.6.1, bb 0.45+ | ✅ | ⚠️ должен работать | ⚠️ ссылки между файлами могут не работать |
+| `office-preview` | Office_vibecom | 0.6.1, bb 0.45+ | ✅ | ⚠️ без `.doc/.rtf/.odt` | ⚠️ без `.doc/.rtf/.odt` |
+| `folder-links` | Folder links_vibecom | 0.6.1 | ✅ | ⚠️ проверено тестами | ⚠️ проверено тестами; ссылки — `file:///C:/…` |
 | `floating-terminal` | Terminal_vibecom | 0.6.2 | ✅ | ⚠️ | ⚠️ |
 | `files-editor` | Explorer_vibecom | 0.1.6 с правками | ✅ | ⚠️ без `Mac app` | ⚠️ без `Mac app` |
-| `russifier` | Русификатор_vibecom | 0.2.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
+| `russifier` | Русификатор_vibecom | 0.3.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 | `repo-tag` | Repo tags_vibecom | 0.1.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 | `pult` | Пульт_vibecom | 0.4.6, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 | `artifacts` | Важные артефакты_vibecom | 0.1.0, **бета**, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
@@ -1320,7 +1320,7 @@ bb provider-retry status
 |---|---|
 | bb | 0.46.1, приложение на Mac. 30.10 `bb settings version` показывает свежую версию 0.48.0: Вадим на неё не обновлялся, комплект на 0.48 проверен только сборкой (раздел 21) |
 | Плагины | 52 всего: 41 running, 11 disabled |
-| Свои (в bb — `_vibecom`) | все двенадцать из комплекта. Версии у Вадима: `parakeet-voice` 0.2.0, `limit-guard` 0.3.1, `russifier` 0.2.0, `repo-tag` 0.1.0, `artifacts` 0.1.0, `composer-labels` 0.1.0, `floating-terminal` 0.6.2, `files-editor` 0.1.6, `pult` 0.4.6 — как в комплекте; `folder-links` 0.4.0, `markdown-view` и `office-preview` 0.1.0 из рабочей папки — код тот же, в комплекте нумеруются по комплекту, 0.5.3 |
+| Свои (в bb — `_vibecom`) | все двенадцать из комплекта. Версии у Вадима: `parakeet-voice` 0.2.0, `limit-guard` 0.3.1, `russifier` 0.3.0, `repo-tag` 0.1.0, `artifacts` 0.1.0, `composer-labels` 0.1.0, `floating-terminal` 0.6.2, `files-editor` 0.1.6, `pult` 0.4.6 — как в комплекте; `folder-links` 0.4.0, `markdown-view` и `office-preview` 0.1.0 из рабочей папки — код тот же, в комплекте нумеруются по комплекту, 0.5.3 |
 | Свои, не в комплекте | `limit-guard` 0.1.1 — сторож недельного лимита Claude, завязан на личного Telegram-бота, общей версии пока нет; `provider-icons` 0.1.1 — иконка Gemini у провайдера Google Antigravity, самого провайдера в комплекте нет; `focus-probe` 0.1.0 — личная диагностика |
 | Внешние | нет: `file-manager` удалён, его заменяет Explorer_vibecom |
 | Настройки плагинов | `floating-terminal`: `fontSize=13`; `files-editor`: `excludedDirectories` по умолчанию, `openDocumentsIn=This panel`; `russifier`: `language=ru`, `collectMissing=true`; `repo-tag`: `tagLength=3`, `compactTagLength=3`; `pult`: `llmTriage=false` (в комплекте этот разбор отключён в коде), `llmModel` по умолчанию; `provider-retry`: `maximumWait=24 hours`; `bb-guide`: всё включено; у `composer-labels`, `artifacts`, `folder-links`, `markdown-view`, `office-preview` настроек нет |
@@ -1431,6 +1431,8 @@ Get-Content -Path "$env:USERPROFILE\.bb\logs\host-daemon-stdio.log" -Tail 40
 - **Mac Вадима, bb 0.45.0, 04–11.10.2026; bb 0.46.0 — 11.10:** настройки и плагины сняты командами `bb settings`,
   `bb plugin list/source/config`, `bb provider models`; 11.10 снимок повторён на 0.46.0 и совпал, кроме
   списка встроенных плагинов (раздел 17).
+- **Комплект 0.6.1, bb 0.50.1, 22.11 (патч — Русификатор 0.3.0: словарь под bb 0.50.1, ветки git и «1 млн» токенов):** Русификатор
+  собран с нуля, тесты прошли (24/24); установка как у bb из Git — все двенадцать; остальные плагины те же, что в 0.6.0.
 - **Комплект 0.6.0, bb 0.50.1, 21.11 (два новых плагина — Parakeet и Сторож лимитов; дерево, «Копировать путь» и HTML_vibecom в Markdown_vibecom):**
   двенадцать плагинов собраны с нуля, тесты прошли: Markdown 66/66, Office 10/10, Folder links 56/56, Terminal 86/86,
   Русификатор 19/19, Repo tags 20/20, Пульт 210/210, Артефакты 5 + 1, Parakeet 8 + 1 пропущенный (сквозной без записи),

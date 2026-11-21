@@ -11,7 +11,7 @@
 //   compact one a CSS variable on the form around it;
 // - the observer drops mutations inside protected zones first (an agent's
 //   streaming reply lives there), batches the rest and keeps to a time budget.
-import type { Engine } from "./engine.ts";
+import { formatTokenAmount, type Engine } from "./engine.ts";
 import { ATTRIBUTES_ONLY_SELECTOR, PROTECTED_SELECTOR, isForeignPluginRoot, isInsideProtected } from "./protect.ts";
 
 const ATTRS = ["aria-label", "title", "placeholder"] as const;
@@ -20,6 +20,8 @@ const COMPACT_VAR = "--promptbox-container-compact-placeholder";
 const EDITOR_PLACEHOLDERS = "[data-promptbox-editor-content] [data-placeholder]";
 const LATIN = /[A-Za-z]/;
 const MAX_TEXT = 300;
+const COMPACT_NUMBER = /^\s*\d+(?:\.\d+)?[kmb]\s*$/i;
+const TOKENS_WORD = /\btok(?:en)?s?\b|токен/i;
 /** Nodes handled inside the observer callback, before the browser paints. */
 const SYNC_LIMIT = 400;
 const CHUNK_MS = 8;
@@ -48,6 +50,22 @@ export interface DomTranslatorStats {
   spentMs: number;
   blocked: number;
   degraded: boolean;
+}
+
+/**
+ * bb's context window reads «350k / 1m tokens» from separate text nodes, and
+ * «1m» alone means a minute elsewhere (sidebar «5m»). A number counts tokens
+ * when its own or its parent's direct text mentions them, before or after
+ * translation; deeper text (a thread title nearby) does not count.
+ */
+function besideTokens(node: Text): boolean {
+  let el = node.parentElement;
+  for (let level = 0; el && level < 2; level++, el = el.parentElement) {
+    for (const child of el.childNodes) {
+      if (child !== node && child.nodeType === 3 && TOKENS_WORD.test((child as Text).data)) return true;
+    }
+  }
+  return false;
 }
 
 function cssString(text: string): string {
@@ -270,7 +288,7 @@ export class DomTranslator {
     if (value.length < 2 || value.length > MAX_TEXT || !LATIN.test(value)) return;
     const rec = this.texts.get(node);
     if (rec && rec.tr === value) return;
-    const tr = this.engine.translate(value);
+    const tr = COMPACT_NUMBER.test(value) && besideTokens(node) ? formatTokenAmount(value) : this.engine.translate(value);
     if (tr === null) {
       this.hooks.onMissing?.(value);
       return;

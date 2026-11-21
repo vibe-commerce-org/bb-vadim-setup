@@ -1,8 +1,8 @@
 {
   "format": 3,
-  "created": "2026-11-21",
+  "created": "2026-11-22",
   "name": "bb-vadim-kit",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "license": "MIT",
   "checked_environment": [
     {
@@ -200,17 +200,17 @@
     {
       "path": "AGENT-TASK.md",
       "bytes": 23629,
-      "sha256": "e38049d3ad744628aceb17fb1edc2ebbbce94bf69f93f16bd7cce1564d7fa086"
+      "sha256": "48b0ca62c12379e4a5d00a6c9f0835c192db0323804e0980727e4c819fb59143"
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 32779,
-      "sha256": "6f96575c42a37a0e23606f11ae91a354e7d03131d440862419ee3b7498fd0494"
+      "bytes": 33285,
+      "sha256": "d049281a7f3394a2c488cdbb971368bd061a277ade2486cc0337fa92ad44427b"
     },
     {
       "path": "GUIDE.md",
-      "bytes": 140585,
-      "sha256": "0294fcf5e2a07f444df0447c8ab9714f476c3f194aec85b7429e8ec5bc2be6b9"
+      "bytes": 140977,
+      "sha256": "f766b5d39cc97c8c87bbea40faa3b1e548b72b09bbbd31db02e133b6b41aa1fb"
     },
     {
       "path": "LICENSE",
@@ -225,7 +225,7 @@
     {
       "path": "README.md",
       "bytes": 13668,
-      "sha256": "f0139f97fdeb307d40c67bf05b6d4d490910eaaf5d35d8511663570598fe9ed2"
+      "sha256": "7a2db45b74d5770e94dc227474bde0df036748cd197558f11c84ea47f5feaab7"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -234,18 +234,18 @@
     },
     {
       "path": "VALIDATION.md",
-      "bytes": 39904,
-      "sha256": "277750e2d1fb115753b8af6a0e8d12924948e5eb7fe41851169dd32d4f1b4400"
+      "bytes": 41293,
+      "sha256": "527800e6d65d4d0ee657169eea5e5f8408dc88e0964e786effa07befb36ad18b"
     },
     {
       "path": "VERSION",
       "bytes": 6,
-      "sha256": "97a5d6e540a6120d09c39ddb667e0e8e2bac7fcc2ffef813b82e08fd60365bce"
+      "sha256": "87b241b275c591694846560e9879f50c9da3150f854efdabd782c539772f3033"
     },
     {
       "path": "catalog.json",
       "bytes": 32575,
-      "sha256": "ffc4df56a170cfafaf9c456cb93fdc2c0718c3a8752e869fbfc2c09b0f9ba1e2"
+      "sha256": "148bd8572a72316d6dc7a074e4c76132ec291b3272958ceba6406e9cc06630f2"
     },
     {
       "path": "examples/README.md",
@@ -285,7 +285,7 @@
     {
       "path": "plugins/README.md",
       "bytes": 4899,
-      "sha256": "f2f6ae7c2c0a3d3507fb90f44a1af657bbc163b3feb0706278103fdf8bd372a8"
+      "sha256": "fc1237533f3fc1111e5cd1aa6327ad1f53a6f8b2855458fef712322c8320bc5a"
     },
     {
       "path": "plugins/artifacts/LICENSE",
@@ -1315,12 +1315,12 @@
     {
       "path": "plugins/folder-links/package-lock.json",
       "bytes": 3934,
-      "sha256": "f769c4672989af4488c65927839bf48603b1e19ae923d2d8b3f2a7d4531d20d7"
+      "sha256": "d2dd3e515469d17c750f8905a269d40635a943365d61a6d85f4c34ef716062e1"
     },
     {
       "path": "plugins/folder-links/package.json",
       "bytes": 923,
-      "sha256": "b6e469350fa1f6aebdfd3d356ee4fa7e9a522de8360dc181bdab4ee0bbb33ba5"
+      "sha256": "f45639d9372fa44f169728dde7f8437889f48c0dcbe70edb6760cd6168d736a9"
     },
     {
       "path": "plugins/folder-links/rpc.ts",
@@ -1650,12 +1650,12 @@
     {
       "path": "plugins/markdown-view/package-lock.json",
       "bytes": 7922,
-      "sha256": "212f9294f27623889a44b2270eceeb2feed2ab6124ce47b8c6158ad0150f61f3"
+      "sha256": "3084d0000cf2567843dbdf5ecb5c69f7bc18c19f13562320c31a14a5236f25eb"
     },
     {
       "path": "plugins/markdown-view/package.json",
       "bytes": 1184,
-      "sha256": "7215b7ce64ed2b3fad60da59e079ef2b31a5d4ff26e1fd299aead8b71c1ca106"
+      "sha256": "734d51cbacc50983863e3c1aa36e8df6f35480b9a1aa591598825ba89ba4d0c1"
     },
     {
       "path": "plugins/markdown-view/server.ts",
@@ -1855,12 +1855,12 @@
     {
       "path": "plugins/office-preview/package-lock.json",
       "bytes": 49549,
-      "sha256": "e2bba788a94cfc8d3e20217f3a25708231526d849b7ea1d131efe7d363660cd3"
+      "sha256": "3c20fffaea286944ee29fe884bf3b5c15ae4f74e2ae8d011d397b87fdbdbb2a8"
     },
     {
       "path": "plugins/office-preview/package.json",
       "bytes": 1038,
-      "sha256": "87a87f4842550adb1566b8735e9dcc6bdac6a1858c09c2de712f6772682259c5"
+      "sha256": "fec7767a25a8eed840ae146dc31f0ed271abd44d4ad5f5aa523d3c49b125faca"
     },
     {
       "path": "plugins/office-preview/server.ts",
@@ -2524,8 +2524,8 @@
     },
     {
       "path": "plugins/russifier/GLOSSARY.md",
-      "bytes": 18364,
-      "sha256": "df2c9940c1a35dc29c765480cda603f8944a5028ed7544c1451c5e229398c962"
+      "bytes": 20824,
+      "sha256": "f0a1c9eac7ff85749f663e5baa1eb25be7b9e1c3a21cfe5d6590b925b52a01a3"
     },
     {
       "path": "plugins/russifier/LICENSE",
@@ -2534,8 +2534,8 @@
     },
     {
       "path": "plugins/russifier/README.md",
-      "bytes": 2710,
-      "sha256": "8e453a1399629531d2d3b4a6d208244ed42559ec2a8c5b87c91099c9dc5a0ba1"
+      "bytes": 2909,
+      "sha256": "609e70ae9c415ffd15baf7a6a28f6f181de1610cbb3bef7e6d6442c4dec76587"
     },
     {
       "path": "plugins/russifier/app.tsx",
@@ -2548,29 +2548,34 @@
       "sha256": "027a2f1c102eefd65fceef57d84ab9519b3daa2c0ee5d2ade8c04f54044e57fb"
     },
     {
+      "path": "plugins/russifier/catalog/bb-0.50.1.json",
+      "bytes": 1255656,
+      "sha256": "57f9c9379f63daf7b061c598a2bd0ca5abe11b1d586e3a88efe664b9cc95c50e"
+    },
+    {
       "path": "plugins/russifier/catalog/scope.json",
-      "bytes": 1114,
-      "sha256": "a053b9c559ecf7a3208fe483ba20e66c438aafd7cb281a13e17ae331e51c9ad6"
+      "bytes": 1276,
+      "sha256": "769f22cb92d8f057d589529a1c4f91f5b51833f897323e4f2674a2d7faa9291f"
     },
     {
       "path": "plugins/russifier/dict/builtin.json",
-      "bytes": 97627,
-      "sha256": "577c5d8411b8519e95b087a43173d207449e13c54e2fef381283acf87a8e3f51"
+      "bytes": 121665,
+      "sha256": "92ee2793a06ca6c5aa0c7f06584e36f7e956ddfd7c17fd59357740d931a53fe8"
     },
     {
       "path": "plugins/russifier/dict/core.json",
-      "bytes": 245523,
-      "sha256": "3819ca8e1a882cdcb77453a2a3aa8648a63fb626954a221f4516ee18d79ad921"
+      "bytes": 291545,
+      "sha256": "04e59412dd8fde11a2d54c921cb71d58dc7987b03288d69a7957d2da17baf879"
     },
     {
       "path": "plugins/russifier/dict/extra.json",
-      "bytes": 3818,
-      "sha256": "cfc1a0148f87613aabf0c1752b5b68515e815952c6741eea21cd0d6333983579"
+      "bytes": 4447,
+      "sha256": "58bae6c360c36e536a29a3addb7fb594a21786944b16ccb3c23307ed94af7dff"
     },
     {
       "path": "plugins/russifier/dict/skip.json",
-      "bytes": 48968,
-      "sha256": "bea82dd7edb1bd6bc9bb615beb63069d15d2a0fe4b642130e303b12030449111"
+      "bytes": 57531,
+      "sha256": "1ddbcd72ccbfdab080fd08cce908b80c8430b6e2e56a98b72164e2387f6e178d"
     },
     {
       "path": "plugins/russifier/dict/vibecom.json",
@@ -2589,13 +2594,13 @@
     },
     {
       "path": "plugins/russifier/lib/dom.ts",
-      "bytes": 13241,
-      "sha256": "501b345c239e1924318594043b1c6a55e5064671f2661b60759acab09c503656"
+      "bytes": 14081,
+      "sha256": "1353180e83318ad365e4780d0db4a0cb29554bf75618d3acf5e6ecc4b5f8d47c"
     },
     {
       "path": "plugins/russifier/lib/engine.ts",
-      "bytes": 9377,
-      "sha256": "1e3651794d90472e83d44c7196a0960467871284a2508d110575c75042ebe46b"
+      "bytes": 11157,
+      "sha256": "cb53a3a13230daf79fe0198d0ccce35348f5f2d16657b2438b8ea458a2aec67e"
     },
     {
       "path": "plugins/russifier/lib/icu.ts",
@@ -2614,18 +2619,18 @@
     },
     {
       "path": "plugins/russifier/lib/protect.ts",
-      "bytes": 3955,
-      "sha256": "770828298e4101f191f244eed91e7a34f789192b4079b444a6cd13d84c32b504"
+      "bytes": 6565,
+      "sha256": "cf82e7f1c404c27de9b5a2087345c8af16a8d013368de700c911031ff35596dc"
     },
     {
       "path": "plugins/russifier/package-lock.json",
       "bytes": 25606,
-      "sha256": "23108e2cf17330672235a13033ec92ea45e28286877d79e37d348a6f190a8cae"
+      "sha256": "54b0dec60d4f8bf91aeb179173a236b5717319a90d53c6fc0a2e54fe57cc8ec0"
     },
     {
       "path": "plugins/russifier/package.json",
       "bytes": 1305,
-      "sha256": "a8c68ab7923be31fda38937a696a9b7b1fd189a9187ca0323ba1dd24c7978183"
+      "sha256": "a195676006065b1f410e7f405ad5d588f8650795075a2b4d6f495f1f2cbab281"
     },
     {
       "path": "plugins/russifier/rpc.ts",
@@ -2676,6 +2681,11 @@
       "path": "plugins/russifier/tests/engine.test.ts",
       "bytes": 5573,
       "sha256": "489fc9700128456d169051d19a928163fb81db4400e60601db3ac766b62ad939"
+    },
+    {
+      "path": "plugins/russifier/tests/user-data.test.ts",
+      "bytes": 9090,
+      "sha256": "5b40a4efcaaa9c7a96fc74be3b35eb6d7a70c85b025cbfafb24364ef8ea30707"
     },
     {
       "path": "plugins/russifier/tsconfig.json",

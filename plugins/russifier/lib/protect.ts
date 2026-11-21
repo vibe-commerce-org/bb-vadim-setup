@@ -16,6 +16,30 @@
 //   English because «Reasoning» is not translated);
 // - the level next to the model in the composer button: its wrapper's
 //   title reads «Claude Code: Opus 5.5 · High reasoning».
+// Git branch names stay as they are (author, 2026-11-22): «main» is not
+// «основная область», «local» is not «локально». Places in bb 0.50.1 DOM:
+// - the branch chip under the composer of a thread;
+// - the value after «Current:», «Checkout:», «Branch from:»… in the branch
+//   and worktree pickers of a new thread (the prefix itself is translated);
+// - the picker rows: data-value is the branch name, «branch:<name>» or
+//   «worktree:<path>»; «intent:…» and «use-query» rows are actions, but the
+//   «Current: local» action names the branch after its prefix span;
+// - the environment group header in the sidebar (thread-list, threads
+//   grouped by environment): environment name, else branch, else folder —
+//   all user data, and so is the rename field that replaces it. Section
+//   headers look alike but sit in a «gap-1» row and may be bb's own
+//   «Pinned» / «Threads», so they stay translated.
+// The git plugin (bb 0.50.1, «bb--git») shows the same names in the thread
+// info rows «Branch» / «Checkout» (span.block.truncate; its «Git status» line
+// is .text-foreground and stays translated) and in the «Merge base» picker
+// button; file paths there come wrapped in direction marks and diffs live in
+// the shadow DOM of <diffs-container>, which the walker never enters.
+// The composer's suggestion menu («/» and «@», bb 0.50.1 «bb--composer»):
+// each row (button.scroll-mt-7) is a skill or command name with its own
+// description, a file, a thread or a plugin — «docs» is a skill, not
+// «документы». Group headers above the rows stay translated.
+// A queued message shows the user's own text in a div titled with it; the
+// «retry» row of the same shape has no title and stays translated.
 export const PROTECTED_SELECTOR = [
   "pre",
   "code",
@@ -41,6 +65,15 @@ export const PROTECTED_SELECTOR = [
   '[role="treeitem"]',
   '[role="radiogroup"][aria-label="Reasoning"]',
   '[title*=" reasoning"] > [data-promptbox-hide-compact]',
+  "[data-promptbox-hide-branch-compact] > span",
+  '[role="combobox"] [data-promptbox-hide-compact] + span',
+  '[data-branch-picker-row]:not([data-value^="intent:"]):not([data-value="use-query"])',
+  "[data-branch-picker-row] span.shrink-0.text-muted-foreground + span",
+  '[data-bb-plugin="thread-list"] span.z-10.gap-1\\.5 > :first-child',
+  '[data-bb-plugin="bb--git"] span.block.truncate:not(.text-foreground)',
+  '[data-bb-plugin="bb--git"] [role="combobox"] span.overflow-hidden > span',
+  "[data-promptbox-typeahead-menu] button.scroll-mt-7",
+  "[data-queued-message-row] div.flex-1.overflow-hidden.text-foreground[title]",
   "[data-russifier-skip]",
 ].join(",");
 
@@ -102,6 +135,12 @@ export const TRANSLATED_PLUGINS: ReadonlySet<string> = new Set([
   "theme-preview",
   "thread-list",
   "workflows",
+  // moved out of bb's core into builtin plugins in 0.50 (ids as on the page)
+  "bb--composer",
+  "bb--git",
+  "bb--github-pr-status",
+  "bb--github-star",
+  "navigation",
   // ours
   "files-editor",
   "floating-terminal",

@@ -9,6 +9,7 @@
 //   5. a counted noun bb pluralised itself: «4 lists» → «4 списка»; a bare
 //      duration «2m 38s»; a known verb before a count: «created 17 files»;
 //   6. a comma list bb glued from pieces: «Edited 3 files, ran 1 command».
+// A token amount goes before all of them: «1M tokens» → «1 млн токенов».
 // An empty dictionary value keeps the string English: no later step may
 // translate it piecemeal («Approve for me» is not «{0} for {1}»).
 // Pure module: no DOM, so it is unit-tested directly.
@@ -23,6 +24,8 @@ interface Pattern {
   message: Message;
   startsWithArg: boolean;
   literal: number;
+  /** The template counts tokens: compact numbers in it are token amounts. */
+  tokens: boolean;
 }
 
 const LATIN = /[A-Za-z]/;
@@ -32,6 +35,9 @@ const SHORTCUT_SUFFIX =
 const DURATION_SUFFIX = /^(.*?\S)(\s*)\((\d+h ?)?(\d+m ?)?(\d+(?:\.\d+)?s)?\)$/;
 const DURATION_ONLY = /^(\d+h ?)?(\d+m ?)?(\d+(?:\.\d+)?s)?$/;
 const VERB_COUNT = /^([A-Za-z]+(?: [A-Za-z]+)?) (\d[\s\S]*)$/;
+const COMPACT_NUMBER = /^(\s*)(\d+(?:\.\d+)?) ?([kmb])(\s*)$/i;
+const TOKEN_AMOUNT = /^(\d+(?:\.\d+)?) ?([kmb]) (?:tokens?|tok)$/i;
+const COMPACT_UNITS: Readonly<Record<string, string>> = { k: "тыс.", m: "млн", b: "млрд" };
 const CACHE_LIMIT = 20_000;
 const MAX_LENGTH = 400;
 
@@ -67,6 +73,17 @@ export function formatDuration(text: string): string | null {
   if (m[2]) parts.push(`${parseInt(m[2], 10)} мин`);
   if (m[3]) parts.push(`${m[3].slice(0, -1).replace(".", ",")} с`);
   return parts.join(" ");
+}
+
+/**
+ * A compact token count: «1m» → «1 млн», «350k» → «350 тыс.», «1.2M» →
+ * «1,2 млн»; null for anything else. bb writes millions with a lower-case m
+ * (Intl compact notation, then toLowerCase), so on its own «1m» reads as a
+ * minute: the page decides by the word «tokens» next to it (dom.ts).
+ */
+export function formatTokenAmount(text: string): string | null {
+  const m = COMPACT_NUMBER.exec(text);
+  return m ? `${m[1]}${m[2].replace(".", ",")} ${COMPACT_UNITS[m[3].toLowerCase()]}${m[4]}` : null;
 }
 
 export class Engine {
@@ -107,6 +124,9 @@ export class Engine {
 
   private addPattern(key: string, ru: string): boolean {
     const pieces = key.split(/(\{\d+\})/);
+    // A placeholder the Russian declines must hold a number: «{0} open tasks»
+    // must not swallow «Tasks, 16» and decline it as if it were one.
+    const counted = new Set([...ru.matchAll(/\{(\d+),\s*plural/g)].map((m) => m[1]));
     let source = "^";
     let literal = 0;
     for (let i = 0; i < pieces.length; i++) {
@@ -119,7 +139,7 @@ export class Engine {
       }
       // «command{1}»: a placeholder glued to a word is an English plural ending.
       const glued = i > 0 && /[A-Za-z]$/.test(pieces[i - 1]);
-      source += glued ? "([a-z]{0,2})" : "(.+?)";
+      source += glued ? "([a-z]{0,2})" : counted.has(arg[1]) ? "(\\d[\\d,]*(?:\\.\\d+)?)" : "(.+?)";
     }
     source += "$";
     if (literal < 3) return false; // «{0} {1}» would match anything
@@ -130,7 +150,8 @@ export class Engine {
       return false;
     }
     const startsWithArg = /^\{\d+\}/.test(key);
-    const pattern: Pattern = { key, re, message: parseMessage(ru), startsWithArg, literal };
+    const tokens = /\btok(?:en)?s?\b/i.test(key);
+    const pattern: Pattern = { key, re, message: parseMessage(ru), startsWithArg, literal, tokens };
     const bucket = startsWithArg ? "*" : firstWord(key);
     const list = this.buckets.get(bucket);
     if (list) list.push(pattern);
@@ -152,6 +173,7 @@ export class Engine {
     const cached = this.cache.get(key);
     if (cached !== undefined) return cached;
     const result =
+      this.lookupTokenAmount(key) ??
       this.exact.get(key) ??
       this.lookupFolded(key) ??
       this.lookupShortcut(key, depth) ??
@@ -166,6 +188,12 @@ export class Engine {
     return result;
   }
 
+  /** «1M tokens» → «1 млн токенов». */
+  private lookupTokenAmount(key: string): string | null {
+    const m = TOKEN_AMOUNT.exec(key);
+    return m ? `${formatTokenAmount(m[1] + m[2])} токенов` : null;
+  }
+
   private lookupFolded(key: string): string | null {
     const hit = this.folded.get(key.toLowerCase());
     return hit ? adaptCase(key, hit) : null;
@@ -178,7 +206,9 @@ export class Engine {
     for (const pattern of candidates) {
       const m = pattern.re.exec(key);
       if (!m) continue;
-      const out = renderMessage(pattern.message, m.slice(1), (value) => this.translateCapture(value, depth));
+      // «Compact {0} tokens»: bb fills in «210k» — «210 тыс.», not «210k».
+      const captures = pattern.tokens ? m.slice(1).map((value) => formatTokenAmount(value) ?? value) : m.slice(1);
+      const out = renderMessage(pattern.message, captures, (value) => this.translateCapture(value, depth));
       return pattern.startsWithArg ? out : adaptCase(key, out);
     }
     return null;
