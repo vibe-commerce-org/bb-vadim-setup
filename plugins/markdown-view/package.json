@@ -1,11 +1,12 @@
 {
   "name": "bb-plugin-markdown-view",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test \"tests/*.test.ts\""
+    "test": "node --test \"tests/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "engines": {
     "bb": ">=0.43",
@@ -13,7 +14,7 @@
   },
   "bb": {
     "name": "Markdown_vibecom",
-    "description": "Opens Markdown files read-only in the look of Typora: links, tables, heading marks, an outline, relative images, refreshed live when the file changes on disk. The Edit button turns on editing in place with Vditor, the engine of the VS Code Office Viewer extension, and saves only the lines you changed.",
+    "description": "Opens Markdown files read-only in the look of Typora: links, tables, heading marks, an outline, relative images, refreshed live when the file changes on disk. The Edit button turns on editing in place with Vditor, the engine of the VS Code Office Viewer extension, and saves only the lines you changed. Also HTML_vibecom: .html and .htm as a page whose links BB opens — a .md in its own tab, readable — instead of the page following them.",
     "branding": {
       "icon": "FileText"
     },

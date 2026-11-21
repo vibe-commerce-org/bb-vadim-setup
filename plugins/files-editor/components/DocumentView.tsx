@@ -71,7 +71,7 @@ export function DocumentView({
 export function MarkdownDocument({ target, Original }: { target: ViewerTarget; Original: ComponentType }) {
   return (
     <div key={target.path} className="flex min-h-0 flex-1 flex-col overflow-hidden">
-      <MarkdownOpener path={target.path} source={target.source} Original={Original} />
+      <MarkdownOpener path={target.path} source={target.source} Original={Original} copyPath />
     </div>
   );
 }

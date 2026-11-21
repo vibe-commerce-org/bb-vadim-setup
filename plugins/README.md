@@ -1,18 +1,18 @@
 # Плагины BB
 
-Last Updated: 2026-10-30
+Last Updated: 2026-11-21
 
 Каждый подкаталог — отдельный плагин. Установка описана в GUIDE.md, раздел 12:
-из Git — `bb plugin install "git:<адрес репозитория>@semver:~0.5.0"
+из Git — `bb plugin install "git:<адрес репозитория>@semver:~0.6.0"
 --subdirectory plugins/<папка>`; из папки — `npm ci` (у files-editor и
 floating-terminal — `npm ci --ignore-scripts`) → `bb plugin build .` →
 `bb plugin install <путь папки>`.
 
 | Папка и id | Имя в BB | Версия | Что делает |
 |---|---|---|---|
-| markdown-view/ | Markdown_vibecom | 0.5.3 | просмотр Markdown в виде Typora и правка в Vditor |
-| office-preview/ | Office_vibecom | 0.5.3 | просмотр таблиц, Word и PowerPoint |
-| folder-links/ | Folder links_vibecom | 0.5.3 | ссылки на папки открывают дерево справа; домашняя папка, профиль Windows в WSL2, папки проектов bb |
+| markdown-view/ | Markdown_vibecom | 0.6.0 | просмотр Markdown в виде Typora и правка в Vditor |
+| office-preview/ | Office_vibecom | 0.6.0 | просмотр таблиц, Word и PowerPoint |
+| folder-links/ | Folder links_vibecom | 0.6.0 | ссылки на папки открывают дерево справа; домашняя папка, профиль Windows в WSL2, папки проектов bb |
 | files-editor/ | Explorer_vibecom | 0.1.6 | проводник и редактор рабочей копии, документы внутри панели; переделка плагина abdoutelb |
 | floating-terminal/ | Terminal_vibecom | 0.6.2 | терминал вкладкой правой панели и плавающим окном; переделка плагина vburojevic |
 | russifier/ | Русификатор_vibecom | 0.2.0 | интерфейс bb на русском; effort, режимы доступа и названия — по-английски |
@@ -20,11 +20,13 @@ floating-terminal — `npm ci --ignore-scripts`) → `bb plugin build .` →
 | pult/ | Пульт_vibecom | 0.4.6 | лента всех тредов, какие треды ждут вас, приоритеты задач Сейчас / Дальше / Потом, карта проектов |
 | artifacts/ | Важные артефакты_vibecom | 0.1.0, бета | бриф, план и важные файлы треда во вкладке справа |
 | composer-labels/ | Модель и эффорт_vibecom | 0.1.0 | эффорт виден в чипе набора на узком поле ввода и на телефоне |
+| parakeet-voice/ | Parakeet_vibecom | 0.2.0, bb 0.50+ | диктовка распознаётся на вашем компьютере моделью Parakeet Ultra, без облака |
+| limit-guard/ | Сторож лимитов_vibecom | 0.3.0 | недельные лимиты Claude Code и Codex и бюджеты Gemini, Яндекса, Cloud.ru под присмотром |
 
 Суффикс `_vibecom` есть только в видимом имени плагина: id, папки и имена
 пакетов прежние, поэтому команды `bb plugin update/reload/remove` используют
 id из первой колонки. Три просмотрщика нумеруются версией комплекта, у
-Русификатора, тега репозитория, Пульта, Артефактов и «Модели и эффорта» — свои версии. У двух
+Русификатора, тега репозитория, Пульта, Артефактов, «Модели и эффорта», Parakeet и Сторожа лимитов — свои версии. У двух
 переделок версии продолжают версии их авторов; откуда они взяты и что изменено —
 в их README, лицензии — в LICENSE и THIRD_PARTY_NOTICES.md.
 

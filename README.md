@@ -1,20 +1,21 @@
 # BB как у Вадима — комплект настройки
 
 Last Updated: 2026-10-30
-Версия: 0.5.3 · Лицензия: [MIT](LICENSE) для собственных материалов ·
+Версия: 0.6.0 · Лицензия: [MIT](LICENSE) для собственных материалов ·
 Сторонние части: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
 
 Инструкция и комплект, чтобы установить [bb](https://github.com/get-bb/bb) и настроить
 его так же, как у меня: подключение моделей (в том числе российских), русский интерфейс,
 тема, просмотр и правка Markdown, офисные файлы рядом с чатом, проводник проекта, терминал
 в панели треда, ссылки на папки, теги репозиториев у тредов, эффорт модели в узком поле
-ввода, Пульт «чей ход» с лентой всех тредов, важные артефакты треда (бета), шаблон правил для агентов. Подходит для кода, документов,
+ввода, Пульт «чей ход» с лентой всех тредов, важные артефакты треда (бета), диктовка без облака (bb 0.50+),
+сторож недельных лимитов и бюджетов моделей, шаблон правил для агентов. Подходит для кода, документов,
 исследований и работы селлера. Доступ к другим репозиториям не нужен.
 
 Это единственный источник комплекта: из него собираются архив `08-BB-VADIM-KIT.zip`,
 инструкция `08-BB-VADIM-SETUP.md` и файл для агента `08-BB-AGENT-SETUP.md`.
 
-**Проверено на macOS, bb 0.46.1:** сборка десяти плагинов с нуля и их тесты, установка
+**Проверено на macOS, bb 0.50.1:** сборка двенадцати плагинов с нуля и их тесты, установка
 так, как это делает bb при установке из Git, тот же код плагинов работает у автора. На bb 0.48
 проверена только сборка и тесты против его SDK, живой bb 0.48 не запускался.
 Установка из публичного Git проверяется после публикации; Windows проверял автор
@@ -28,7 +29,7 @@ Last Updated: 2026-10-30
 | [PHONE.md](PHONE.md) | Как пользоваться bb с телефона: подключение, голос, документы, терминал |
 | [AGENT-TASK.md](AGENT-TASK.md) | Готовое задание кодинговому агенту: настроить bb по комплекту |
 | [theme/](theme/README.md) | Тема `atom-one_vibecom` (One Dark / One Light) |
-| [plugins/](plugins/README.md) | Исходники плагинов Markdown_vibecom, Office_vibecom, Folder links_vibecom, Explorer_vibecom, Terminal_vibecom, Русификатор_vibecom, Repo tags_vibecom, Модель и эффорт_vibecom, Пульт_vibecom, Важные артефакты_vibecom (бета) |
+| [plugins/](plugins/README.md) | Исходники плагинов Markdown_vibecom, Office_vibecom, Folder links_vibecom, Explorer_vibecom, Terminal_vibecom, Русификатор_vibecom, Repo tags_vibecom, Модель и эффорт_vibecom, Пульт_vibecom, Важные артефакты_vibecom (бета), Parakeet_vibecom (голос без облака), Сторож лимитов_vibecom |
 | [models/pi/](models/pi/README.md) | Шаблоны агента Pi для моделей Яндекса, Cloud.ru и LM Studio, без ключей |
 | [instructions/](instructions/README.md) | Универсальный шаблон `AGENTS.md` для агентов в bb |
 | [examples/](examples/README.md) | Искусственный `demo.md` для проверки |
@@ -52,16 +53,18 @@ Last Updated: 2026-10-30
 и потом обновляет командой; ставьте только нужные:
 
 ```sh
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/markdown-view
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/office-preview
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/folder-links
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/files-editor
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/floating-terminal
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/russifier
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/repo-tag
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/pult
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/artifacts
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/composer-labels
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/markdown-view
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/office-preview
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/folder-links
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/files-editor
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/floating-terminal
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/russifier
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/repo-tag
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/pult
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/artifacts
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/composer-labels
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/limit-guard
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/parakeet-voice   # движок и модель — bash setup.sh из клона, нужен bb 0.50+
 bb plugin list
 ```
 
@@ -77,18 +80,18 @@ Explorer_vibecom показывает `.md` через Markdown_vibecom — ст
 
 | Что | Обновить | Откатить |
 |---|---|---|
-| Плагин из Git с диапазоном `~0.5.0` | `bb plugin outdated`, затем `bb plugin update ИМЯ` | `bb plugin remove ИМЯ` и установка нужного тега, например `@v0.4.1` |
-| Плагин из Git с тегом `@v0.5.0` | закреплён: `remove` и установка нового тега | то же |
+| Плагин из Git с диапазоном `~0.5.0` | `bb plugin outdated`, затем `bb plugin update ИМЯ` | `bb plugin remove ИМЯ` и установка нужного тега, например `@v0.5.3` |
+| Плагин из Git с тегом `@v0.6.0` | закреплён: `remove` и установка нового тега | то же |
 | Плагин из папки комплекта | новые файлы в ту же папку, `npm ci`, `bb plugin build .`, `bb plugin reload ИМЯ` | предыдущая версия папки и те же команды |
 | Тема | скопировать новую папку `atom-one_vibecom` | резервная копия темы или `bb theme reset` |
 | Правила | сравнить новый шаблон со своим `AGENTS.md` и перенести нужное | ваш файл остаётся вашим |
 
-Выпуски 0.5.x будут совместимы между собой; опубликованные теги не передвигаются.
-Диапазоны `~0.2.0`, `~0.3.0` и `~0.4.0` выпуски 0.5.x не принимают: переустановите плагин
-(`bb plugin remove ИМЯ`, затем установка с `@semver:~0.5.0`). Тема с 0.2.0 называется
+Выпуски 0.6.x будут совместимы между собой; опубликованные теги не передвигаются.
+Диапазоны `~0.2.0`, `~0.3.0`, `~0.4.0` и `~0.5.0` выпуски 0.6.x не принимают: переустановите плагин
+(`bb plugin remove ИМЯ`, затем установка с `@semver:~0.6.0`). Тема с 0.2.0 называется
 `atom-one_vibecom`. ИМЯ — id из `bb plugin list`: `markdown-view`, `office-preview`,
 `folder-links`, `files-editor`, `floating-terminal`, `russifier`, `repo-tag`, `composer-labels`, `pult`,
-`artifacts`.
+`artifacts`, `limit-guard`, `parakeet-voice`.
 `bb plugin remove` удаляет настройки, секреты, расписания и базу плагина (настройки есть у Explorer_vibecom,
 Terminal_vibecom, Русификатора и тега репозитория; база — у Пульта и Артефактов);
 папка комплекта остаётся на диске.

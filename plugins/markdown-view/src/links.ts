@@ -54,16 +54,21 @@ export function resolveLink(href: string, file: FileLocation): LinkAction | null
   const absolute = normalize(path.startsWith("/") ? path : `${dirname(file.path)}/${path}`);
   if (absolute === null) return null;
 
+  return { kind: "file", target: fileTarget(absolute, file) };
+}
+
+/**
+ * How BB is asked to open `absolute`: as a workspace file when it sits in the
+ * checkout `file` belongs to, otherwise as a host file.
+ */
+export function fileTarget(absolute: string, file: FileLocation): ExperimentalLiveFileTarget {
   if (file.checkout) {
     const root = trimSlash(file.checkout.rootPath);
     if (absolute.startsWith(`${root}/`)) {
-      return {
-        kind: "file",
-        target: { kind: "workspace", environmentId: file.checkout.environmentId, path: absolute.slice(root.length + 1) },
-      };
+      return { kind: "workspace", environmentId: file.checkout.environmentId, path: absolute.slice(root.length + 1) };
     }
   }
-  return { kind: "file", target: { kind: "host", hostId: file.hostId, path: absolute } };
+  return { kind: "host", hostId: file.hostId, path: absolute };
 }
 
 /**
@@ -72,9 +77,15 @@ export function resolveLink(href: string, file: FileLocation): LinkAction | null
  */
 export const previewRoot = (file: FileLocation) => trimSlash(file.checkout?.rootPath ?? dirname(file.path));
 
-/** `baseUrl` of a preview of `previewRoot(file)` → the prefix a relative image path is appended to. */
-export function linkBase(file: FileLocation, baseUrl: string): string {
-  const root = previewRoot(file);
+/**
+ * The folder BB serves to an HTML page: the checkout, else the thread's
+ * storage (so `../assets/x.png` works there, as in BB's own preview), else the
+ * page's own folder.
+ */
+export const pageRoot = (file: FileLocation) => trimSlash(file.checkout?.rootPath ?? file.root ?? dirname(file.path));
+
+/** `baseUrl` of a preview of `root` → the prefix a relative path from the file's folder is appended to. */
+export function linkBase(file: FileLocation, baseUrl: string, root: string = previewRoot(file)): string {
   const folder = dirname(file.path);
   const relative = folder.startsWith(`${root}/`) ? folder.slice(root.length + 1) : "";
   const segments = relative === "" ? [] : relative.split("/").map(encodeURIComponent);

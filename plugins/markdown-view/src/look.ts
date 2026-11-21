@@ -22,6 +22,8 @@ export const LOOK_CSS = `
 .mdv-primary:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .mdv-primary:disabled { opacity: 0.5; cursor: default; }
 .mdv-primary svg { width: 14px; height: 14px; flex: none; }
+/* In a narrow panel the word is gone and the button is a square the size of its neighbours. */
+.mdv-primary--icon { width: 32px; height: 32px; padding: 0; justify-content: center; }
 .dark .mdv-primary { color: var(--primary-foreground); background-color: var(--primary); }
 .dark .mdv-primary:hover { background-color: color-mix(in srgb, var(--primary) 85%, white); }
 .dark .mdv-primary:active { background-color: color-mix(in srgb, var(--primary) 85%, black); }

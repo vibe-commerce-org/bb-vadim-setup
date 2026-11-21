@@ -35,6 +35,12 @@ export interface FileLocation {
   path: string;
   /** For project files: the checkout it belongs to, which relative links resolve against. */
   checkout: { environmentId: string; rootPath: string } | null;
+  /**
+   * The folder the repository tree starts from: the checkout, or the thread's
+   * storage. Null for a bare host file, whose repository is looked up when the
+   * tree is opened.
+   */
+  root: string | null;
 }
 
 const joinPath = (root: string, relative: string) => `${root.replace(/\/+$/, "")}/${relative.replace(/^\/+/, "")}`;
@@ -49,12 +55,17 @@ export async function locateFile(
   if (source.kind === "thread-storage") {
     if (source.threadId === null) return null;
     const storage = await sdk.threads.storageLocation({ threadId: source.threadId, signal });
-    return { hostId: storage.hostId, path: joinPath(storage.storageRootPath, path), checkout: null };
+    return {
+      hostId: storage.hostId,
+      path: joinPath(storage.storageRootPath, path),
+      checkout: null,
+      root: storage.storageRootPath,
+    };
   }
 
   // Opened outside any thread (Files page, Pult), BB names the host and nothing else.
   if (source.kind === "host" && source.experimental_hostId) {
-    return { hostId: source.experimental_hostId, path, checkout: null };
+    return { hostId: source.experimental_hostId, path, checkout: null, root: null };
   }
 
   let environmentId = source.environmentId;
@@ -65,7 +76,7 @@ export async function locateFile(
   if (source.kind === "host") {
     if (environmentId === null) return null;
     const environment = await sdk.environments.get({ environmentId, signal });
-    return { hostId: environment.hostId, path, checkout: null };
+    return { hostId: environment.hostId, path, checkout: null, root: null };
   }
 
   const environment =
@@ -85,6 +96,7 @@ export async function locateFile(
     hostId: source.experimental_hostId ?? environment.hostId,
     path: joinPath(environment.path, path),
     checkout: { environmentId: environment.id, rootPath: environment.path },
+    root: environment.path,
   };
 }
 

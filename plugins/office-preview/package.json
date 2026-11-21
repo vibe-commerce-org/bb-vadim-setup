@@ -1,6 +1,6 @@
 {
   "name": "bb-plugin-office-preview",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "license": "MIT",
   "private": true,
   "type": "module",

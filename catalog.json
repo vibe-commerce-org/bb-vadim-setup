@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "version": "0.5.3",
-  "tag": "v0.5.3",
+  "version": "0.6.0",
+  "tag": "v0.6.0",
   "repository": "https://github.com/vibe-commerce-org/bb-vadim-setup",
   "archive": {
     "name": "08-BB-VADIM-KIT.zip",
-    "url": "https://github.com/vibe-commerce-org/bb-vadim-setup/releases/download/v0.5.3/08-BB-VADIM-KIT.zip",
+    "url": "https://github.com/vibe-commerce-org/bb-vadim-setup/releases/download/v0.6.0/08-BB-VADIM-KIT.zip",
     "folder": "bb-vadim-kit",
     "mirrors": []
   },
   "checked": "bb 0.46.1 на macOS, сверено 30.10; Windows — bb 0.45.0; bb 0.48 — сборка и тесты против его SDK, вживую не запускался",
-  "guide": "https://github.com/vibe-commerce-org/bb-vadim-setup/blob/v0.5.3/GUIDE.md",
+  "guide": "https://github.com/vibe-commerce-org/bb-vadim-setup/blob/v0.6.0/GUIDE.md",
   "sections": [
     {
       "id": "theme",
@@ -62,7 +62,7 @@
       "id": "markdown-view",
       "section": "plugins",
       "name": "Markdown_vibecom",
-      "version": "0.5.3",
+      "version": "0.6.0",
       "gives": "Планы и отчёты агентов — как в Typora: оглавление, таблицы, ссылки между файлами и репозиториями. Правка без разметки, сохранение само, правки агента не затираются.",
       "for": "Всем, кто читает и правит документы агентов",
       "os": {
@@ -82,7 +82,7 @@
       "id": "office-preview",
       "section": "plugins",
       "name": "Office_vibecom",
-      "version": "0.5.3",
+      "version": "0.6.0",
       "gives": "Excel, CSV, Word и PowerPoint с заметками докладчика — рядом с чатом, без Office. Только просмотр: формулы показывают сохранённый результат.",
       "for": "Селлерам, аналитикам и всем, кто работает с таблицами и презентациями",
       "os": {
@@ -144,7 +144,7 @@
       "id": "folder-links",
       "section": "plugins",
       "name": "Folder links_vibecom",
-      "version": "0.5.3",
+      "version": "0.6.0",
       "gives": "Клик по ссылке на папку в ответе агента открывает её дерево справа, а не браузер.",
       "for": "Тем, кому агенты присылают ссылки на папки",
       "os": {
@@ -305,6 +305,49 @@
           "demo": true
         }
       ]
+    },
+    {
+      "id": "limit-guard",
+      "section": "plugins",
+      "name": "Сторож лимитов_vibecom",
+      "version": "0.3.0",
+      "gives": "Следит за недельными лимитами Claude Code и Codex и за бюджетами платных моделей Pi (Gemini на Vertex, Яндекс, Cloud.ru). С 85 % недели переводит треды Claude на Sonnet и снижает effort, на 93 % и на 100 % бюджета держит новые ходы до вашего согласия; карточка со шкалой — в подвале боковой панели. Сторож Codex по умолчанию выключен: он сам меняет effort тредов, включайте осознанно. Бюджеты Яндекса и Cloud.ru считают расход по ценам из настроек Pi — в шаблонах комплекта цен нет, блок покажет «расход не прочитан», пока вы их не впишете.",
+      "for": "Тем, у кого лимит подписки кончается посреди недели или кто платит за модели Pi по токенам",
+      "os": {
+        "macos": "yes",
+        "windows": "candidate",
+        "linux": "candidate"
+      },
+      "os_notes": {
+        "windows": "на Windows не проверялся",
+        "linux": "на Linux не проверялся"
+      },
+      "default": false,
+      "docs": "#сторож-лимитов_vibecom--недельные-лимиты-и-бюджеты",
+      "tier": 3,
+      "short": "Лимиты подписок и бюджеты моделей под присмотром"
+    },
+    {
+      "id": "parakeet-voice",
+      "section": "plugins",
+      "name": "Parakeet_vibecom",
+      "version": "0.2.0",
+      "gives": "Диктовка в поле ввода распознаётся локальной моделью Parakeet Ultra на вашем компьютере: звук не уходит в облако, интернет не нужен, 2 минуты речи — около 2 секунд на Mac с Apple silicon. Нужен bb 0.50 или новее; движок и модель (740 МБ) ставит `setup.sh` — запускать в своём Terminal. Parakeet не принимает словарь bb (имена, названия), поэтому термины может писать хуже; вернуть облако — одна команда.",
+      "for": "Тем, кто диктует и не хочет отправлять звук в облако",
+      "os": {
+        "macos": "yes",
+        "windows": "no",
+        "linux": "candidate"
+      },
+      "os_notes": {
+        "macos": "готовый движок для Apple silicon; на Intel Mac — сборка из исходников",
+        "windows": "готового движка нет, setup.sh не работает",
+        "linux": "setup.sh собирает движок из исходников; в комплекте не проверялось"
+      },
+      "default": false,
+      "docs": "#parakeet_vibecom--голос-локально-без-облака",
+      "tier": 3,
+      "short": "Диктовка на вашем компьютере, без облака"
     },
     {
       "id": "rules",
@@ -491,7 +534,7 @@
       "title": "Всё как у Вадима",
       "tier": 3,
       "default": true,
-      "intro": "Всё, что стоит у Вадима: ещё Пульт, «Важные артефакты» (бета), ссылки на папки, его клавиши и компьютер без сна."
+      "intro": "Всё, что стоит у Вадима: ещё Пульт, «Важные артефакты» (бета), ссылки на папки, сторож лимитов, голос без облака (bb 0.50+), его клавиши и компьютер без сна."
     }
   ],
   "prompts": {

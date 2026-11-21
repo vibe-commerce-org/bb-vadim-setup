@@ -1,0 +1,31 @@
+{
+  "name": "bb-plugin-parakeet-voice",
+  "version": "0.2.0",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "bb": ">=0.50",
+    "bbPluginSdk": ">=0.6.157"
+  },
+  "bb": {
+    "name": "Parakeet_vibecom",
+    "description": "Local voice input: bb's voice transcription runs on the bb machine with the Parakeet Ultra model (transcribe.cpp). Audio never leaves the machine.",
+    "branding": {
+      "icon": "Mic"
+    },
+    "server": "./server.ts",
+    "host": "./host.ts"
+  },
+  "dependencies": {
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@get-bb/plugin-sdk": "0.6.157",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  },
+  "scripts": {
+    "test": "node --test \"tests/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
+  }
+}

@@ -1,8 +1,8 @@
 # Как установить и настроить bb как у Вадима
 
-Last Updated: 2026-11-07 · Комплект **0.5.3** (история версий — `CHANGELOG.md` в комплекте)
-Проверенная среда: **bb 0.46.1, macOS на Apple Silicon** (30.10 все десять плагинов комплекта собраны с нуля
-и прошли тесты; до 11.10 комплект проверялся на 0.45.0). **На bb 0.48** (вышел 28.10) комплект проверен только
+Last Updated: 2026-11-21 · Комплект **0.6.0** (история версий — `CHANGELOG.md` в комплекте)
+Проверенная среда: **bb 0.50.1, macOS на Apple Silicon** (21.11 все двенадцать плагинов комплекта собраны с нуля
+и прошли тесты; до 07.11 комплект проверялся на 0.46.1, до 11.10 — на 0.45.0). **На bb 0.48** (вышел 28.10) комплект проверен только
 сборкой и тестами против его SDK, живой bb 0.48 не запускался — [раздел 21](#21-как-проверена-инструкция). **Windows проверена Вадимом 08.10.2026** на 0.45.0;
 маршрут установки (нативная Windows или WSL) не уточнён. Linux-сервер описан по официальной
 документации; на настоящем сервере эти шаги не проверялись.
@@ -14,7 +14,7 @@ bb — приложение, в котором вы даёте задания И
 Инструкция состоит из двух файлов. Пересылайте **оба**:
 
 - **этот файл** — `08-BB-VADIM-SETUP.md`;
-- **комплект** `08-BB-VADIM-KIT.zip` — тема, десять плагинов, шаблоны
+- **комплект** `08-BB-VADIM-KIT.zip` — тема, двенадцать плагинов, шаблоны
   для подключения российских моделей и правила для агентов. Внутри нет ключей, паролей и личных данных.
 
 Внутри ZIP лежит `GUIDE.md` — этот же текст. Команды удобнее копировать оттуда, а не из PDF.
@@ -64,6 +64,8 @@ bb — приложение, в котором вы даёте задания И
 | Тег репозитория у каждого треда в боковой панели | Repo tags_vibecom | ZIP |
 | Какие треды ждут вас, приоритеты задач Сейчас / Дальше / Потом | Пульт_vibecom | ZIP |
 | Бриф, план и важные файлы треда во вкладке справа | Важные артефакты_vibecom (бета) | ZIP |
+| Диктовка на своём компьютере, без облака | Parakeet_vibecom (bb 0.50+, Mac с Apple silicon) | ZIP |
+| Недельные лимиты Claude Code и Codex и бюджеты платных моделей Pi под присмотром | Сторож лимитов_vibecom | ZIP |
 | PDF, редактор кода, повторы после лимита, задачи, документы | встроенные плагины bb | уже в bb |
 | Основной чекаут, дочерние треды, планы, правила агентам | шаблон `AGENTS.md` | ZIP |
 | Работа с телефона | bb Connect через getbb.app | ваш аккаунт bb |
@@ -880,14 +882,14 @@ HTML-страницы (`.html`, `.htm`) открываются свёрстан�
 
 ### 12. Мои плагины из комплекта
 
-В `plugins/` — исходники десяти плагинов с `package-lock.json`. Зависимости скачивает npm, собирает
+В `plugins/` — исходники двенадцати плагинов с `package-lock.json`. Зависимости скачивает npm, собирает
 bb. Они не привязаны к конкретному репозиторию. В bb они видны с суффиксом `_vibecom`, ID прежние.
 
 | Папка (ID) | Имя в bb | Версия | macOS | Linux-сервер | Windows |
 |---|---|---|---|---|---|
-| `markdown-view` | Markdown_vibecom | 0.5.3, bb 0.45+ | ✅ | ⚠️ должен работать | ⚠️ ссылки между файлами могут не работать |
-| `office-preview` | Office_vibecom | 0.5.3, bb 0.45+ | ✅ | ⚠️ без `.doc/.rtf/.odt` | ⚠️ без `.doc/.rtf/.odt` |
-| `folder-links` | Folder links_vibecom | 0.5.3 | ✅ | ⚠️ проверено тестами | ⚠️ проверено тестами; ссылки — `file:///C:/…` |
+| `markdown-view` | Markdown_vibecom | 0.6.0, bb 0.45+ | ✅ | ⚠️ должен работать | ⚠️ ссылки между файлами могут не работать |
+| `office-preview` | Office_vibecom | 0.6.0, bb 0.45+ | ✅ | ⚠️ без `.doc/.rtf/.odt` | ⚠️ без `.doc/.rtf/.odt` |
+| `folder-links` | Folder links_vibecom | 0.6.0 | ✅ | ⚠️ проверено тестами | ⚠️ проверено тестами; ссылки — `file:///C:/…` |
 | `floating-terminal` | Terminal_vibecom | 0.6.2 | ✅ | ⚠️ | ⚠️ |
 | `files-editor` | Explorer_vibecom | 0.1.6 с правками | ✅ | ⚠️ без `Mac app` | ⚠️ без `Mac app` |
 | `russifier` | Русификатор_vibecom | 0.2.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
@@ -895,8 +897,10 @@ bb. Они не привязаны к конкретному репозитор�
 | `pult` | Пульт_vibecom | 0.4.6, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 | `artifacts` | Важные артефакты_vibecom | 0.1.0, **бета**, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 | `composer-labels` | Модель и эффорт_vibecom | 0.1.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
+| `parakeet-voice` | Parakeet_vibecom | 0.2.0, **bb 0.50+** | ✅ Apple silicon | ⚠️ сборка движка самим, не проверялась | ✗ готового движка нет |
+| `limit-guard` | Сторож лимитов_vibecom | 0.3.0, bb 0.46+ | ✅ | ⚠️ должен работать | ⚠️ не проверялся |
 
-Три просмотрщика нумеруются версией комплекта, у Русификатора, тега, Пульта, Артефактов и «Модели и эффорта» — свои версии; у копий
+Три просмотрщика нумеруются версией комплекта, у Русификатора, тега, Пульта, Артефактов, «Модели и эффорта», Parakeet и Сторожа лимитов — свои версии; у копий
 чужих плагинов версии продолжают версии их авторов.
 Explorer_vibecom показывает Markdown через сервер Markdown_vibecom — ставьте их вместе.
 
@@ -946,22 +950,24 @@ bb plugin config files-editor set openDocumentsIn "This panel"
 зависимости, соберёт плагин и сможет обновлять его командой. Ставьте только нужные:
 
 ```text
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/markdown-view
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/office-preview
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/folder-links
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/files-editor
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/floating-terminal
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/russifier
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/repo-tag
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/pult
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/artifacts
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/composer-labels
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/markdown-view
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/office-preview
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/folder-links
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/files-editor
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/floating-terminal
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/russifier
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/repo-tag
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/pult
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/artifacts
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/composer-labels
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/limit-guard
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/parakeet-voice   # движок и модель — bash setup.sh из клона, нужен bb 0.50+
 ```
 
-bb покажет источник и попросит подтвердить. Диапазон `~0.5.0` принимает выпуски 0.5.x: новую совместимую
+bb покажет источник и попросит подтвердить. Диапазон `~0.6.0` принимает выпуски 0.6.x: новую совместимую
 версию покажет `bb plugin outdated`, поставит `bb plugin update <ID>`. Для точного повторения укажите тег
-`@v0.5.0` вместо диапазона — такой источник `update` не меняет. Плагины, поставленные с диапазоном `~0.4.0`,
-`~0.3.0` или `~0.2.0`, на 0.5.x сами не перейдут: удалите (`bb plugin remove <ID>`) и поставьте заново.
+`@v0.6.0` вместо диапазона — такой источник `update` не меняет. Плагины, поставленные с диапазоном `~0.5.0`,
+`~0.4.0`, `~0.3.0` или `~0.2.0`, на 0.6.x сами не перейдут: удалите (`bb plugin remove <ID>`) и поставьте заново.
 
 Один плагин ставится одним путём. Чтобы перейти с папки на Git или обратно, сначала `bb plugin remove <ID>`:
 команда удаляет и настройки плагина (они есть у Explorer_vibecom и Terminal_vibecom) — задайте их заново
@@ -989,10 +995,18 @@ bb покажет источник и попросит подтвердить. �
 - Файлы хранилища треда теперь можно не только смотреть, но и править.
 - Голые адреса без `[текст](…)` ссылками не становятся.
 - **На телефоне** шапка и лента инструментов правки занимают одну строку, ленту листают пальцем.
-  Свайп по ленте больше не нажимает кнопки редактора: раньше на iPhone он мог испортить файл.
+  Свайп по ленте больше не нажимает кнопки редактора: раньше на iPhone он мог испортить файл. В узкой панели кнопки —
+  иконки (слово — в подсказке), «Оглавление» открывается списком заголовков поверх текста.
+- **«Дерево»** — файлы репозитория, в котором лежит документ: открытый файл подсвечен, клик по `.md` показывает файл в
+  той же вкладке, по другому типу открывает вкладку bb. Широкая панель (от 720 px) — колонка слева, узкая — выезжает
+  поверх документа. Скрытые файлы (`.claude`, `.github`) в дереве не видны: bb их не отдаёт.
+- **«Копировать путь»** — полный абсолютный путь файла в буфер обмена.
+- **HTML_vibecom** — второй открыватель плагина для `.html`/`.htm`: страница свёрстанная, скрипты и стили работают в
+  песочнице без доступа к bb; ссылки на `.md`, `file://` и сайты открывает bb новой вкладкой. Плагин закрепляет его сам, один
+  раз на устройство (если выбора не было или стоял встроенный просмотр); выбор, сделанный после, не трогает.
 
 Настройки вида хранятся в браузере, отдельно от файлов. Файл на компьютере по абсолютной ссылке открывается и без
-треда — из «Файлов» и «Пульта». Тесты: `npm test` (29 проверок ✅).
+треда — из «Файлов» и «Пульта». Тесты: `npm test` (66 проверок ✅).
 
 #### Office_vibecom — Excel, Word, PowerPoint
 
@@ -1119,6 +1133,46 @@ composer-labels` — или убрать: `bb plugin uninstall composer-labels`.
 
 *Та же панель на телефоне. Демо-данные.*
 
+#### Parakeet_vibecom — голос локально, без облака
+
+Диктовка в поле ввода распознаётся **на вашем компьютере**, звук не уходит в облако и не нужен интернет. Плагин
+добавляет в **Settings → AI services** сервис `parakeet` («Parakeet Ultra (local)») — локальную модель Parakeet
+Ultra (740 МБ, 25 языков, русский WER 5,6 %); на Mac с Apple silicon 2 минуты речи распознаются примерно за 2 секунды.
+
+- **Нужен bb 0.50 или новее.** На более старом bb пропустите плагин: API AI-сервисов плагинов у bb экспериментальный,
+  после каждого обновления bb сделайте пробную диктовку.
+- **Установка — в вашем Terminal, не агентом:** `bash setup.sh` в папке `plugins/parakeet-voice` ставит готовый
+  движок (на Apple silicon он лежит в комплекте, компилятор не нужен), скачивает модель со сверкой sha256 и ставит
+  `ffmpeg` через Homebrew, потом `bb plugin install path:"$PWD" --yes`. Голос включается отдельной командой:
+  `bb settings ai-services set voice parakeet`; вернуть облако — `… set voice automatic`.
+- **Что теряется:** Parakeet не принимает словарь bb (имена, названия репозиториев) и может хуже писать термины.
+  В режиме Automatic Parakeet остаётся запасным: bb cloud недоступен — диктовка распознаётся локально.
+- **Linux и Intel Mac** — `bash setup.sh` соберёт движок из исходников; **Windows** — готового движка нет.
+  Подробности, настройки и проверка — `plugins/parakeet-voice/README.md`. Тесты: `npm test` (8 проверок ✅ и одна сквозная на реальной записи,
+  среди них — что во время работы нет сетевых соединений).
+
+#### Сторож лимитов_vibecom — недельные лимиты и бюджеты
+
+Карточка «Сторож лимитов» — иконка в подвале боковой панели. Плагин следит за недельными лимитами подписок и
+бюджетами платных моделей, чтобы тред не упёрся в потолок посреди работы. Пять сторожей, у каждого свой выключатель:
+
+- **Claude Code** (включён): с 85 % недели переводит треды на Sonnet и снижает effort, с 93 % новые ходы ждут вашего
+  согласия, идущие треды останавливаются. Согласие — `bb limit-guard resume`.
+- **Codex** (**выключен**, включается `bb limit-guard on codex`): с 85 % снижает effort до `medium`, модель треда не
+  меняет; с 93 % то же, что у Claude. Он сам меняет настройки тредов, поэтому включайте его осознанно.
+- **Бюджеты Gemini (Vertex), Яндекса, Cloud.ru** (включены): недельный лимит в деньгах для тредов агента Pi — $50,
+  1 000 ₽, 1 000 ₽; на 80 % предупреждение, на 100 % ходы ждут вашего согласия. Лимит — `bb limit-guard limit yandex 1500`.
+  Расход — оценка по ценам из `~/.pi/agent/models.json`. **В шаблоне `models/pi/models.json` комплекта цен нет**, поэтому
+  у Яндекса и Cloud.ru блок покажет «расход не прочитан», пока вы не впишете цены; Vertex в шаблонах нет совсем.
+  Ненужный бюджет выключите: `bb limit-guard off yandex`.
+- **Уведомления** (необязательно): если есть ваш скрипт `~/.bb/limit-guard/notify/send.py`, сторож вызывает его при
+  входе в стадии; скрипта нет — сторож работает так же, без уведомлений.
+
+Запретите агентам команды `resume`, `off`, `on` и `limit` правилами `Bash(bb limit-guard resume*)` и подобными в
+настройках Claude Code: согласие и выключение — решение человека. Аварийно выключить — `bb plugin disable limit-guard`.
+Подробности — `plugins/limit-guard/README.md`. Тесты: `npm test`. Живая проверка сторожа Codex не выполнялась —
+смена effort и перестановка очереди проверены только тестами.
+
 ### 13. Открытие файлов
 
 **Settings → Files → File openers** — закрепите:
@@ -1130,14 +1184,14 @@ composer-labels` — или убрать: `bb plugin uninstall composer-labels`.
 | `.docx`, `.docm`, `.dotx` | «Документ (Word)» |
 | `.pptx` | «Презентация (PowerPoint)» |
 | `.pdf` | встроенный PDF preview |
-| `.html`, `.htm` | «Built-in preview» — страница свёрстанной, в песочнице; переключатель **Preview / Raw**. Explorer_vibecom закрепляет его сам при первой загрузке bb на устройстве (⌘R / обновить страницу), если вы ничего не выбирали |
+| `.html`, `.htm` | «HTML_vibecom» — страница свёрстанной, в песочнице; скрипты и стили работают, ссылки на `.md`, `file://` и сайты открывает bb новой вкладкой. Markdown_vibecom закрепляет его сам при первой загрузке bb на устройстве (⌘R / обновить страницу), если вы ничего не выбирали или стоял «Built-in preview» |
 | код и конфигурации | встроенный редактор Monaco или BB preview |
 
 **Важно:** открывателями регистрируются и другие плагины (например, File Manager из прошлых выпусков
 комплекта). Пока Markdown_vibecom не закреплён для `.md`, клик по файлу в чате может открыть его не тем
 плагином. Для отдельного файла — правый клик → **Open with**. Без закрепления `.html` открывается исходным
 кодом во встроенном File Editor; если так и осталось, значит раньше `.html` был закреплён за File Editor вручную —
-Explorer_vibecom такой выбор не перебивает, поменяйте его здесь.
+Markdown_vibecom такой выбор не перебивает, поменяйте его здесь.
 
 Выбор открывателей хранится в браузере: закрепите их на каждом устройстве — в приложении на компьютере и
 в браузере телефона отдельно.
@@ -1265,7 +1319,7 @@ bb provider-retry status
 |---|---|
 | bb | 0.46.1, приложение на Mac. 30.10 `bb settings version` показывает свежую версию 0.48.0: Вадим на неё не обновлялся, комплект на 0.48 проверен только сборкой (раздел 21) |
 | Плагины | 52 всего: 41 running, 11 disabled |
-| Свои (в bb — `_vibecom`) | все десять из комплекта. Версии у Вадима: `russifier` 0.2.0, `repo-tag` 0.1.0, `artifacts` 0.1.0, `composer-labels` 0.1.0, `floating-terminal` 0.6.2, `files-editor` 0.1.6, `pult` 0.4.6 — как в комплекте; `folder-links` 0.4.0, `markdown-view` и `office-preview` 0.1.0 из рабочей папки — код тот же, в комплекте нумеруются по комплекту, 0.5.3 |
+| Свои (в bb — `_vibecom`) | все двенадцать из комплекта. Версии у Вадима: `parakeet-voice` 0.2.0, `limit-guard` 0.3.1 (в комплекте 0.3.0: автопереключение Gemini при ошибке 429 ещё не подключено), `russifier` 0.2.0, `repo-tag` 0.1.0, `artifacts` 0.1.0, `composer-labels` 0.1.0, `floating-terminal` 0.6.2, `files-editor` 0.1.6, `pult` 0.4.6 — как в комплекте; `folder-links` 0.4.0, `markdown-view` и `office-preview` 0.1.0 из рабочей папки — код тот же, в комплекте нумеруются по комплекту, 0.5.3 |
 | Свои, не в комплекте | `limit-guard` 0.1.1 — сторож недельного лимита Claude, завязан на личного Telegram-бота, общей версии пока нет; `provider-icons` 0.1.1 — иконка Gemini у провайдера Google Antigravity, самого провайдера в комплекте нет; `focus-probe` 0.1.0 — личная диагностика |
 | Внешние | нет: `file-manager` удалён, его заменяет Explorer_vibecom |
 | Настройки плагинов | `floating-terminal`: `fontSize=13`; `files-editor`: `excludedDirectories` по умолчанию, `openDocumentsIn=This panel`; `russifier`: `language=ru`, `collectMissing=true`; `repo-tag`: `tagLength=3`, `compactTagLength=3`; `pult`: `llmTriage=false` (в комплекте этот разбор отключён в коде), `llmModel` по умолчанию; `provider-retry`: `maximumWait=24 hours`; `bb-guide`: всё включено; у `composer-labels`, `artifacts`, `folder-links`, `markdown-view`, `office-preview` настроек нет |
@@ -1376,6 +1430,13 @@ Get-Content -Path "$env:USERPROFILE\.bb\logs\host-daemon-stdio.log" -Tail 40
 - **Mac Вадима, bb 0.45.0, 04–11.10.2026; bb 0.46.0 — 11.10:** настройки и плагины сняты командами `bb settings`,
   `bb plugin list/source/config`, `bb provider models`; 11.10 снимок повторён на 0.46.0 и совпал, кроме
   списка встроенных плагинов (раздел 17).
+- **Комплект 0.6.0, bb 0.50.1, 21.11 (два новых плагина — Parakeet и Сторож лимитов; дерево, «Копировать путь» и HTML_vibecom в Markdown_vibecom):**
+  двенадцать плагинов собраны с нуля, тесты прошли: Markdown 66/66, Office 10/10, Folder links 56/56, Terminal 86/86,
+  Русификатор 19/19, Repo tags 20/20, Пульт 210/210, Артефакты 5 + 1, Parakeet 8 + 1 пропущенный (сквозной без записи),
+  Сторож лимитов 133/133, «Модель и эффорт» собран (тестов нет); Explorer — 393/393 в копии с обновлённым lock-файлом
+  (`npm ci` с lock-файлом комплекта не проходит из-за `@napi-rs/canvas`, как и 07.11). Установка как у bb из Git — все
+  двенадцать. Parakeet работает у автора на bb 0.50.1; Сторож лимитов стоит у автора, сторож Codex вживую не включался.
+  Кнопки «Дерево», «Копировать путь» и HTML_vibecom проверены автором на iPhone и на компьютере; настоящий Safari не проверен.
 - **Комплект 0.5.3, bb 0.46.1, 07.11 (патч — строка клавиш Terminal_vibecom на iPhone, скрытые проекты Пульта 0.4.6):**
   десять плагинов собраны с нуля, тесты прошли: Markdown 29/29, Office 10/10, Folder links 56/56, Explorer 393/393,
   Terminal 86/86, Русификатор 19/19, Repo tags 20/20, Пульт 210/210, Артефакты 5 + 1 (у «Модели и эффорта» тестов нет).

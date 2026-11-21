@@ -1,9 +1,9 @@
 # Задание агенту: настрой bb как у Вадима
 
-Last Updated: 2026-10-30
+Last Updated: 2026-11-21
 
-Комплект 0.5.3 проверен на bb 0.46.1, macOS: 30.10 все десять плагинов собраны с нуля (`npm ci`,
-`bb plugin build .`) и прошли тесты; до 11.10 комплект проверялся на 0.45.0. На bb 0.48 проверена только сборка и
+Комплект 0.6.0 проверен на bb 0.50.1, macOS: 21.11 все двенадцать плагинов собраны с нуля (`npm ci`,
+`bb plugin build .`) и прошли тесты; до 07.11 комплект проверялся на 0.46.1, до 11.10 — на 0.45.0. На bb 0.48 проверена только сборка и
 тесты против его SDK (GUIDE.md, раздел 21): если у пользователя bb 0.48, после установки проверь, что
 панели Explorer_vibecom, Terminal_vibecom, Пульта и Артефактов открываются, и скажи пользователю, что работа на 0.48
 не подтверждена. Windows проверена Вадимом 08.10.2026 на 0.45.0;
@@ -46,11 +46,12 @@ bb и хотя бы один агент уже должны работать. В
    symlink наружу и лишних файлов. Если комплект — клон репозитория, `.git`, `.gitignore` и `scripts/`
    в манифест не входят: это служебные файлы репозитория.
 5. Поставь профиль ОС по таблице ниже. Плагины лежат в `plugins/`: `markdown-view`, `office-preview`,
-   `folder-links`, `floating-terminal`, `files-editor`, `russifier`, `repo-tag`, `pult`, `artifacts`, `composer-labels`; в bb
-   они видны с суффиксом `_vibecom` (Markdown_vibecom, Office_vibecom, Folder links_vibecom,
+   `folder-links`, `floating-terminal`, `files-editor`, `russifier`, `repo-tag`, `pult`, `artifacts`, `composer-labels`,
+   `limit-guard`, `parakeet-voice`; в bb они видны с суффиксом `_vibecom` (Markdown_vibecom, Office_vibecom, Folder links_vibecom,
    Terminal_vibecom, Explorer_vibecom, Русификатор_vibecom, Repo tags_vibecom, Пульт_vibecom,
-   Важные артефакты_vibecom, Модель и эффорт_vibecom). Русификатору, тегу репозитория, Пульту, Артефактам и
-   «Модели и эффорту» нужен bb 0.46 или новее: на старом bb пропусти их и скажи почему.
+   Важные артефакты_vibecom, Модель и эффорт_vibecom, Сторож лимитов_vibecom, Parakeet_vibecom). Русификатору, тегу репозитория,
+   Пульту, Артефактам, «Модели и эффорту» и Сторожу лимитов нужен bb 0.46 или новее, Parakeet — 0.50 или новее: на старом bb
+   пропусти их и скажи почему. Parakeet ставится иначе, чем остальные (пункт `parakeet-voice` в таблице ниже).
    В папке каждого: `npm ci` (для `files-editor` и `floating-terminal` — `npm ci --ignore-scripts`), `bb plugin build .`,
    `bb plugin install <абсолютный путь папки> --yes`. Уже установленный плагин не дублируй:
    проверь `bb plugin list` и `bb plugin source <id>`. Если плагин с тем же ID стоит из другого
@@ -60,7 +61,7 @@ bb и хотя бы один агент уже должны работать. В
    переустанавливай, а пересобери: `npm ci` (для `files-editor` и `floating-terminal` — `npm ci --ignore-scripts`),
    `bb plugin build .`, `bb plugin reload <id>` (ID — имя папки, не имя с `_vibecom`); сверь версию
    в `bb plugin list` (`floating-terminal@0.6.2`, `files-editor@0.1.6`, `russifier@0.2.0`, `pult@0.4.6`,
-   `repo-tag@0.1.0`, `artifacts@0.1.0`, `composer-labels@0.1.0`, три просмотрщика — `@0.5.3`). Explorer_vibecom показывает
+   `repo-tag@0.1.0`, `artifacts@0.1.0`, `composer-labels@0.1.0`, `limit-guard@0.3.0`, `parakeet-voice@0.2.0`, три просмотрщика — `@0.6.0`). Explorer_vibecom показывает
    Markdown через сервер Markdown_vibecom: без `markdown-view` его не ставь. Lockfile и версии не меняй. Предупреждение сборки о закреплённой версии SDK — норма;
    `bb plugin types` не выполняй.
 6. Скопируй папку `theme/atom-one_vibecom` в каталог из `bb theme dir`, выполни
@@ -73,7 +74,7 @@ bb и хотя бы один агент уже должны работать. В
    запуске обновляй только его. Правила пользователя сохрани, противоречия покажи.
 9. Открыватели файлов назначь по разделу 13 GUIDE.md, если тебе доступен интерфейс.
    Есть только CLI — перечисли, что пользователю закрепить в **Settings → Files → File openers**. `.html` и `.htm`
-   → «Built-in preview» Explorer_vibecom закрепляет сам при загрузке bb на каждом устройстве; попроси
+   → «HTML_vibecom» (второй открыватель Markdown_vibecom) закрепляется сам при загрузке bb на каждом устройстве, если выбора не было или стоял встроенный просмотр; попроси
    пользователя обновить окно bb (⌘R) и страницу на телефоне. Остальной выбор хранится в браузере: на телефоне
    его закрепляют отдельно.
 10. Модели (пути 2 и 3 GUIDE.md) — для выбранных провайдеров; без списков «Поставить» и «Не ставить»
@@ -114,6 +115,8 @@ Id — как в `catalog.json` и на странице выбора. Пунк�
 | `repo-tag` | шаг 5 для `plugins/repo-tag`; настройки по умолчанию (3 символа) |
 | `pult` | шаг 5 для `plugins/pult`; открывается на вкладке «Лента» (все треды одной таблицей); маркер «⏸ Ход за тобой» в ответах агентов даёт пункт `rules` — не выбран, скажи, что Пульт будет распознавать ход только по тексту |
 | `artifacts` | шаг 5 для `plugins/artifacts`; это бета — перескажи пользователю «что пока не работает» из `plugins/artifacts/README.md` |
+| `limit-guard` | шаг 5 для `plugins/limit-guard`. Перескажи пользователю: сторож Claude Code включён и сам переводит треды на Sonnet с 85 % недели, сторож Codex выключен (`bb limit-guard on codex` — только по просьбе), бюджеты Gemini, Яндекса и Cloud.ru считают расход по ценам `~/.pi/agent/models.json` — в шаблонах комплекта цен нет, пока не впишет, блок покажет «расход не прочитан» (выключить: `bb limit-guard off yandex`). Не запускай `resume`, `off`, `on`, `limit` и `test`: это решения пользователя. Скрипт уведомлений не создавай |
+| `parakeet-voice` | только macOS на Apple silicon и bb 0.50+; на другой ОС пропусти и скажи почему. `bash setup.sh` в папке плагина запускает **пользователь в своём Terminal** (ставит готовый движок, качает модель 740 МБ, `ffmpeg` через brew, около минуты) — дай команду и дождись «готово»; после неё шаг 5 для `plugins/parakeet-voice`, `bb parakeet-voice status` должен показать `ready`. **Голос не переключай**: `bb settings ai-services set voice parakeet` — только по просьбе пользователя, скажи про откат `… set voice automatic` и что Parakeet хуже пишет имена и термины |
 | `composer-labels` | шаг 5 для `plugins/composer-labels`; настроек нет. Скажи пользователю: плагин возвращает эффорт в чип набора на узком поле ввода и на телефоне; он опирается на внутреннюю разметку bb, и если после обновления bb перестал работать — его можно выключить (`bb plugin disable composer-labels`) |
 | `rules` | шаг 8 |
 | `phone` | Connect сам не подключай: проверь `bb connect status` и покажи пользователю шаги из `PHONE.md`, разделы 1–2 |
@@ -144,6 +147,8 @@ Id — как в `catalog.json` и на странице выбора. Пунк�
 | Terminal_vibecom (`floating-terminal`) | ставить | ставить | ставить как кандидат |
 | Explorer_vibecom (`files-editor`) | ставить | ставить; «Open documents in» — не `Mac app`: вне Mac он не работает | ставить; «Open documents in» — не `Mac app` |
 | Русификатор, тег репозитория, Пульт, Артефакты, Модель и эффорт (`russifier`, `repo-tag`, `pult`, `artifacts`, `composer-labels`) | ставить | ставить как кандидат | ставить как кандидат: на Windows не испытаны |
+| Сторож лимитов (`limit-guard`) | ставить | ставить как кандидат | ставить как кандидат: на Windows не испытан |
+| Parakeet (`parakeet-voice`), только bb 0.50+ | ставить на Apple silicon: `setup.sh` — в Terminal пользователя | не ставить: готового движка нет, сборка — по README плагина, только по просьбе | не ставить: готового движка нет |
 | Не давать уснуть | `bb keep-awake enable`, если пользователь попросил | не нужно | `bb keep-awake enable` и параметры электропитания, если попросил |
 
 ## Общие настройки

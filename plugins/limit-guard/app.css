@@ -1,0 +1,187 @@
+/*
+ * Sidebar-footer card of «Сторож лимитов_vibecom» (app.tsx, lib/card.ts).
+ * Colors come from the host theme variables (--foreground, --border, --accent…),
+ * so light and dark follow bb; the tones add a hue on top.
+ */
+.vblg-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.vblg-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.vblg-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vblg-switch {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--accent);
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.vblg-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.vblg-switch[aria-checked="true"] {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.vblg-switch[aria-checked="true"]::after {
+  background: var(--primary-foreground);
+  transform: translateX(14px);
+}
+
+.vblg-switch[aria-disabled="true"] {
+  cursor: progress;
+  opacity: 0.55;
+}
+
+.vblg-switch:focus-visible,
+.vblg-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.vblg-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.vblg-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--muted-foreground);
+}
+
+.vblg-tone-ok .vblg-fill {
+  background: oklch(0.62 0.13 150);
+}
+.vblg-tone-warn .vblg-fill {
+  background: oklch(0.72 0.14 75);
+}
+.vblg-tone-stop .vblg-fill {
+  background: var(--destructive);
+}
+
+.vblg-tick {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 1px;
+  background: var(--foreground);
+  opacity: 0.45;
+}
+
+.vblg-week {
+  color: var(--muted-foreground);
+}
+
+.vblg-headline {
+  font-weight: 600;
+}
+
+.vblg-hint,
+.vblg-counts,
+.vblg-message {
+  color: var(--muted-foreground);
+}
+
+.vblg-error {
+  color: var(--destructive-text, var(--destructive));
+  overflow-wrap: anywhere;
+}
+
+.vblg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.vblg-button {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  cursor: pointer;
+}
+
+.vblg-button:hover:not(:disabled) {
+  background: var(--accent);
+}
+
+.vblg-button:disabled {
+  cursor: progress;
+  opacity: 0.55;
+}
+
+/* One block per guard (Claude Code, Codex), separated by a line. */
+.vblg-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.vblg-name {
+  font-weight: 600;
+}
+
+/* Gemini budget block: today and per-model rows */
+.vblg-rows {
+  display: grid;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.vblg-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted-foreground);
+}
+
+.vblg-row span:last-child {
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.vblg-row-error span:last-child {
+  color: var(--destructive);
+}

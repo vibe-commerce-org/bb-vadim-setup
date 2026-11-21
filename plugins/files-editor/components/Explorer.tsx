@@ -61,6 +61,8 @@ export interface ExplorerProps {
   /** Gitignored entries still listed are drawn dimmed. */
   isIgnored: (path: string) => boolean;
   header: React.ReactNode;
+  /** Where the tree lies over the file (a phone), a way to put it away: it covers the button that shows it. */
+  onClose?: () => void;
   /** Folders open when the tree mounts — BB remounts a panel tab on every visit. */
   initialExpanded?: readonly string[];
   /** Told every time a folder opens or closes, so the surface can keep it. */
@@ -170,6 +172,7 @@ export function Explorer({
   onToggleHideIgnored,
   isIgnored,
   header,
+  onClose,
   initialExpanded,
   onExpandedChange,
   isSecretRevealed = () => false,
@@ -516,6 +519,21 @@ export function Explorer({
             isSpinning={isLoading}
             onClick={onRefresh}
           />
+          {onClose ? (
+            <button
+              type="button"
+              onClick={onClose}
+              title="Hide the file explorer"
+              aria-label="Hide the file explorer"
+              className={cn(
+                "ml-1 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md",
+                "text-foreground transition-colors hover:bg-state-hover",
+                "focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none",
+              )}
+            >
+              <Icon name="X" aria-hidden className="size-4" />
+            </button>
+          ) : null}
         </div>
       </div>
 

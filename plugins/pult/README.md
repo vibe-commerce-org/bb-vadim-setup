@@ -34,7 +34,7 @@ BB >= 0.46, SDK >= 0.6.37.
 Установка из Git:
 
 ```sh
-bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.5.0" --subdirectory plugins/pult
+bb plugin install "git:https://github.com/vibe-commerce-org/bb-vadim-setup.git@semver:~0.6.0" --subdirectory plugins/pult
 ```
 
 Локально, в этой папке: npm ci, bb plugin build ., bb plugin install .

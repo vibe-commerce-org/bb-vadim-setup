@@ -879,6 +879,7 @@ export function Workspace({
       }}
       isIgnored={isIgnored}
       header={explorerHeader}
+      onClose={isNarrow ? () => setIsExplorerOpen(false) : undefined}
       initialExpanded={panel.key === scopeKey ? panel.state.expanded : undefined}
       onExpandedChange={onExpandedChange}
       isSecretRevealed={(path) => revealedSecrets.has(path)}

@@ -16,6 +16,7 @@
   комплекта, в package.json добавляется "license": "MIT";
 - у своих плагинов с собственной версией (NEW_OWN) версия остаётся, в package.json
   добавляется "license": "MIT";
+- файлы из EXCLUDED_PLUGIN_FILES (личные данные автора) не переносятся;
 - LICENSE и package-lock.json, которых нет в источнике, — файлы комплекта: не удаляются;
 - файл, который в комплекте отличается от источника, но в источнике не менялся с прошлого
   переноса, считается правкой комплекта (например, обезличенный комментарий) и остаётся;
@@ -31,12 +32,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 STATE = ROOT / "scripts" / "plugins-source-commit.txt"
 OWN = ("markdown-view", "office-preview", "folder-links")
-NEW_OWN = ("russifier", "pult", "repo-tag", "artifacts", "composer-labels")
+NEW_OWN = ("russifier", "pult", "repo-tag", "artifacts", "composer-labels", "parakeet-voice", "limit-guard")
 PLUGINS = OWN + ("files-editor", "floating-terminal") + NEW_OWN
 KIT_ADDED = {"LICENSE", "package-lock.json"}
 EXCLUDED_TOP = {"README.md", "PLUGIN_OVERVIEW.md", ".gitignore"}
 EXCLUDED_DIRS = {"docs", "samples", "scratch", ".claude", "node_modules", "dist"}
 SCREENS = "docs/screens/"
+# Файлы источника с личными данными автора (ID проекта и платёжного аккаунта, почта): в комплект не идут.
+EXCLUDED_PLUGIN_FILES = {("limit-guard", "setup/google-month-spend.sh")}
 
 
 def git(repo: Path, *args: str, binary: bool = False):
@@ -85,7 +88,7 @@ def main() -> None:
     for plugin in PLUGINS:
         base = f"{prefix}/{plugin}/"
         src_files = [f[len(base):] for f in git(repo, "ls-tree", "-r", "--name-only", "HEAD", "--", base).splitlines()]
-        src_files = [f for f in src_files if not excluded(f)]
+        src_files = [f for f in src_files if not excluded(f) and (plugin, f) not in EXCLUDED_PLUGIN_FILES]
         if not src_files:
             print(f"пропущен {plugin}: в коммитах источника его нет, копия комплекта не меняется")
             continue

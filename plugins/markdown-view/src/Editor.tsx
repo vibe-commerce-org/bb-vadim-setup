@@ -8,23 +8,31 @@
 // sha256 of the version it was based on. A file changed underneath is taken
 // as is when nothing here is unsaved, and reported when something is.
 import { useEffect, useRef, useState } from "react";
-import type { KeyboardEvent } from "react";
+import type { KeyboardEvent, ReactNode } from "react";
 import { useSdk } from "@get-bb/plugin-sdk/app";
 import type { PluginBrowserBbSdk } from "@get-bb/plugin-sdk/app";
 import { readFromDisk, writeToDisk } from "./file-access";
 import type { DiskText, FileLocation } from "./file-access";
 import { linkBase, previewRoot } from "./links";
+import { CheckIcon, EyeIcon, OutlineIcon, PencilIcon, SourceModeIcon, TyporaModeIcon, WordModeIcon } from "./icons";
 import { LOOK_CSS } from "./look";
+import { HEADINGS_SELECTOR, outlineEntries } from "./outline";
+import type { OutlineEntry } from "./outline";
+import { OutlineDrawer } from "./OutlineDrawer";
 import { tameToolbarTouches } from "./touch-toolbar";
 import { textToSave } from "./preserve";
 import type { SaveScope } from "./preserve";
 import {
   BUTTON,
+  ICON_BUTTON,
+  ICON_BUTTON_ON,
   pollDelay,
   SMALL_BUTTON,
   SMALL_BUTTON_ON,
   timeOf,
   Toolbar,
+  ToolText,
+  useCompact,
   useOpenLink,
   usePolling,
 } from "./ui";
@@ -32,10 +40,10 @@ import { DisplayMenu, displayVariables, useDisplay } from "./display";
 import { isDark, loadVditor, roundTrip, VDITOR_CDN, vditorTheme } from "./vditor";
 import type { EditMode, VditorEditor } from "./vditor";
 
-const MODES: { mode: EditMode; label: string; title: string }[] = [
-  { mode: "ir", label: "Как в Typora", title: "Разметка раскрывается там, где стоит курсор" },
-  { mode: "wysiwyg", label: "Как в Word", title: "Только оформленный текст" },
-  { mode: "sv", label: "Исходник", title: "Текст файла как есть, рядом — вид" },
+const MODES: { mode: EditMode; label: string; title: string; icon: ReactNode }[] = [
+  { mode: "ir", label: "Как в Typora", title: "Разметка раскрывается там, где стоит курсор", icon: <TyporaModeIcon /> },
+  { mode: "wysiwyg", label: "Как в Word", title: "Только оформленный текст", icon: <WordModeIcon /> },
+  { mode: "sv", label: "Исходник", title: "Текст файла как есть, рядом — вид", icon: <SourceModeIcon /> },
 ];
 
 // Vditor's default minus upload, recording, emoji and fullscreen (the panel is
@@ -202,7 +210,20 @@ const CURRENT_BLOCK = "p, li, h1, h2, h3, h4, h5, h6, td, th, [data-block]";
 
 const slug = (text: string) => text.replace(/^#+\s*/, "").trim().toLowerCase().replace(/\s+/g, "-");
 
-export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: () => void }) {
+export function Editor({
+  file,
+  onOriginal,
+  leading,
+  location,
+}: {
+  file: FileLocation;
+  /** BB's own preview of the file; absent when the file on screen is not the one BB opened. */
+  onOriginal?: () => void;
+  /** Tools at the start of the toolbar, in viewing and in editing; told whether the panel is narrow. */
+  leading?: (compact: boolean) => ReactNode;
+  /** Where the file sits, shown in the viewing toolbar instead of the word "Markdown". */
+  location?: string;
+}) {
   const sdk = useSdk();
   const rootRef = useRef<HTMLDivElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
@@ -222,13 +243,16 @@ export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: (
   const outlineWanted = useRef(display.outline);
   outlineWanted.current = display.outline;
   const [outlineShown, setOutlineShown] = useState(false);
+  // A narrow panel (a phone): icons for words, and the outline as a list over the text.
+  const compact = useCompact(rootRef);
+  const [outlineList, setOutlineList] = useState<OutlineEntry[] | null>(null);
   const conflictRef = useRef(false);
   conflictRef.current = conflict;
 
   const toAnchor = (id: string) => {
     const current = session.current;
     if (!current) return;
-    const headings = editableOf(current.editor).querySelectorAll<HTMLElement>("h1, h2, h3, h4, h5, h6");
+    const headings = editableOf(current.editor).querySelectorAll<HTMLElement>(HEADINGS_SELECTOR);
     const wanted = id.toLowerCase();
     [...headings].find((heading) => heading.id === id || slug(heading.textContent ?? "") === wanted)?.scrollIntoView({ block: "start" });
   };
@@ -330,7 +354,7 @@ export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: (
             if (toolbar !== undefined) untameToolbar = tameToolbarTouches(toolbar);
             if (session.current?.editor === editor) session.current.baseline = editor.getValue();
             if (!editingRef.current) settleForViewing(editor);
-            setOutlineShown(editor.vditor.outline.element.style.display !== "none");
+            setOutlineShown(getComputedStyle(editor.vditor.outline.element).display !== "none");
             setPhase({ kind: "ready" });
           },
         });
@@ -512,10 +536,34 @@ export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: (
   const toggleOutline = () => {
     const current = session.current;
     if (!current) return;
-    const show = current.editor.vditor.outline.element.style.display === "none";
+    if (compact) {
+      // The list of a narrow panel is read from the page each time it opens: the file may have changed.
+      setOutlineList((open) =>
+        open !== null
+          ? null
+          : outlineEntries(
+              [...editableOf(current.editor).querySelectorAll<HTMLElement>(HEADINGS_SELECTOR)].map((heading) => ({
+                tag: heading.tagName,
+                text: heading.textContent ?? "",
+              })),
+            ),
+      );
+      return;
+    }
+    // Computed, not inline: the panel Vditor did not open at the start has no inline `display`,
+    // and reading that as "shown" made the first press hide what was not there.
+    const outline = current.editor.vditor.outline.element;
+    const show = getComputedStyle(outline).display === "none";
     current.editor.vditor.outline.toggle(current.editor.vditor, show, false);
     setOutlineShown(show);
     setDisplay({ outline: show });
+  };
+
+  const pickHeading = (entry: OutlineEntry) => {
+    setOutlineList(null);
+    const current = session.current;
+    if (!current) return;
+    editableOf(current.editor).querySelectorAll<HTMLElement>(HEADINGS_SELECTOR)[entry.index]?.scrollIntoView({ block: "start" });
   };
 
   const onKeyDown = (event: KeyboardEvent) => {
@@ -526,16 +574,18 @@ export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: (
     }
   };
 
+  const outlineOpen = compact ? outlineList !== null : outlineShown;
   const outlineButton = (
     <button
       type="button"
-      className={outlineShown ? SMALL_BUTTON_ON : SMALL_BUTTON}
-      aria-pressed={outlineShown}
-      title="Показать или скрыть оглавление слева"
+      className={compact ? (outlineOpen ? ICON_BUTTON_ON : ICON_BUTTON) : outlineOpen ? SMALL_BUTTON_ON : SMALL_BUTTON}
+      aria-pressed={outlineOpen}
+      aria-label="Оглавление"
+      title={compact ? "Оглавление: список заголовков" : "Показать или скрыть оглавление слева"}
       disabled={phase.kind !== "ready"}
       onClick={toggleOutline}
     >
-      Оглавление
+      {compact ? <OutlineIcon /> : "Оглавление"}
     </button>
   );
 
@@ -550,33 +600,45 @@ export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: (
         <Toolbar
           trailing={
             <>
-              <DisplayMenu />
+              <DisplayMenu compact={compact} />
               {/* No separate "Save": it saves by itself a second after typing stops, on Cmd+S and on "Готово". */}
               <button
                 type="button"
-                className="mdv-primary"
+                className={compact ? "mdv-primary mdv-primary--icon" : "mdv-primary"}
                 onClick={() => void finishEditing()}
                 title="Сохранить и вернуться к просмотру (сохраняет и само, и по Cmd+S)"
               >
                 <CheckIcon />
-                Готово
+                <ToolText compact={compact}>Готово</ToolText>
               </button>
             </>
           }
         >
+          {leading?.(compact)}
           {outlineButton}
-          <span className="mdv-badge">Правка</span>
+          <span className="mdv-badge" title={location}>
+            Правка
+          </span>
           <div className="flex flex-none items-center gap-1" role="group" aria-label="Режим редактора">
             {MODES.map((item) => (
               <button
                 key={item.mode}
                 type="button"
-                className={item.mode === mode ? SMALL_BUTTON_ON : SMALL_BUTTON}
+                className={
+                  compact
+                    ? item.mode === mode
+                      ? ICON_BUTTON_ON
+                      : ICON_BUTTON
+                    : item.mode === mode
+                      ? SMALL_BUTTON_ON
+                      : SMALL_BUTTON
+                }
                 aria-pressed={item.mode === mode}
-                title={item.title}
+                aria-label={item.label}
+                title={compact ? `${item.label}: ${item.title}` : item.title}
                 onClick={() => void switchMode(item.mode)}
               >
-                {item.label}
+                {compact ? item.icon : item.label}
               </button>
             ))}
           </div>
@@ -588,26 +650,35 @@ export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: (
         <Toolbar
           trailing={
             <>
-              <DisplayMenu />
+              <DisplayMenu compact={compact} />
               <button
                 type="button"
-                className="mdv-primary"
+                className={compact ? "mdv-primary mdv-primary--icon" : "mdv-primary"}
                 disabled={phase.kind !== "ready"}
                 onClick={startEditing}
                 title="Править файл здесь же, в Vditor"
               >
                 <PencilIcon />
-                Редактировать
+                <ToolText compact={compact}>Редактировать</ToolText>
               </button>
             </>
           }
         >
+          {leading?.(compact)}
           {outlineButton}
-          <button type="button" className={SMALL_BUTTON} onClick={onOriginal} title="Встроенный просмотр BB">
-            Стандартный просмотр
-          </button>
+          {onOriginal && (
+            <button
+              type="button"
+              className={compact ? ICON_BUTTON : SMALL_BUTTON}
+              aria-label="Стандартный просмотр"
+              onClick={onOriginal}
+              title="Встроенный просмотр BB"
+            >
+              {compact ? <EyeIcon /> : "Стандартный просмотр"}
+            </button>
+          )}
           <div className="flex items-center gap-2 whitespace-nowrap" aria-live="polite">
-            <span>Markdown</span>
+            <span title={file.path}>{location ?? "Markdown"}</span>
             {reloadedAt && <span title="Файл изменился на диске">· обновлено {timeOf(reloadedAt)}</span>}
           </div>
         </Toolbar>
@@ -638,12 +709,17 @@ export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: (
                 <button type="button" className={BUTTON} onClick={() => setAttempt((n) => n + 1)}>
                   Повторить
                 </button>
-                <button type="button" className={BUTTON} onClick={onOriginal}>
-                  Стандартный просмотр
-                </button>
+                {onOriginal && (
+                  <button type="button" className={BUTTON} onClick={onOriginal}>
+                    Стандартный просмотр
+                  </button>
+                )}
               </div>
             </div>
           </div>
+        )}
+        {compact && outlineList !== null && (
+          <OutlineDrawer entries={outlineList} onPick={pickHeading} onClose={() => setOutlineList(null)} />
         )}
         <div className="mdv-frame">
           <div
@@ -655,23 +731,6 @@ export function Editor({ file, onOriginal }: { file: FileLocation; onOriginal: (
         </div>
       </div>
     </div>
-  );
-}
-
-function PencilIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-      <path d="m15 5 4 4" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
   );
 }
 

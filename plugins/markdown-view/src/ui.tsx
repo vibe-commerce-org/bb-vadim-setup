@@ -1,6 +1,6 @@
 // Small pieces shared by the panel: buttons, the loading and notice screens,
 // polling while the tab is on screen, and following links.
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode, RefObject } from "react";
 import { useBbNavigate } from "@get-bb/plugin-sdk/app";
 import type { PluginFileOpenerSource } from "@get-bb/plugin-sdk/app";
@@ -12,6 +12,39 @@ export const BUTTON =
 export const SMALL_BUTTON =
   "inline-flex h-7 flex-none items-center justify-center rounded-md border border-border bg-background px-2.5 text-xs font-medium text-foreground hover:bg-state-hover focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50";
 export const SMALL_BUTTON_ON = `${SMALL_BUTTON} bg-state-hover`;
+
+// The tools a finger reaches for are 32 px tall, unlike the 28 px text buttons of a wide panel.
+const TOOL_BASE =
+  "inline-flex h-8 flex-none items-center justify-center rounded-md border border-border bg-background text-xs font-medium text-foreground hover:bg-state-hover focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50";
+/** An icon and a word. */
+export const TOOL_BUTTON = `${TOOL_BASE} gap-1.5 px-2.5`;
+export const TOOL_BUTTON_ON = `${TOOL_BUTTON} bg-state-hover`;
+/** An icon alone, square. */
+export const ICON_BUTTON = `${TOOL_BASE} w-8`;
+export const ICON_BUTTON_ON = `${ICON_BUTTON} bg-state-hover`;
+
+/** A panel narrower than this (a phone, BB's side panel) shows icons where a wide one shows words. */
+export const COMPACT_PX = 720;
+
+/** Whether the element is narrower than COMPACT_PX, kept up to date as it is resized. */
+export function useCompact(ref: RefObject<HTMLElement | null>): boolean {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const measure = () => setCompact(element.clientWidth < COMPACT_PX);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [ref]);
+  return compact;
+}
+
+/** The word of a button, beside its icon or, in a narrow panel, for screen readers only. */
+export function ToolText({ compact, children }: { compact: boolean; children: ReactNode }) {
+  return compact ? <span className="sr-only">{children}</span> : <>{children}</>;
+}
 
 export function Loading({ label }: { label: string }) {
   return (
@@ -139,29 +172,30 @@ export function usePolling(
 /**
  * Follows a link from the document: http(s) as BB's chat does, mailto/tel to
  * the OS, a file in BB's panel (relative paths from `file`'s folder), `#id` to
- * `toAnchor`. Anything else (javascript:, app schemes) is ignored.
+ * `toAnchor`. Anything else (javascript:, app schemes) is ignored. Returns
+ * false when the link was ignored or BB declined to open it.
  */
-export function useOpenLink(file: FileLocation, toAnchor: (id: string) => void): (href: string) => void {
+export function useOpenLink(file: FileLocation, toAnchor: (id: string) => void): (href: string) => boolean {
   const navigate = useBbNavigate();
   return (href) => {
     const action = resolveLink(href, file);
     switch (action?.kind) {
       case "web":
-        navigate.openUrl(action.url);
-        return;
+        return navigate.openUrl(action.url);
       case "system": {
         const anchor = document.createElement("a");
         anchor.href = action.url;
         anchor.rel = "noopener noreferrer";
         anchor.click();
-        return;
+        return true;
       }
       case "anchor":
         toAnchor(action.id);
-        return;
+        return true;
       case "file":
-        navigate.experimental_openFilePreview({ target: action.target, location: null });
-        return;
+        return navigate.experimental_openFilePreview({ target: action.target, location: null });
+      default:
+        return false;
     }
   };
 }

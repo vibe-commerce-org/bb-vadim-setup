@@ -3,14 +3,15 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import type { FileLocation } from "../src/file-access.ts";
-import { linkBase, previewRoot, resolveLink } from "../src/links.ts";
+import { linkBase, pageRoot, previewRoot, resolveLink } from "../src/links.ts";
 
 const inCheckout: FileLocation = {
   hostId: "host_a",
   path: "/work/repo/docs/plans/plan.md",
   checkout: { environmentId: "env_1", rootPath: "/work/repo/" },
+  root: "/work/repo/",
 };
-const loose: FileLocation = { hostId: "host_a", path: "/data/storage/thr_1/notes/report.md", checkout: null };
+const loose: FileLocation = { hostId: "host_a", path: "/data/storage/thr_1/notes/report.md", checkout: null, root: null };
 
 test("web, mail and phone links keep their address", () => {
   assert.deepEqual(resolveLink("https://example.com/a?b=1", inCheckout), { kind: "web", url: "https://example.com/a?b=1" });
@@ -63,4 +64,13 @@ test("images load from a preview of the checkout, at the file's folder", () => {
   assert.equal(linkBase(loose, "/api/v1/file-previews/abc/"), "/api/v1/file-previews/abc/");
   const spaced: FileLocation = { ...inCheckout, path: "/work/repo/мои отчёты/a.md" };
   assert.equal(linkBase(spaced, "/p"), "/p/%D0%BC%D0%BE%D0%B8%20%D0%BE%D1%82%D1%87%D1%91%D1%82%D1%8B/");
+});
+
+test("an HTML page is served from the checkout, else the thread's storage, else its own folder", () => {
+  assert.equal(pageRoot(inCheckout), "/work/repo");
+  const stored: FileLocation = { ...loose, root: "/data/storage/thr_1/" };
+  assert.equal(pageRoot(stored), "/data/storage/thr_1");
+  assert.equal(linkBase(stored, "/api/v1/file-previews/abc", pageRoot(stored)), "/api/v1/file-previews/abc/notes/");
+  assert.equal(pageRoot(loose), "/data/storage/thr_1/notes");
+  assert.equal(linkBase(loose, "/p", pageRoot(loose)), "/p/");
 });

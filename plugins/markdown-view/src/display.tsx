@@ -4,7 +4,8 @@
 // open Markdown tab; nothing of it goes into the file.
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { CSSProperties } from "react";
-import { SMALL_BUTTON, SMALL_BUTTON_ON } from "./ui";
+import { TextSizeIcon } from "./icons";
+import { ICON_BUTTON, ICON_BUTTON_ON, SMALL_BUTTON, SMALL_BUTTON_ON } from "./ui";
 
 export interface Display {
   /** Text size relative to the renderer's own, 1 = as is. */
@@ -136,7 +137,8 @@ function Choice<K extends string>({
 }
 
 /** The "Вид" button and its panel: text size, line height, page width, font. */
-export function DisplayMenu() {
+/** `compact`: the icon alone, where a wide panel has the word. */
+export function DisplayMenu({ compact = false }: { compact?: boolean }) {
   const [display, setDisplay] = useDisplay();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -160,12 +162,13 @@ export function DisplayMenu() {
     <div ref={rootRef} className="relative">
       <button
         type="button"
-        className={open ? SMALL_BUTTON_ON : SMALL_BUTTON}
+        className={compact ? (open ? ICON_BUTTON_ON : ICON_BUTTON) : open ? SMALL_BUTTON_ON : SMALL_BUTTON}
         aria-expanded={open}
+        aria-label="Вид документа"
         title="Размер текста, интервал, ширина страницы, шрифт"
         onClick={() => setOpen(!open)}
       >
-        Вид
+        {compact ? <TextSizeIcon /> : "Вид"}
       </button>
       {open && (
         <div
